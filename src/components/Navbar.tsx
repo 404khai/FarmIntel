@@ -5,7 +5,7 @@ import { RxCaretDown } from "react-icons/rx";
 import { LuLogOut, LuUser, LuLayoutDashboard } from "react-icons/lu";
 import logo from "../assets/logo.png";
 import Button from "./Button";
-import { logout } from "../lib/api";
+// import { logout } from "../lib/api";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
