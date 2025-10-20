@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.jpeg';
 
 type FooterProps = {
   /** optional override for the logo import */

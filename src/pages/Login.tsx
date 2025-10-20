@@ -1,41 +1,13 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import logo from '../assets/logo.png'
+import React from "react";
+import { Link } from "react-router-dom";
+import { VscEyeClosed } from "react-icons/vsc";
+import logo from '../assets/logo.jpeg'
 import loginImg from "../assets/login.jpg"; // adjust path as needed
-import toast from "react-hot-toast"; // adjust path as needed
-import api from "../lib/api";
+
+
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-    
-        try {
-          const res = await api.post("/auth/login", {
-            email,
-            password,
-          });
-    
-          const { access_token, user } = res.data;
-    
-          // Save auth data
-          localStorage.setItem("token", access_token);
-          localStorage.setItem("user", JSON.stringify(user));
-          toast.success("Logged in successfully!");
-    
-          // Redirect based on role
-          navigate(user.role === "vet" ? "/VetDashboard" : "/PetOwnerDashboard");
-        } catch (err: any) {
-          const message =
-            err.response?.data?.detail || "Login failed. Try again.";
-          toast.error(message);
-        }
-      };
+  
   return (
     <div className="flex items-center justify-center w-full min-h-screen bg-white px-4">
       {/* Image (hidden on small screens) */}
@@ -46,7 +18,7 @@ const Login: React.FC = () => {
       />
 
       {/* Form container */}
-      <form onSubmit={handleLogin} className="flex flex-col items-center justify-center gap-4 bg-white rounded-xl p-10 md:h-[400px] font-inter w-full max-w-md">
+      <form className="flex flex-col items-center justify-center gap-4 bg-white rounded-xl p-10 md:h-[400px] font-inter w-full max-w-md">
         {/* Title */}
         <div className="flex flex-col items-center justify-center gap-2 text-center">
           <div className='h-full flex items-center justify-evenly'>
@@ -88,8 +60,7 @@ const Login: React.FC = () => {
             id="email"
             type="email"
             placeholder="name@mail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            
             className="pl-10 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
@@ -124,18 +95,17 @@ const Login: React.FC = () => {
           </svg>
           <input
             id="password"
-            type={showPassword ? "text" : "password"}
+            type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            
             className="pl-10 pr-10 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
           <span
-            onClick={() => setShowPassword(!showPassword)}
+            
             className="absolute right-3 bottom-2.5 cursor-pointer text-gray-600 hover:text-black transition"
           >
-            {showPassword ? <VscEyeClosed /> : <VscEye />}
+            <VscEyeClosed /> 
           </span>
         </div>
 
