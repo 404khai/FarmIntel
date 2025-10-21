@@ -1,1 +1,11 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+* {
+    font-family: "DM Mono", monospace;
+}
+
+p{
+    font-family: "Exo 2", sans-serif;
+}
