@@ -5,12 +5,11 @@
 
 * {
     font-family: "DM Mono", monospace;
-    font-weight: 300;
-    font-style: italic;
- 
+    font-weight: 400;
 }
 
 p{
     /* font-family: "Exo 2", sans-serif!; */
     font-family: "Nunito", sans-serif !important;
+    font-weight: 300 !important;
 }
