@@ -4,51 +4,50 @@ import { Link } from "react-router-dom";
 import { VscEyeClosed } from "react-icons/vsc";
 import logo from "../assets/logo.png";
 import signupImg from "../assets/signup.jpeg";
-
+import google from "../assets/google.png";
 
 const SignUp: React.FC = () => {
   
 
   return (
-    <div className="flex items-center justify-center w-full min-h-screen bg-amber-100">
+    <div className="flex items-center gap-2 justify-center w-full min-h-screen bg-black ">
     
       <form
         
-        className="flex flex-col items-center justify-center gap-4 bg-white rounded-xl p-10 md:h-[450px] font-inter w-full max-w-md"
+        className="flex flex-col items-center justify-center gap-4  rounded-xl p-10 md:h-[450px] font-inter w-full max-w-md"
       >
         <div className="flex flex-col items-center justify-center gap-2 text-center">
           <div className="h-full flex items-center justify-evenly">
             <img src={logo} alt="VetLink logo" className="w-20 h-20" />
-            <p className="text-2xl font-semibold">VetLink</p>
           </div>
-          <p className="text-xl font-semibold text-[#212121]">
+          <p className="text-xs font-semibold text-lime-400 p-1 bg-lime-400/15 rounded-md">
             Create your Account
           </p>
+          
         </div>
 
-        {/* Full Name */}
-        <div className="relative flex flex-col w-full gap-1">
-          <label
-            htmlFor="name"
-            className="text-xs font-semibold text-[#8B8E98]"
-          >
-            Full Name
-          </label>
-          <input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-           
-            className="pl-3 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
-            required
-          />
+      
+        <button
+          type="button"
+          className="flex items-center justify-center gap-3 w-[60%] rounded-md py-3 bg-[#ffffff] hover:shadow-md transition-all"
+        >
+          <img src={google} alt="Google" className="w-5 h-5" />
+          <span className="text-sm font-medium text-gray-800">
+            Sign up with Google
+          </span>
+        </button>
+
+        <div className="flex items-center justify-center w-full gap-4 text-[#c7c7c7] my-2">
+          <span className="h-px bg-[#8b8b8b] flex-1"></span>
+          or
+          <span className="h-px bg-[#8b8b8b] flex-1"></span>
         </div>
 
         {/* Email */}
         <div className="relative flex flex-col w-full gap-1">
           <label
             htmlFor="email"
-            className="text-xs font-semibold text-[#8B8E98]"
+            className="text-md font-semibold text-[#ffffff]"
           >
             Email
           </label>
@@ -56,8 +55,7 @@ const SignUp: React.FC = () => {
             id="email"
             type="email"
             placeholder="name@mail.com"
-            
-            className="pl-3 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
+            className="placeholder-[#b0b0b0] placeholder:text-xs pl-3 pr-3 py-2 bg-[#3a3a3a41] text-white rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
         </div>
@@ -66,75 +64,40 @@ const SignUp: React.FC = () => {
         <div className="relative flex flex-col w-full gap-1">
           <label
             htmlFor="password"
-            className="text-xs font-semibold text-[#8B8E98]"
+            className="text-md font-semibold text-[#ffffff]"
           >
             Password
           </label>
           <input
             id="password"
             type="password"
-            placeholder="Password"
-            
-            className="pl-3 pr-10 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
+            placeholder="input password"
+            className="placeholder-[#b0b0b0] placeholder:text-xs pl-3 pr-3 py-2 bg-[#3a3a3a41] text-white rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
           <span
             
             className="absolute right-3 bottom-2.5 cursor-pointer text-gray-600 hover:text-black transition"
           >
-            <VscEyeClosed /> 
+            <VscEyeClosed className="text-[#efefef]"/> 
           </span>
-        </div>
-
-        {/* Role dropdown */}
-        <div className="flex flex-col w-full gap-1">
-          <label
-            htmlFor="role"
-            className="text-xs font-semibold text-[#8B8E98]"
-          >
-            Role
-          </label>
-          <select
-            id="role"
-            
-            className="pl-3 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
-          >
-            <option value="PET_OWNER">Pet Owner</option>
-            <option value="VET">Veterinarian</option>
-          </select>
         </div>
 
         {/* Submit */}
         <button
           type="submit"
-          className="w-2/5 py-2 mt-2 bg-black text-white rounded-md hover:scale-105 transition-all duration-300"
+          className="w-2/5 py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
         >
           Sign Up
         </button>
 
-        {/* Divider
-        <div className="flex items-center justify-center w-full gap-4 text-gray-400 my-2">
-          <span className="h-px bg-gray-200 flex-1"></span>
-          or
-          <span className="h-px bg-gray-200 flex-1"></span>
-        </div>
-
-        
-        <button
-          type="button"
-          className="flex items-center justify-center gap-3 w-[60%] border border-gray-200 rounded-md py-3 bg-white hover:shadow-md transition-all"
-          onClick={handleGoogleSignup}
-        >
-          <img src={google} alt="Google" className="w-5 h-5" />
-          <span className="text-sm font-medium text-gray-800">
-            Sign up with Google
-          </span>
-        </button> */}
+      
+         
 
         {/* Footer */}
         <p className="text-md text-[#8B8E98] mt-2">
           Already have an account?
-          <Link to="/Login" className="text-[#f57d38] ml-1">
+          <Link to="/Login" className="text-lime-400 ml-1">
             Login
           </Link>
         </p>
@@ -143,7 +106,7 @@ const SignUp: React.FC = () => {
       <img
         src={signupImg}
         alt="signup"
-        className="w-[50%] h-full rounded-4xl hidden md:block"
+        className="w-[300px] h-[500px] rounded-4xl hidden md:block"
       />
     </div>
   );
