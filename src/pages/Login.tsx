@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { VscEyeClosed } from "react-icons/vsc";
-import logo from '../assets/logo.jpeg'
+import logo from '../assets/logo.png'
 import loginImg from "../assets/login.jpg"; // adjust path as needed
 
 

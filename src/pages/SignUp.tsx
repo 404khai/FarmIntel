@@ -2,21 +2,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { VscEyeClosed } from "react-icons/vsc";
-import logo from "../assets/logo.jpeg";
-import signupImg from "../assets/signup.jpg";
+import logo from "../assets/logo.png";
+import signupImg from "../assets/signup.jpeg";
 
 
 const SignUp: React.FC = () => {
   
 
   return (
-    <div className="flex items-center justify-center w-full min-h-screen bg-white px-4">
-      <img
-        src={signupImg}
-        alt="signup"
-        className="w-[400px] hidden md:block"
-      />
-
+    <div className="flex items-center justify-center w-full min-h-screen bg-amber-100">
+    
       <form
         
         className="flex flex-col items-center justify-center gap-4 bg-white rounded-xl p-10 md:h-[450px] font-inter w-full max-w-md"
@@ -144,6 +139,12 @@ const SignUp: React.FC = () => {
           </Link>
         </p>
       </form>
+
+      <img
+        src={signupImg}
+        alt="signup"
+        className="w-[50%] h-full rounded-4xl hidden md:block"
+      />
     </div>
   );
 };

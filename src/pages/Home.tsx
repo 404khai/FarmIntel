@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import farmBg from "../assets/farmBg.jpg";  
-import logo from "../assets/logo.jpeg"; 
+import logo from "../assets/logo.png"; 
 import { ArrowRight02Icon } from "hugeicons-react";
 import { Link } from "react-router-dom";
 
@@ -24,7 +24,7 @@ const Home: React.FC = () => {
           <img
             src={logo} // replace with your image path
             alt="Farm background"
-            className="w-20 h-full"
+            className="w-15 h-15"
           />
           <h2>FarmIntel</h2>
         </div>

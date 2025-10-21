@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/logo.jpeg';
+import logo from '../assets/logo.png';
 
 type FooterProps = {
   /** optional override for the logo import */
@@ -45,7 +45,7 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
           "
         >
           <h3 className="text-black text-lg font-semibold">Farmers</h3>
-          <ul className="space-y-1 text-center max-md:text-center">
+          <ul className="space-y-1 ">
             <li>
               <a
                 className="text-black/60 hover:text-black transition-colors"
@@ -73,7 +73,7 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
           "
         >
           <h3 className="text-black text-lg font-semibold">Community</h3>
-          <ul className="space-y-1 text-center max-md:text-center">
+          <ul className="space-y-1">
             <li>
               <a
                 className="text-black/60 hover:text-black transition-colors"
