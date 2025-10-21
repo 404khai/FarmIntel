@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.jpeg';
 
 type FooterProps = {
   /** optional override for the logo import */
@@ -29,7 +29,7 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
               alt="VetLink logo"
               className="w-[60px] h-[80%] object-contain"
             />
-            <h2 className="text-black text-2xl font-semibold">VetLink</h2>
+            <h2 className="text-black text-2xl font-semibold">FarmIntel</h2>
           </div>
           <p className="text-black/70 text-sm ">
             Your Pet, Your Vet, One Platform
@@ -44,14 +44,14 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
             max-md:w-full max-md:h-auto max-md:items-center
           "
         >
-          <h3 className="text-black text-lg font-semibold">Product</h3>
+          <h3 className="text-black text-lg font-semibold">Farmers</h3>
           <ul className="space-y-1 text-center max-md:text-center">
             <li>
               <a
                 className="text-black/60 hover:text-black transition-colors"
                 href="#"
               >
-                Pro
+                Co-operatives
               </a>
             </li>
             <li>
@@ -104,7 +104,7 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
             max-md:text-[80px] max-md:-bottom-[20px]
           "
         >
-          VetLink
+          FarmIntel
         </h1>
       </div>
     </footer>

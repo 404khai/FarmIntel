@@ -1,72 +1,104 @@
 import React from "react";
+import { motion } from "framer-motion";
+import farmBg from "../assets/farmBg.jpg";  
+import logo from "../assets/logo.jpeg"; 
+import { ArrowRight02Icon } from "hugeicons-react";
 import { Link } from "react-router-dom";
-import { IoPawOutline } from "react-icons/io5";
-import heroImg from "../assets/home.png";
-import user1 from "../assets/user1.jpeg";
-import user2 from "../assets/user2.jpeg";
-import user3 from "../assets/user3.jpeg";
-import user4 from "../assets/user4.jpeg";
 
 const Home: React.FC = () => {
   return (
-    <section className="bg-[#f7f3ed] flex flex-col md:flex-row md:gap-10 items-center md:items-start justify-center px-6 md:px-16 py-16 md:h-[600px] w-full">
-      {/* Left Text Section */}
-      <div className="flex flex-col gap-6 text-center md:text-left">
-        <p className="text-3xl md:text-5xl text-[#212121] leading-snug">
-          Book <span className="text-[#f57d38] font-semibold">vet appointments</span>{" "}
-          with ease, <span className="text-[#f57d38] font-semibold">track your pet’s health</span> and{" "}
-          get trusted care — all in one place.
-        </p>
+    <div className="relative h-screen w-full overflow-hidden bg-black">
+      {/* Background Image */}
+      <img
+        src={farmBg} // replace with your image path
+        alt="Farm background"
+        className="absolute inset-0 w-full h-full object-cover opacity-80"
+      />
 
-        {/* CTA Button */}
-        <div className="flex justify-center md:justify-start">
-          <Link to="/appointments">
-            <button className="relative flex items-center justify-center gap-2 px-6 py-3 border border-[#f57d38] text-[#f57d38] font-semibold rounded-full overflow-hidden group transition-all duration-300">
-              <span className="relative z-10 flex items-center gap-2 group-hover:text-white">
-                Book Appointment <IoPawOutline className="text-xl" />
-              </span>
-              <span className="absolute inset-0 bg-[#f57d38] w-0 group-hover:w-full transition-all duration-300"></span>
-            </button>
+      {/* Overlay Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
+
+      {/* Navbar */}
+      <header className="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-6 z-20">
+        <div className="gap-2 flex items-center text-white text-2xl font-semibold tracking-wide">
+          <img
+            src={logo} // replace with your image path
+            alt="Farm background"
+            className="w-20 h-full"
+          />
+          <h2>FarmIntel</h2>
+        </div>
+        <nav className="hidden md:flex items-center space-x-8 text-white">
+          
+          <a href="#home" className="hover:text-green-400 transition">Home</a>
+          <a href="#marketplace" className="hover:text-green-400 transition">Marketplace</a>
+          <a href="#blog" className="hover:text-green-400 transition">Blog</a>
+          <a href="#community" className="hover:text-green-400 transition">Community</a>
+        </nav>
+        <div className="flex items-center space-x-4">
+          <Link to="/SignUp" className="text-white hover:text-green-400 transition">Sign Up</Link>
+          <Link to="/Login" className="bg-lime-400 text-black font-medium hover:bg-lime-300 px-5 py-2 rounded-full">
+            Login
           </Link>
         </div>
+      </header>
 
-        {/* Overlapping User Images */}
-        <div className="flex justify-center md:justify-start mt-4">
-          <div className="flex items-center">
-            <img
-              src={user1}
-              alt="user1"
-              className="w-13 h-13 rounded-full border-3 border-[#f7f3ed] -mr-4"
-            />
-            <img
-              src={user2}
-              alt="user2"
-              className="w-13 h-13 rounded-full border-3 border-[#f7f3ed] -mr-4"
-            />
-            <img
-              src={user3}
-              alt="user3"
-              className="w-13 h-13 rounded-full border-3 border-[#f7f3ed] -mr-4"
-            />
-            <img
-              src={user4}
-              alt="user4"
-              className="w-13 h-13 rounded-full border-3 border-[#f7f3ed]"
-            />
+      {/* Hero Section */}
+      <div className="absolute top-20 z-10 flex flex-col justify-center h-full px-10 md:px-20 max-w-3xl text-white">
+        <motion.span
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="bg-green-700/30 px-4 py-1 w-fit rounded-full text-sm mb-4"
+        >
+          Sustainable Farming Tech
+        </motion.span>
 
-          </div>
-        </div>
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-4xl md:text-4xl font-bold leading-tight mb-6"
+        >
+          Bringing Innovation to Your <br /> Farming Journey.
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="text-gray-200 text-lg mb-8"
+        >
+          From precision agriculture to sustainable practices, FarmIntel helps
+          farmers grow more efficiently and profitably. Join us in transforming
+          the way you farm.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <button className="bg-lime-400 text-black font-semibold px-2 py-2 rounded-full hover:bg-lime-300 flex items-center gap-2">
+            Get Started
+            
+            <ArrowRight02Icon size={34} className="text-white bg-emerald-950 p-2 rounded-full"/>
+          </button>
+        </motion.div>
       </div>
 
-      {/* Right Hero Image */}
-      <div className="mt-10 md:mt-0 md:w-1/2 flex justify-center">
-        <img
-          src={heroImg}
-          alt="Vet hero"
-          className="w-100 max-w-md md:max-w-xl object-cover"
-        />
+      {/* Mission Card */}
+      <div className="absolute bottom-12 right-10 bg-white/10 backdrop-blur-md p-6 rounded-2xl text-white max-w-xs z-10">
+        <h3 className="font-semibold text-lg mb-2">Our Mission</h3>
+        <p className="text-sm text-gray-200">
+          To empower farmers with innovative tools and technology that elevate
+          productivity, sustainability, and efficiency—shaping the future of farming.
+        </p>
+        <button className="mt-3 text-lime-400 hover:underline text-sm">
+          Learn More →
+        </button>
       </div>
-    </section>
+    </div>
   );
 };
 

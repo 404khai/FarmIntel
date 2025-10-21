@@ -1,52 +1,12 @@
 // src/pages/SignUp.tsx
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import toast from "react-hot-toast";
-import { VscEye, VscEyeClosed } from "react-icons/vsc";
-import logo from "../assets/logo.png";
+import React from "react";
+import { Link } from "react-router-dom";
+import { VscEyeClosed } from "react-icons/vsc";
+import logo from "../assets/logo.jpeg";
 import signupImg from "../assets/signup.jpg";
-// import google from "../assets/google.png";
-import api from "../lib/api";
+
 
 const SignUp: React.FC = () => {
-  const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("PET_OWNER"); // default
-  const [name, setName] = useState("");
-
-  // 🧩 Handle Email/Password Signup
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // console.log("Form submitted:", { name, email, password, role });
-    try {
-      const res = await api.post("/auth/register", {
-        name,
-        email,
-        password,
-        role: role.toLowerCase(),
-      });
-
-      const { access_token, user } = res.data;
-
-      // Save auth data
-      localStorage.setItem("token", access_token);
-      localStorage.setItem("user", JSON.stringify(user));
-      console.log("Submitting signup:", { name, email, password, role }); 
-      toast.success("Account created successfully!");
-
-      // Redirect based on role
-      navigate(user.role === "vet" ? "/VetDashboard" : "/PetOwnerDashboard");
-    } catch (err: any) {
-      const message =
-        err.response?.data?.detail || "Signup failed. Try again.";
-      toast.error(message);
-    }
-  };
-
-  // 🧩 Placeholder for Google Signup
   
 
   return (
@@ -58,7 +18,7 @@ const SignUp: React.FC = () => {
       />
 
       <form
-        onSubmit={handleSubmit}
+        
         className="flex flex-col items-center justify-center gap-4 bg-white rounded-xl p-10 md:h-[450px] font-inter w-full max-w-md"
       >
         <div className="flex flex-col items-center justify-center gap-2 text-center">
@@ -83,8 +43,7 @@ const SignUp: React.FC = () => {
             id="name"
             type="text"
             placeholder="John Doe"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+           
             className="pl-3 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
@@ -102,8 +61,7 @@ const SignUp: React.FC = () => {
             id="email"
             type="email"
             placeholder="name@mail.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            
             className="pl-3 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
@@ -119,18 +77,17 @@ const SignUp: React.FC = () => {
           </label>
           <input
             id="password"
-            type={showPassword ? "text" : "password"}
+            type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            
             className="pl-3 pr-10 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
             required
           />
           <span
-            onClick={() => setShowPassword(!showPassword)}
+            
             className="absolute right-3 bottom-2.5 cursor-pointer text-gray-600 hover:text-black transition"
           >
-            {showPassword ? <VscEyeClosed /> : <VscEye />}
+            <VscEyeClosed /> 
           </span>
         </div>
 
@@ -144,8 +101,7 @@ const SignUp: React.FC = () => {
           </label>
           <select
             id="role"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
+            
             className="pl-3 pr-3 py-2 border border-gray-200 rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
           >
             <option value="PET_OWNER">Pet Owner</option>
