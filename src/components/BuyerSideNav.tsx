@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
+import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
+const BuyerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
   return (
     <>
       {/* --- Overlay for Mobile --- */}
@@ -44,7 +44,7 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
             </Section>
 
             {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
-            <Section title="Insights">
+            <Section title="Insights & Intelligence">
                 <NavLink to="/FarmerDashboard/Recommendations" icon={<Megaphone02Icon />}>
                     AI Recommendations
                 </NavLink>
@@ -59,11 +59,8 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
                 {/* --- ACCOUNT SECTION --- */}
                 <Section title="Account">
                 <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
-                    Settings
+                    Account Settings
                 </NavLink>
-                <NavLink to="/FarmerDashboard/Reports" icon={<Invoice03Icon />}>
-                Billing
-              </NavLink>
             </Section>
 
             {/* --- SUPPORT SECTION --- */}
@@ -85,7 +82,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   children,
 }) => (
   <div className="mb-6">
-    <p className="font-mono pl-5 text-lime-600 font-semibold text-xs uppercase tracking-wide mb-2">
+    <p className="pl-5 font-mono text-lime-600 font-semibold text-xs uppercase tracking-wide mb-2">
       {title}
     </p>
     {children}
@@ -109,4 +106,4 @@ const NavLink: React.FC<NavLinkProps> = ({ to, icon, children }) => (
   </Link>
 );
 
-export default FarmerSideNav;
+export default BuyerSideNav;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, AnalysisTextLinkIcon, Analytics01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Megaphone02Icon, Plant02Icon, UserGroupIcon } from "hugeicons-react";
+import { AccountSetting02Icon, AiIdeaIcon, AnalysisTextLinkIcon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, Plant02Icon, UserGroupIcon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -48,19 +48,19 @@ const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
               <NavLink to="/FarmerDashboard/Recommendations" icon={<AnalysisTextLinkIcon />}>
                 Analytics
               </NavLink>
-                <NavLink to="/FarmerDashboard/MarketInsights" icon={<AiIdeaIcon />}>
-                    Market Insights
-                </NavLink>
-                <NavLink to="/FarmerDashboard/Reports" icon={<DocumentAttachmentIcon />}>
-                    Reports
-                </NavLink>
-                </Section>
+              <NavLink to="/FarmerDashboard/MarketInsights" icon={<AiIdeaIcon />}>
+                Buyer Connections
+              </NavLink>
+            </Section>
 
                 {/* --- ACCOUNT SECTION --- */}
-                <Section title="Account">
-                <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
-                    Account Settings
-                </NavLink>
+            <Section title="Account">
+              <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
+                Settings
+              </NavLink>
+              <NavLink to="/FarmerDashboard/Reports" icon={<Invoice03Icon />}>
+                Billing
+              </NavLink>
             </Section>
 
             {/* --- SUPPORT SECTION --- */}
@@ -82,7 +82,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   children,
 }) => (
   <div className="mb-6">
-    <p className="pl-5 text-lime-600 font-semibold text-sm uppercase tracking-wide mb-2">
+    <p className="font-mono pl-5 text-lime-600 font-semibold text-xs uppercase tracking-wide mb-2">
       {title}
     </p>
     {children}
