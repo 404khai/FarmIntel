@@ -84,12 +84,12 @@ const Login: React.FC = () => {
         </div>
 
         {/* Submit */}
-        <button
+        <Link to="/FarmerDashboard"
           type="submit"
           className="w-2/5 py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
         >
           Log In
-        </button>
+        </Link>
 
       
          
