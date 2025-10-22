@@ -20,7 +20,7 @@ const SignUp: React.FC = () => {
           <div className="h-full flex items-center justify-evenly">
             <img src={logo} alt="VetLink logo" className="w-20 h-20" />
           </div>
-          <p className="text-xs font-semibold text-lime-400 p-1 bg-lime-400/15 rounded-md">
+          <p className="text-xs font-semibold text-lime-400 px-3 py-2 bg-lime-400/15 rounded-md">
             Create your Account
           </p>
           

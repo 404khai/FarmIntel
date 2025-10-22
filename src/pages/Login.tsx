@@ -20,7 +20,7 @@ const Login: React.FC = () => {
           <div className="h-full flex items-center justify-evenly">
             <img src={logo} alt="VetLink logo" className="w-20 h-20" />
           </div>
-          <p className="text-xs font-semibold text-lime-400 p-1 bg-lime-400/15 rounded-md">
+          <p className="text-xs font-semibold text-lime-400 px-3 py-2 bg-lime-400/15 rounded-md">
             Log into your Account
           </p>
           
@@ -84,12 +84,12 @@ const Login: React.FC = () => {
         </div>
 
         {/* Submit */}
-        <button
+        <Link to="/FarmerDashboard"
           type="submit"
-          className="w-2/5 py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
+          className="w-2/5 flex justify-center py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
         >
           Log In
-        </button>
+        </Link>
 
       
          

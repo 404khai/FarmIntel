@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import DashboardNav from "../components/DashboardNav";
 import FarmerSideNav from "../components/FarmerSideNav";
-import toast from "react-hot-toast";
 import {
   LuStethoscope,
   LuSyringe,
@@ -92,26 +91,7 @@ const FarmerDashboard: React.FC = () => {
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const [petRes, apptRes] = await Promise.all([
-          api.get<Pet[]>("/petowners/pets"),
-          api.get<Appointment[]>("/appointments/get_appointments"),
-        ]);
-        setPets(petRes.data || []);
-        setAppointments(apptRes.data || []);
-      } catch (err) {
-        console.error(err);
-        toast.error("Failed to load dashboard data");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
+  
   const upcomingAppointments = useMemo(
     () => appointments.filter((a) => a.status === "ACCEPTED"),
     [appointments]

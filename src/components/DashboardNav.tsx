@@ -1,31 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { LuHouse, LuLogOut, LuUser, LuBell } from "react-icons/lu";
 import { RxCaretDown } from "react-icons/rx";
+import avatar from "../assets/avatar.jpeg";
+import logo from "../assets/logo.png";
 
 interface DashboardNavProps {
   onToggleSidebar: () => void;
 }
 
 const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Load user info from localStorage on mount
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-  }, []);
-
-  const handleLogout = () => {
-    logout();
-    navigate("/home");
-  };
+  
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -37,24 +28,6 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
     setIsDropdownOpen(false);
   };
 
-  // ✅ Get user's initials (if no profile image)
-  const getInitials = (name: string) => {
-    const parts = name.trim().split(" ");
-    return parts.length > 1
-      ? `${parts[0][0]}${parts[1][0]}`
-      : parts[0][0];
-  };
-
-  // ✅ Combine firstname + lastname
-  const fullName = user
-  ? `${user.firstname || ""} ${user.lastname || ""}`.trim() || user.name || "Jane Doe"
-  : "Jane Doe";
-
-  const initials = fullName
-    ? getInitials(fullName).toUpperCase()
-    : "JD";
-
-  const imageUrl = user?.imageUrl;
 
 
   // ✅ Handle outside clicks
@@ -81,9 +54,10 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
         </button>
         <Link
           to="/home"
-          className="text-2xl font-bold text-[#f57d38] tracking-tight"
+          className="text-2xl font-bold text-lime-500 tracking-tight flex items-center"
         >
-          Vet<span className="text-gray-700">Link</span>
+          <img src={logo} alt="" className="w-20 h-20"/>
+          Farm<span className="text-gray-700">Intel</span>
         </Link>
       </div>
 
@@ -136,21 +110,17 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
           className="relative flex items-center gap-2 cursor-pointer"
         >
           {/* ✅ Profile Image OR Initials */}
-          {imageUrl ? (
+          
             <img
-              src={imageUrl}
+              src={avatar}
               alt="Profile"
               className="w-9 h-9 rounded-full object-cover border border-gray-200"
             />
-          ) : (
-            <div className="w-9 h-9 rounded-full bg-[#f57d3849] text-[#f57d38] flex items-center justify-center font-semibold">
-              {initials}
-            </div>
-          )}
+          
 
           <p className="hidden sm:block font-medium text-gray-700">
-          Hi, {user ? user.name?.split(" ")[0] : "Jane"}
-        </p>
+            Hi, Noah
+          </p>
 
           <RxCaretDown size={18} />
 
@@ -170,7 +140,6 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
               </Link>
               <button
                 className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50 text-red-500"
-                onClick={handleLogout}
               >
                 <LuLogOut size={16} /> Log Out
               </button>

@@ -31,8 +31,8 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
             />
             <h2 className="text-black text-2xl font-semibold">FarmIntel</h2>
           </div>
-          <p className="text-black/70 text-sm ">
-            Your Pet, Your Vet, One Platform
+          <p className="text-black/70 text-md ">
+            AI-driven intelligence for smarter, sustainable farming.
           </p>
         </div>
 
@@ -44,14 +44,14 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
             max-md:w-full max-md:h-auto max-md:items-center
           "
         >
-          <h3 className="text-black text-lg font-semibold">Farmers</h3>
+          <h3 className="text-black text-lg font-semibold">For Farmers</h3>
           <ul className="space-y-1 ">
             <li>
               <a
                 className="text-black/60 hover:text-black transition-colors"
                 href="#"
               >
-                Co-operatives
+                Crop Recommendations
               </a>
             </li>
             <li>
@@ -59,7 +59,7 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
                 className="text-black/60 hover:text-black transition-colors"
                 href="#"
               >
-                Teams
+                Pest Detection
               </a>
             </li>
           </ul>
@@ -72,14 +72,14 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
             max-md:w-full max-md:h-auto max-md:items-center
           "
         >
-          <h3 className="text-black text-lg font-semibold">Community</h3>
+          <h3 className="text-black text-lg font-semibold">For Co-operatives</h3>
           <ul className="space-y-1">
             <li>
               <a
                 className="text-black/60 hover:text-black transition-colors"
                 href="#"
               >
-                X
+                Manage Members
               </a>
             </li>
             <li>
@@ -87,7 +87,7 @@ const Footer: React.FC<FooterProps> = ({ logoSrc = logo }) => {
                 className="text-black/60 hover:text-black transition-colors"
                 href="#"
               >
-                GitHub
+                Buyer Connections
               </a>
             </li>
           </ul>
