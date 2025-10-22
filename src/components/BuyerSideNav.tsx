@@ -82,7 +82,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   children,
 }) => (
   <div className="mb-6">
-    <p className="pl-5 text-lime-600 font-semibold text-sm uppercase tracking-wide mb-2">
+    <p className="pl-5 font-mono text-lime-600 font-semibold text-xs uppercase tracking-wide mb-2">
       {title}
     </p>
     {children}
