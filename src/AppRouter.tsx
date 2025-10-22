@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import './App.css'
 import FarmerDashboard from "./pages/FarmerDashboard";
 import Footer from "./components/Footer";
+import CoopDashboard from "./pages/CoopDashboard";
 
 
 
@@ -14,7 +15,7 @@ const Layout = () => {
   const location = useLocation();
 
   // const hideNavbarPaths = ["/SignUp", "/Login", "/VetDashboard", "/PetOwnerDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard"];
-  const hideFooterPaths = ["/Signup", "/Login", "/FarmerDashboard", "/ClientDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
+  const hideFooterPaths = ["/Signup", "/Login", "/FarmerDashboard", "/CoopDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
   // const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
   const shouldShowFooter = !hideFooterPaths.includes(location.pathname);
 
@@ -43,14 +44,11 @@ const FarmerDashboardLayout = () => (
 );
 
 
-const PetOwnerDashboardLayout = () => (
+const CoopDashboardLayout = () => (
   <>
-    {/* <Routes>
-      <Route path="/PetOwnerDashboard" element={<PetOwnerDashboard />} />
-      <Route path="/PetOwnerDashboard/PetOwnerPetsPage" element={<PetOwnerPetsPage />} /> 
-      <Route path="/PetOwnerDashboard/PetOwnerAppointments" element={<PetOwnerAppointments />} /> 
-      <Route path="/PetOwnerDashboard/PetProfile/:id" element={<PetProfile />} /> 
-    </Routes> */}
+    <Routes>
+      <Route path="/CoopDashboard" element={<CoopDashboard />} /> 
+    </Routes>
   </>
 );
 
@@ -61,14 +59,14 @@ const AppRouter = () => {
   const location = useLocation();
 
   const isFarmerDashboardRoute = location.pathname.startsWith("/FarmerDashboard");
-  const isPetOwnerDashboardRoute = location.pathname.startsWith("/PetOwnerDashboard");
+  const isCoopDashboardRoute = location.pathname.startsWith("/CoopDashboard");
 
 
 
   if (isFarmerDashboardRoute) {
     return <FarmerDashboardLayout />;
-  } else if (isPetOwnerDashboardRoute) {
-    return <PetOwnerDashboardLayout />;
+  } else if (isCoopDashboardRoute) {
+    return <CoopDashboardLayout />;
   } else {
     return <Layout />;
   }
