@@ -84,12 +84,11 @@ const SignUp: React.FC = () => {
         </div>
 
         {/* Submit */}
-        <button
-          type="submit"
+        <Link to="/CoopDashboard"
           className="w-2/5 py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
         >
           Sign Up
-        </button>
+        </Link>
 
       
          
