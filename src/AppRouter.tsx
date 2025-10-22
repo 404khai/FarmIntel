@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import './App.css'
-
+import FarmerDashboard from "./pages/FarmerDashboard";
 import Footer from "./components/Footer";
 
 
@@ -14,7 +14,7 @@ const Layout = () => {
   const location = useLocation();
 
   // const hideNavbarPaths = ["/SignUp", "/Login", "/VetDashboard", "/PetOwnerDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard"];
-  const hideFooterPaths = ["/SignUp", "/Login", "/ProviderDashboard", "/ClientDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
+  const hideFooterPaths = ["/SignUp", "/Login", "/FarmerDashboard", "/ClientDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
   // const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
   const shouldShowFooter = !hideFooterPaths.includes(location.pathname);
 
@@ -34,13 +34,11 @@ const Layout = () => {
   );
 };
 
-const VetDashboardLayout = () => (
+const FarmerDashboardLayout = () => (
   <>
-    {/* <Routes>
-      <Route path="/VetDashboard" element={<VetDashboard />} />
-      
-      <Route path="/VetDashboard/VetAppointments" element={<VetAppointments />} /> 
-    </Routes> */}
+    <Routes>
+      <Route path="/FarmerDashboard" element={<FarmerDashboard />} />
+    </Routes>
   </>
 );
 
@@ -62,13 +60,13 @@ const PetOwnerDashboardLayout = () => (
 const AppRouter = () => {
   const location = useLocation();
 
-  const isVetDashboardRoute = location.pathname.startsWith("/VetDashboard");
+  const isFarmerDashboardRoute = location.pathname.startsWith("/FarmerDashboard");
   const isPetOwnerDashboardRoute = location.pathname.startsWith("/PetOwnerDashboard");
 
 
 
-  if (isVetDashboardRoute) {
-    return <VetDashboardLayout />;
+  if (isFarmerDashboardRoute) {
+    return <FarmerDashboardLayout />;
   } else if (isPetOwnerDashboardRoute) {
     return <PetOwnerDashboardLayout />;
   } else {
