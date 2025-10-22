@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import DashboardNav from "../components/DashboardNav";
-import PetOwnerSideNav from "../components/PetOwnerSideNav";
+import FarmerSideNav from "../components/FarmerSideNav";
 import toast from "react-hot-toast";
 import {
   LuStethoscope,
@@ -137,7 +137,7 @@ const FarmerDashboard: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <PetOwnerSideNav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <FarmerSideNav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
       <div className="flex-1 flex flex-col">
         <DashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
