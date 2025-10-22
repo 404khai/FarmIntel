@@ -80,7 +80,7 @@ const Section: React.FC<{ title: string; children: React.ReactNode }> = ({
   children,
 }) => (
   <div className="mb-6">
-    <p className="pl-5 text-[#f57d38] font-semibold text-sm uppercase tracking-wide mb-2">
+    <p className="pl-5 text-lime-600 font-semibold text-sm uppercase tracking-wide mb-2">
       {title}
     </p>
     {children}
@@ -97,7 +97,7 @@ interface NavLinkProps {
 const NavLink: React.FC<NavLinkProps> = ({ to, icon, children }) => (
   <Link
     to={to}
-    className="flex items-center gap-3 py-3 px-5 text-gray-600 hover:text-[#f57d38] hover:bg-[#f57d3813] border-l-4 border-transparent hover:border-[#f57d38] transition-all duration-200"
+    className="flex items-center gap-3 py-3 px-5 text-gray-600 hover:text-lime-600 hover:bg-lime-400/10 border-l-4 border-transparent hover:border-lime-600 transition-all duration-200"
   >
     <span className="text-xl">{icon}</span>
     <span className="text-[15px] font-medium">{children}</span>

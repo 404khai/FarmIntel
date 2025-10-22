@@ -4,6 +4,7 @@ import { HiOutlineMenuAlt2 } from "react-icons/hi";
 import { LuHouse, LuLogOut, LuUser, LuBell } from "react-icons/lu";
 import { RxCaretDown } from "react-icons/rx";
 import avatar from "../assets/avatar.jpeg";
+import logo from "../assets/logo.png";
 
 interface DashboardNavProps {
   onToggleSidebar: () => void;
@@ -53,9 +54,10 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
         </button>
         <Link
           to="/home"
-          className="text-2xl font-bold text-[#f57d38] tracking-tight"
+          className="text-2xl font-bold text-lime-500 tracking-tight flex items-center"
         >
-          Vet<span className="text-gray-700">Link</span>
+          <img src={logo} alt="" className="w-20 h-20"/>
+          Farm<span className="text-gray-700">Intel</span>
         </Link>
       </div>
 

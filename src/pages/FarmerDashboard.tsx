@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import DashboardNav from "../components/DashboardNav";
 import FarmerSideNav from "../components/FarmerSideNav";
-import toast from "react-hot-toast";
 import {
   LuStethoscope,
   LuSyringe,

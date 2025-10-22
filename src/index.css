@@ -1,15 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import "tailwindcss";
 
-
-
-* {
-    font-family: "DM Mono", monospace;
-    font-weight: 400;
+.font-mono {
+  font-family: var(--font-mono);
 }
 
-p{
-    /* font-family: "Exo 2", sans-serif!; */
-    font-family: "Nunito", sans-serif !important;
-    font-weight: 300 !important;
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+:root {
+  --font-mono: 'DM Mono', monospace;
+  --font-sans: 'Nunito', sans-serif;
 }
