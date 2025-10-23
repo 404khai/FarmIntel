@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import DashboardNav from "../components/DashboardNav";
-import FarmerSideNav from "../components/FarmerSideNav";
 import {
   LuCloudRain,
   LuSprout,

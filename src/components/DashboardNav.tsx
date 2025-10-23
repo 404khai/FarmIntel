@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { HiOutlineMenuAlt2 } from "react-icons/hi";
-import { LuHouse, LuLogOut, LuUser, LuBell } from "react-icons/lu";
+import { LuHouse, LuLogOut, LuUser } from "react-icons/lu";
 import { RxCaretDown } from "react-icons/rx";
 import avatar from "../assets/avatar.jpeg";
 import logo from "../assets/logo.png";
