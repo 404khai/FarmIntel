@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
+import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, CreditCardPosIcon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Megaphone02Icon, Plant02Icon, Store04Icon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -33,33 +33,41 @@ const BuyerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
             </Section>
 
             {/* --- FARM MANAGEMENT SECTION --- */}
-            <Section title="Farm Management">
+            <Section title="Marketplace">
                 <NavLink to="/FarmerDashboard/Farms" icon={<Plant02Icon />}>
-                    My Farms
+                    Browse Crops
                 </NavLink>
-                <NavLink to="/FarmerDashboard/PestDetection" icon={<Bug02Icon />}>
-                    Pest Detection
+                <NavLink to="/FarmerDashboard/PestDetection" icon={<Store04Icon />}>
+                    Seller Matches
                 </NavLink>
                 
             </Section>
 
             {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
-            <Section title="Insights & Intelligence">
-                <NavLink to="/FarmerDashboard/Recommendations" icon={<Megaphone02Icon />}>
-                    AI Recommendations
-                </NavLink>
+            <Section title="Analytics">
                 <NavLink to="/FarmerDashboard/MarketInsights" icon={<AiIdeaIcon />}>
                     Market Insights
                 </NavLink>
                 <NavLink to="/FarmerDashboard/Reports" icon={<DocumentAttachmentIcon />}>
-                    Reports
+                    Reports & Forecasts
                 </NavLink>
-                </Section>
+            </Section>
+
+            {/* --- ORDERS --- */}
+            <Section title="Orders">
+                <NavLink to="/FarmerDashboard/Profile" icon={<Invoice03Icon />}>
+                    Orders & Transactions
+                </NavLink>
+                
+            </Section>
 
                 {/* --- ACCOUNT SECTION --- */}
-                <Section title="Account">
+            <Section title="Account">
                 <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
                     Account Settings
+                </NavLink>
+                <NavLink to="/FarmerDashboard/Profile" icon={<CreditCardPosIcon />}>
+                    Subscription
                 </NavLink>
             </Section>
 

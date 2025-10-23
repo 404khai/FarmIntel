@@ -5,6 +5,7 @@ import { LuHouse, LuLogOut, LuUser, LuBell } from "react-icons/lu";
 import { RxCaretDown } from "react-icons/rx";
 import avatar from "../assets/avatar.jpeg";
 import logo from "../assets/logo.png";
+import { Notification02Icon, Search01Icon } from "hugeicons-react";
 
 interface DashboardNavProps {
   onToggleSidebar: () => void;
@@ -43,7 +44,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
   }, []);
 
   return (
-    <nav className="absolute w-full h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-8 top-0 z-50">
+    <nav className="absolute w-full h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-0 md:pr-8 top-0 z-50">
       {/* Left Section */}
       <div className="flex items-center gap-3">
         <button
@@ -61,15 +62,20 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
         </Link>
       </div>
 
+      <div className="bg-[#3a3a3a10] rounded-full px-4 py-2 flex gap-2 items-center w-1/3 max-w-md">
+        <Search01Icon size={20} className=" text-black" />
+        <input type="text" placeholder="Search" className="outline-0 w-[90%]"/>
+      </div>
+
       {/* Right Section */}
       <div className="flex items-center gap-5 relative">
         {/* Notifications */}
         <div ref={notifRef} className="relative">
           <button
             onClick={toggleNotifications}
-            className="relative p-2 rounded-md bg-gray-100 hover:bg-gray-200 transition"
+            className="relative p-2 rounded-md bg-[#3a3a3a10] hover:bg-gray-200 transition"
           >
-            <LuBell size={22} />
+            <Notification02Icon size={22} />
             <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
               3
             </span>
