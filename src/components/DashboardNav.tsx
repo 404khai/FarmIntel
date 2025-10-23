@@ -5,7 +5,9 @@ import { LuHouse, LuLogOut, LuUser } from "react-icons/lu";
 import { RxCaretDown } from "react-icons/rx";
 import avatar from "../assets/avatar.jpeg";
 import logo from "../assets/logo.png";
-import { Notification02Icon, Search01Icon } from "hugeicons-react";
+import orgLogo from "../assets/orgLogo.jpeg";
+import orgLogo2 from "../assets/orgLogo2.jpeg";
+import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-react";
 
 interface DashboardNavProps {
   onToggleSidebar: () => void;
@@ -17,7 +19,12 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
 
-  
+  const [isOpen, setIsOpen] = useState(false);
+
+  const cooperatives = [
+    { id: 1, name: "Green Planet", image: orgLogo },
+    { id: 2, name: "Plant Powered", image: orgLogo2 },
+  ];
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -65,6 +72,70 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
       <div className="bg-[#3a3a3a10] rounded-full px-4 py-2 flex gap-2 items-center w-1/3 max-w-md">
         <Search01Icon size={20} className=" text-black" />
         <input type="text" placeholder="Search" className="outline-0 w-[90%]"/>
+      </div>
+
+      <div
+        className="relative inline-block"
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
+        {/* MAIN BUTTON */}
+        <div className="bg-[#3a3a3a10] rounded-md px-4 py-1 flex gap-3 items-center max-w-md cursor-pointer">
+          {/* Overlapping images */}
+          <div className="relative flex">
+            <img
+              src={orgLogo}
+              alt=""
+              className="w-8 h-8 rounded-full border-2 border-white"
+            />
+            <img
+              src={orgLogo}
+              alt=""
+              className="w-8 h-8 rounded-full border-2 border-white -ml-4 z-10"
+            />
+          </div>
+
+          <p className="font-medium text-sm text-gray-700">
+            Manage Co-operatives
+          </p>
+          <UnfoldMoreIcon fontSize="small" className="text-gray-600" />
+        </div>
+
+        {/* DROPDOWN */}
+        {isOpen && (
+          <div
+            className={`absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-100 z-50 transition-all duration-200 ${
+              isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
+            }`}
+          >
+
+            <ul className="max-h-60 overflow-y-auto">
+              {cooperatives.map((coop) => (
+                <li
+                  key={coop.id}
+                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                >
+                  <img
+                    src={coop.image}
+                    alt={coop.name}
+                    className="w-8 h-8 rounded-full"
+                  />
+                  <span className="text-gray-700 font-medium text-sm">
+                    {coop.name}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {/* Divider */}
+            <div className="border-t border-gray-200 my-2"></div>
+
+            {/* Create new button */}
+            <button className="w-full text-center text-sm font-semibold text-blue-600 py-2 hover:bg-blue-50 transition">
+              + Create New Cooperative
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Right Section */}
