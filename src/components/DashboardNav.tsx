@@ -7,6 +7,7 @@ import avatar from "../assets/avatar.jpeg";
 import logo from "../assets/logo.png";
 import orgLogo from "../assets/orgLogo.jpeg";
 import orgLogo2 from "../assets/orgLogo2.jpeg";
+import orgLogo3 from "../assets/orgLogo3.jpeg";
 import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-react";
 
 interface DashboardNavProps {
@@ -24,6 +25,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
   const cooperatives = [
     { id: 1, name: "Green Planet", image: orgLogo },
     { id: 2, name: "Plant Powered", image: orgLogo2 },
+    { id: 2, name: "Garden Society", image: orgLogo3 },
   ];
 
   const toggleDropdown = () => {
@@ -69,7 +71,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
         </Link>
       </div>
 
-      <div className="bg-[#3a3a3a10] rounded-full px-4 py-2 flex gap-2 items-center w-1/3 max-w-md">
+      <div className="bg-[#3a3a3a10] rounded-md px-4 py-2 flex gap-2 items-center w-1/3 max-w-md">
         <Search01Icon size={20} className=" text-black" />
         <input type="text" placeholder="Search" className="outline-0 w-[90%]"/>
       </div>
@@ -86,12 +88,17 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
             <img
               src={orgLogo}
               alt=""
-              className="w-8 h-8 rounded-full border-2 border-white"
+              className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10]"
             />
             <img
-              src={orgLogo}
+              src={orgLogo2}
               alt=""
-              className="w-8 h-8 rounded-full border-2 border-white -ml-4 z-10"
+              className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10] -ml-4 z-10"
+            />
+            <img
+              src={orgLogo3}
+              alt=""
+              className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10] -ml-4 z-10"
             />
           </div>
 
