@@ -82,9 +82,9 @@ const Avatar: React.FC<{ name?: string; imageUrl?: string | null; size?: number 
 const BuyerDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [pets, setPets] = useState<Pet[]>([]);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [pets] = useState<Pet[]>([]);
+  const [appointments] = useState<Appointment[]>([]);
+  const [loading] = useState(true);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
