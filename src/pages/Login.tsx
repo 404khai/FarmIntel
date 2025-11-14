@@ -1,7 +1,6 @@
 // src/pages/SignUp.tsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { VscEyeClosed } from "react-icons/vsc";
 import logo from "../assets/logo.png";
 import loginImg from "../assets/login.jpeg";
 import google from "../assets/google.png";
@@ -61,7 +60,7 @@ const Login: React.FC = () => {
         </div>
 
         {/* Password */}
-        <div className="relative flex flex-col w-full gap-1">
+        {/* <div className="relative flex flex-col w-full gap-1">
           <label
             htmlFor="password"
             className="text-md font-semibold text-[#ffffff]"
@@ -81,7 +80,7 @@ const Login: React.FC = () => {
           >
             <VscEyeClosed className="text-[#efefef]"/> 
           </span>
-        </div>
+        </div> */}
 
         {/* Submit */}
         <Link to="/FarmerDashboard"

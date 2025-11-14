@@ -111,7 +111,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
         {/* DROPDOWN */}
         {isOpen && (
           <div
-            className={`absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-lg border border-gray-100 z-50 transition-all duration-200 ${
+            className={`absolute left-0 mt-2 w-72 bg-white shadow-lg rounded-lg border border-gray-100 z-50 transition-all duration-200 ${
               isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"
             }`}
           >
@@ -138,7 +138,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
             <div className="border-t border-gray-200 my-2"></div>
 
             {/* Create new button */}
-            <button className="w-full text-center text-sm font-semibold text-blue-600 py-2 hover:bg-blue-50 transition">
+            <button className="w-full text-center text-sm font-semibold text-lime-600 py-3 hover:bg-lime-50 transition">
               + Create New Cooperative
             </button>
           </div>

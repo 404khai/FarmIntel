@@ -1,7 +1,7 @@
 // src/pages/SignUp.tsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { VscEyeClosed } from "react-icons/vsc";
+//import { VscEyeClosed } from "react-icons/vsc";
 import logo from "../assets/logo.png";
 import signupImg from "../assets/signup.jpeg";
 import google from "../assets/google.png";
@@ -61,31 +61,11 @@ const SignUp: React.FC = () => {
         </div>
 
         {/* Password */}
-        <div className="relative flex flex-col w-full gap-1">
-          <label
-            htmlFor="password"
-            className="text-md font-semibold text-[#ffffff]"
-          >
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            placeholder="input password"
-            className="placeholder-[#b0b0b0] placeholder:text-xs pl-3 pr-3 py-2 bg-[#3a3a3a41] text-white rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
-            required
-          />
-          <span
-            
-            className="absolute right-3 bottom-2.5 cursor-pointer text-gray-600 hover:text-black transition"
-          >
-            <VscEyeClosed className="text-[#efefef]"/> 
-          </span>
-        </div>
+        
 
         {/* Submit */}
         <Link to="/CoopDashboard"
-          className="w-2/5 py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
+          className="flex justify-center w-2/5 py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
         >
           Sign Up
         </Link>
