@@ -9,20 +9,20 @@ import FarmerDashboard from "./pages/FarmerDashboard";
 import Footer from "./components/Footer";
 import CoopDashboard from "./pages/CoopDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard";
-
+import Navbar from "./components/Navbar";
 
 
 const Layout = () => {
   const location = useLocation();
 
-  // const hideNavbarPaths = ["/SignUp", "/Login", "/VetDashboard", "/PetOwnerDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard"];
+  const hideNavbarPaths = ["/SignUp", "/Login", "/VetDashboard", "/PetOwnerDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard"];
   const hideFooterPaths = ["/Signup", "/Login", "/FarmerDashboard", "/CoopDashboard", "/BuyerDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
-  // const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
+  const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
   const shouldShowFooter = !hideFooterPaths.includes(location.pathname);
 
   return (
     <div className="bodyDiv">
-      {/* {shouldShowNavbar && <Navbar />} */}
+      {shouldShowNavbar && <Navbar />} 
 
       <Routes>
         <Route path="/" index element={<Navigate to="/Home" />} />

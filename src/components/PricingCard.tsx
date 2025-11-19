@@ -28,7 +28,7 @@ export default function PricingCard({
     <div className="relative flex w-full max-w-md flex-col items-center justify-between rounded-3xl border border-[#242424] bg-[#161616] p-8 text-white">
       {/* Popular badge */}
       {isPopular && (
-        <div className="absolute right-5 top-3 flex items-center gap-1 rounded-full border border-[#402364] bg-[#201122] px-3 py-1 text-sm text-[#9733C6]">
+        <div className="absolute right-5 top-3 flex items-center gap-1 rounded-full border border-emerald-950 bg-lime-400 px-3 py-1 text-sm text-emerald-950 font-semibold">
           <PiStarFour />
           Popular
         </div>
