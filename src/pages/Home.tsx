@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import farmBg from "../assets/farmBg.jpg";  
-import { ArrowRight02Icon } from "hugeicons-react";
+import { ArrowRight02Icon, Plant02Icon } from "hugeicons-react";
 import PricingCard from "../components/PricingCard";
 
 const Home: React.FC = () => {
@@ -81,6 +81,7 @@ const Home: React.FC = () => {
 
       {/* Pricing Section */}
       <div className="w-[90%] h-auto flex justify-center items-center gap-8 mx-auto my-20 md:flex-row flex-col">
+        <Capsule title="Features" Icon={Plant02Icon } />
         <PricingCard
           title="Starter"
           subtitle="Perfect for early-stage founders"
