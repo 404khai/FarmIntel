@@ -1,8 +1,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import farmBg from "../assets/farmBg.jpg";  
-import { ArrowRight02Icon } from "hugeicons-react";
+import { ArrowRight02Icon, Plant02Icon, Tag01Icon } from "hugeicons-react";
 import PricingCard from "../components/PricingCard";
+import Capsule from "../components/Capsule";
+import FeatureGrid from "../components/FeatureGrid";
 
 const Home: React.FC = () => {
   return (
@@ -78,58 +80,63 @@ const Home: React.FC = () => {
 
       </div>
 
+      <FeatureGrid />
 
       {/* Pricing Section */}
-      <div className="w-[90%] h-auto flex justify-center items-center gap-8 mx-auto my-20 md:flex-row flex-col">
-        <PricingCard
-          title="Starter"
-          subtitle="Perfect for early-stage founders"
-          price="Free"
-          features={[
-           'Up to 100 notes/tasks/month',
-           'Basic AI suggestions',
-           'Daily summary',
-           '1 workspace'
-          ]}
-          buttonText="Get started"
-          buttonColor="rgba(31, 31, 31, 1)"
-          buttonTextColor="#ffffff"
-        />
-              
-        <PricingCard
-          title="Pro"
-          subtitle="Built for serious solo builders"
-          price="$12"
-          priceSubtext="/month"
-          features={[
-           'Unlimited notes & tasks',
-            'Advanced AI features',
-            'Goal tracking & reminders',
-            'Project timelines',
-            '3 workspaces'
-          ]}
-          buttonText="Get started"
-          buttonColor="#ffffff"
-          buttonTextColor="rgba(15, 15, 15, 1)"
-          isPopular={true}
-        />
+      <div className="w-[90%] h-auto flex justify-center items-center gap-8 mx-auto my-20 flex-col">
+        <Capsule title="Pricing" Icon={Tag01Icon } />
 
-        <PricingCard
-          title="Team"
-          subtitle="For fast-moving teams"
-          price="$29"
-          priceSubtext="/month"
-          features={[
-           'Everything in Pro',
-            'Team collaboration',
-            'Shared notes/tasks',
-            'Admin & permissions',
-            'Slack/Calendar integration'
-          ]}
-          buttonText="Contact Us"
-          buttonColor="#ffffff"
-          buttonTextColor="rgba(15, 15, 15, 1)"
-        />
+        <div className="w-[90%] h-auto flex justify-center items-center gap-8 mx-auto md:flex-row flex-col">
+          <PricingCard
+            title="Starter"
+            subtitle="Perfect for early-stage founders"
+            price="Free"
+            features={[
+            'Up to 100 notes/tasks/month',
+            'Basic AI suggestions',
+            'Daily summary',
+            '1 workspace'
+            ]}
+            buttonText="Get started"
+            buttonColor="rgba(31, 31, 31, 1)"
+            buttonTextColor="#ffffff"
+          />
+                
+          <PricingCard
+            title="Pro"
+            subtitle="Built for serious solo builders"
+            price="$12"
+            priceSubtext="/month"
+            features={[
+            'Unlimited notes & tasks',
+              'Advanced AI features',
+              'Goal tracking & reminders',
+              'Project timelines',
+              '3 workspaces'
+            ]}
+            buttonText="Get started"
+            buttonColor="#ffffff"
+            buttonTextColor="rgba(15, 15, 15, 1)"
+            isPopular={true}
+          />
+
+          <PricingCard
+            title="Team"
+            subtitle="For fast-moving teams"
+            price="$29"
+            priceSubtext="/month"
+            features={[
+            'Everything in Pro',
+              'Team collaboration',
+              'Shared notes/tasks',
+              'Admin & permissions',
+              'Slack/Calendar integration'
+            ]}
+            buttonText="Contact Us"
+            buttonColor="#ffffff"
+            buttonTextColor="rgba(15, 15, 15, 1)"
+          />
+        </div>
       </div>
     </div>
   );
