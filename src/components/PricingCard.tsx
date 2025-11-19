@@ -1,5 +1,3 @@
-"use client";
-
 import { PiStarFour } from "react-icons/pi";
 import { IoMdCheckmark } from "react-icons/io";
 

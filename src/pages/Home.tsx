@@ -1,9 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import farmBg from "../assets/farmBg.jpg";  
-import logo from "../assets/logo.png"; 
 import { ArrowRight02Icon } from "hugeicons-react";
-import { Link } from "react-router-dom";
+import PricingCard from "../components/PricingCard";
 
 const Home: React.FC = () => {
   return (
@@ -19,29 +18,6 @@ const Home: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
 
       {/* Navbar */}
-      <header className="absolute top-0 left-0 w-full flex justify-between items-center px-10 py-6 z-20">
-        <div className="gap-2 flex items-center text-white text-2xl font-semibold tracking-wide">
-          <img
-            src={logo} // replace with your image path
-            alt="Farm background"
-            className="w-15 h-15"
-          />
-          <h2 className="font-mono">FarmIntel</h2>
-        </div>
-        <nav className="hidden md:flex items-center space-x-8 text-white">
-          
-          <a href="#home" className="font-mono hover:text-green-400 transition">Home</a>
-          <a href="#marketplace" className="font-mono hover:text-green-400 transition">Marketplace</a>
-          <a href="#blog" className=" font-mono hover:text-green-400 transition">Blog</a>
-          <a href="#community" className="font-mono hover:text-green-400 transition">Community</a>
-        </nav>
-        <div className="flex items-center space-x-4">
-          <Link to="/SignUp" className="text-white hover:text-green-400 transition font-mono">Sign Up</Link>
-          <Link to="/Login" className="bg-lime-400 text-black font-mono font-medium hover:bg-lime-300 px-5 py-2 rounded-full">
-            Login
-          </Link>
-        </div>
-      </header>
 
       {/* Hero Section */}
       <div className="absolute top-20 z-10 flex flex-col justify-center h-full px-10 md:px-20 max-w-3xl text-white">
@@ -97,6 +73,24 @@ const Home: React.FC = () => {
         <button className="mt-3 text-lime-400 hover:underline text-sm">
           Learn More →
         </button>
+      </div>
+
+      <div className="w-[90%] h-auto flex gap-8">
+        <PricingCard
+          title="Starter"
+          subtitle="Perfect for early-stage founders"
+          price="Free"
+          features={[
+            'Up to 100 notes/tasks/month',
+            'Basic AI suggestions',
+            'Daily summary',
+            '1 workspace'
+          ]}
+          buttonText="Get started"
+          buttonColor="rgba(31, 31, 31, 1)"
+          buttonTextColor="#ffffff"
+        />
+            
       </div>
     </div>
   );
