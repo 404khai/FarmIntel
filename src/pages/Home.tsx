@@ -80,7 +80,7 @@ const Home: React.FC = () => {
 
 
       {/* Pricing Section */}
-      <div className="w-[90%] h-auto flex gap-8">
+      <div className="w-[90%] h-auto flex justify-center items-center gap-8 mx-auto my-20 md:flex-row flex-col">
         <PricingCard
           title="Starter"
           subtitle="Perfect for early-stage founders"
