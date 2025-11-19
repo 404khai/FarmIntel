@@ -1,10 +1,10 @@
 // src/pages/SignUp.tsx
 import React from "react";
 import { Link } from "react-router-dom";
-import { VscEyeClosed } from "react-icons/vsc";
 import logo from "../assets/logo.png";
 import loginImg from "../assets/login.jpeg";
 import google from "../assets/google.png";
+import { VscEyeClosed } from "react-icons/vsc";
 
 const Login: React.FC = () => {
   

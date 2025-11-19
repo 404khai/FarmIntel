@@ -12,6 +12,7 @@
   "dependencies": {
     "@hugeicons/react": "^1.1.1",
     "@tailwindcss/vite": "^4.1.14",
+    "axios": "^1.13.2",
     "framer-motion": "^12.23.24",
     "hugeicons-react": "^0.3.0",
     "react": "^19.1.1",
