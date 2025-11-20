@@ -4,6 +4,9 @@ import { ParagraphBulletsPoint01Icon } from "hugeicons-react";
 
 // IMPORT YOUR IMAGES HERE
 import grid5 from "../assets/grid5.png";
+import grid1 from "../assets/grid1.jpeg";
+import grid2 from "../assets/grid2.jpeg";
+import grid3 from "../assets/grid3.jpeg";
 
 type FeatureBoxProps = {
   title: string;
@@ -22,7 +25,7 @@ const FeatureBox: React.FC<FeatureBoxProps> = ({ title, image, widthClass }) => 
       style={{ backgroundImage: `url(${image})` }}
     >
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/60 transition-all duration-300"></div>
+      <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all duration-300"></div>
 
       {/* Hover Text */}
       <div
@@ -49,13 +52,13 @@ const FeatureGrid = () => {
       <div className="w-full flex flex-col gap-6">
         {/* Row 1 */}
         <div className="flex flex-col md:flex-row w-full gap-6">
-          <FeatureBox title="AI Pest Detection" image={grid5} widthClass="md:w-[60%] w-full" />
-          <FeatureBox title="Crop Monitoring" image={grid5} widthClass="md:w-[40%] w-full" />
+          <FeatureBox title="AI Pest Detection" image={grid1} widthClass="md:w-[60%] w-full" />
+          <FeatureBox title="Crop Monitoring" image={grid2} widthClass="md:w-[40%] w-full" />
         </div>
 
         {/* Row 2 */}
         <div className="flex flex-col md:flex-row w-full gap-6">
-          <FeatureBox title="Satellite Imaging" image={grid5} widthClass="md:w-[45%] w-full" />
+          <FeatureBox title="Satellite Imaging" image={grid3} widthClass="md:w-[45%] w-full" />
           <FeatureBox title="Soil Analysis" image={grid5} widthClass="md:w-[55%] w-full" />
         </div>
 
