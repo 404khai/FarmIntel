@@ -10,13 +10,13 @@ import Footer from "./components/Footer";
 import CoopDashboard from "./pages/CoopDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard";
 import Navbar from "./components/Navbar";
-
+import OrgDashboard from "./pages/OrgDashboard";
 
 const Layout = () => {
   const location = useLocation();
 
-  const hideNavbarPaths = ["/SignUp", "/Login", "/VetDashboard", "/PetOwnerDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard"];
-  const hideFooterPaths = ["/Signup", "/Login", "/FarmerDashboard", "/CoopDashboard", "/BuyerDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
+  const hideNavbarPaths = ["/SignUp", "/Login", "/VetDashboard", "/PetOwnerDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/OrgDashboard"];
+  const hideFooterPaths = ["/Signup", "/Login", "/FarmerDashboard", "/CoopDashboard", "/BuyerDashboard",  "/OrgDashboard", "/AdminDashboard", "/Notifications", "/PasswordResetModal", "/Dashboard", "/PaymentPage"];
   const shouldShowNavbar = !hideNavbarPaths.includes(location.pathname);
   const shouldShowFooter = !hideFooterPaths.includes(location.pathname);
 
@@ -63,12 +63,21 @@ const BuyerDashboardLayout = () => (
 );
 
 
+const OrgDashboardLayout = () => (
+  <>
+    <Routes>
+      <Route path="/OrgDashboard" element={<OrgDashboard />} /> 
+    </Routes>
+  </>
+);
+
 const AppRouter = () => {
   const location = useLocation();
 
   const isFarmerDashboardRoute = location.pathname.startsWith("/FarmerDashboard");
   const isCoopDashboardRoute = location.pathname.startsWith("/CoopDashboard");
   const isBuyerDashboardRoute = location.pathname.startsWith("/BuyerDashboard");
+  const isOrgDashboardRoute = location.pathname.startsWith("/OrgDashboard");
 
 
   if (isFarmerDashboardRoute) {
@@ -79,6 +88,9 @@ const AppRouter = () => {
   } 
   else if (isBuyerDashboardRoute) {
     return <BuyerDashboardLayout />; 
+  }
+  else if (isOrgDashboardRoute) {
+    return <OrgDashboardLayout />; 
   }
   else {
     return <Layout />;
