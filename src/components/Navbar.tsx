@@ -14,13 +14,13 @@ const Navbar = () => {
         </div>
         <nav className="hidden md:flex items-center space-x-8 text-white">
           
-          <a href="#home" className="font-mono hover:text-green-400 transition">Home</a>
-          <a href="#marketplace" className="font-mono hover:text-green-400 transition">Marketplace</a>
-          <a href="#blog" className=" font-mono hover:text-green-400 transition">Blog</a>
-          <a href="#community" className="font-mono hover:text-green-400 transition">Community</a>
+          <a href="#home" className="font-mono hover:text-lime-400 transition">Home</a>
+          <a href="#marketplace" className="font-mono hover:text-lime-400 transition">Cooperatives</a>
+          <a href="#pricing" className=" font-mono hover:text-lime-400 transition">Pricing</a>
+          <a href="#orgs" className="font-mono hover:text-lime-400 transition">For Organizations</a>
         </nav>
         <div className="flex items-center space-x-4">
-          <Link to="/SignUp" className="text-white hover:text-green-400 transition font-mono">Sign Up</Link>
+          <Link to="/SignUp" className="text-white hover:text-lime-400 transition font-mono">Sign Up</Link>
           <Link to="/Login" className="bg-lime-400 text-black font-mono font-medium hover:bg-lime-300 px-5 py-2 rounded-full">
             Login
           </Link>

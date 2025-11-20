@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import farmBg from "../assets/farmBg.jpg";  
-import { ArrowRight02Icon, Plant02Icon, Tag01Icon } from "hugeicons-react";
+import { ArrowRight02Icon, Tag01Icon } from "hugeicons-react";
 import PricingCard from "../components/PricingCard";
 import Capsule from "../components/Capsule";
 import FeatureGrid from "../components/FeatureGrid";
