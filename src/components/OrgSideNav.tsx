@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Key01Icon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
+import { AccountSetting02Icon, BookOpen02Icon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, Key01Icon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -37,8 +37,8 @@ const OrgSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
                 <NavLink to="/OrgDashboard/Farms" icon={<Key01Icon />}>
                     API Key
                 </NavLink>
-                <NavLink to="/OrgDashboard/PestDetection" icon={<Bug02Icon />}>
-                    Pest Detection
+                <NavLink to="/OrgDashboard" icon={<BookOpen02Icon />}>
+                    Docs
                 </NavLink>
                 
             </Section>
