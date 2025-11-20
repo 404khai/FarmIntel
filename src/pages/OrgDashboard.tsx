@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DashboardNav from "../components/DashboardNav";
+import OrgDashboardNav from "../components/OrgDashboardNav";
 import {
   LuCloudRain,
   LuSprout,
@@ -91,7 +91,7 @@ const OrgDashboard: React.FC = () => {
       />
 
       <div className="flex-1 flex flex-col">
-        <DashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
         <main className="pt-20 px-6 sm:px-8 pb-10 ml-60">
           {/* Welcome */}
