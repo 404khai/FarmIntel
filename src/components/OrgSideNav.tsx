@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
+import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Key01Icon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -33,9 +33,9 @@ const OrgSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
             </Section>
 
             {/* --- FARM MANAGEMENT SECTION --- */}
-            <Section title="Farm Management">
-                <NavLink to="/OrgDashboard/Farms" icon={<Plant02Icon />}>
-                    My Farms
+            <Section title="API Key Management">
+                <NavLink to="/OrgDashboard/Farms" icon={<Key01Icon />}>
+                    API Key
                 </NavLink>
                 <NavLink to="/OrgDashboard/PestDetection" icon={<Bug02Icon />}>
                     Pest Detection
@@ -43,21 +43,10 @@ const OrgSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
                 
             </Section>
 
-            {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
-            <Section title="Insights">
-                <NavLink to="/FarmerDashboard/Recommendations" icon={<Megaphone02Icon />}>
-                    AI Recommendations
-                </NavLink>
-                <NavLink to="/FarmerDashboard/MarketInsights" icon={<AiIdeaIcon />}>
-                    Market Insights
-                </NavLink>
-                <NavLink to="/FarmerDashboard/Reports" icon={<DocumentAttachmentIcon />}>
-                    Reports
-                </NavLink>
-                </Section>
+
 
                 {/* --- ACCOUNT SECTION --- */}
-                <Section title="Account">
+            <Section title="Account">
                 <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
                     Settings
                 </NavLink>
