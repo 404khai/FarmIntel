@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Megaphone02Icon, Plant02Icon } from "hugeicons-react";
+import { AccountSetting02Icon, AiIdeaIcon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -35,7 +35,7 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
             {/* --- FARM MANAGEMENT SECTION --- */}
             <Section title="Farm Management">
                 <NavLink to="/FarmerDashboard/Farms" icon={<Plant02Icon />}>
-                    My Farms
+                    My Crops
                 </NavLink>
                 <NavLink to="/FarmerDashboard/PestDetection" icon={<Bug02Icon />}>
                     Pest Detection
@@ -45,9 +45,9 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
 
             {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
             <Section title="Insights">
-                <NavLink to="/FarmerDashboard/Recommendations" icon={<Megaphone02Icon />}>
+                {/* <NavLink to="/FarmerDashboard/Recommendations" icon={<Megaphone02Icon />}>
                     AI Recommendations
-                </NavLink>
+                </NavLink> */}
                 <NavLink to="/FarmerDashboard/MarketInsights" icon={<AiIdeaIcon />}>
                     Market Insights
                 </NavLink>
