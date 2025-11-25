@@ -109,10 +109,10 @@ const CoopDashboard: React.FC = () => {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`flex flex-col justify-between p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 ${stat.color}`}
+                className={`flex flex-col justify-between p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 bg-white`}
               >
                 <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-xl bg-white shadow-sm">
+                  <div className={`p-2 rounded-xl shadow-sm ${stat.color}`}>
                     {stat.icon}
                   </div>
                   <span className="text-xl font-semibold text-gray-800">

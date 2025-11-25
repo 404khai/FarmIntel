@@ -3,9 +3,7 @@ import DashboardNav from "../components/DashboardNav";
 import FarmerSideNav from "../components/FarmerSideNav";
 import {
   LuSprout,
- 
-  LuBot,
- 
+  LuBot, 
   LuNetwork,
   LuTriangleAlert,
   LuChartBar,
@@ -126,7 +124,7 @@ const FarmerDashboard: React.FC = () => {
   ];
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="flex min-h-screen bg-white">
       <FarmerSideNav
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
@@ -152,10 +150,10 @@ const FarmerDashboard: React.FC = () => {
               {heroStats.map((stat, i) => (
                 <div
                   key={i}
-                  className={`p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between ${stat.tint}`}
+                  className="p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 flex flex-col justify-between bg-white"
                 >
                   <div className="flex items-center justify-between">
-                    <div className="p-[5px] bg-white rounded-lg shadow-sm">
+                    <div className={`p-[5px] rounded-lg shadow-sm ${stat.tint}`}>
                       {stat.icon}
                     </div>
                     <span className="text-lg font-semibold text-gray-800">
