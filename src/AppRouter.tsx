@@ -5,12 +5,15 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import './App.css'
-import FarmerDashboard from "./pages/FarmerDashboard";
+import FarmerDashboard from "./pages/FarmerDashboard/FarmerDashboard";
 import Footer from "./components/Footer";
-import CoopDashboard from "./pages/CoopDashboard";
-import BuyerDashboard from "./pages/BuyerDashboard";
+import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
+import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import Navbar from "./components/Navbar";
-import OrgDashboard from "./pages/OrgDashboard";
+import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
+
+// FarmerDashboard PAGES
+import { Detection } from "./pages/FarmerDashboard/Detection";
 
 const Layout = () => {
   const location = useLocation();
@@ -40,6 +43,7 @@ const FarmerDashboardLayout = () => (
   <>
     <Routes>
       <Route path="/FarmerDashboard" element={<FarmerDashboard />} />
+      <Route path="/FarmerDashboard/Detection" element={<Detection />} />
     </Routes>
   </>
 );

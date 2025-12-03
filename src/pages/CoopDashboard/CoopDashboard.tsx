@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DashboardNav from "../components/DashboardNav";
+import DashboardNav from "../../components/DashboardNav";
 import {
   LuCloudRain,
   LuSprout,
@@ -10,7 +10,7 @@ import {
   LuLeaf,
   LuTriangleAlert,
 } from "react-icons/lu";
-import CoopSideNav from "../components/CoopSideNav";
+import CoopSideNav from "../../components/CoopSideNav";
 
 const CoopDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);

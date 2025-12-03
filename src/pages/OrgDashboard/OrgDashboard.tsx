@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import OrgDashboardNav from "../components/OrgDashboardNav";
+import OrgDashboardNav from "../../components/OrgDashboardNav";
 import {
   LuCloudRain,
   LuSprout,
@@ -10,7 +10,7 @@ import {
   LuLeaf,
   LuTriangleAlert,
 } from "react-icons/lu";
-import OrgSideNav from "../components/OrgSideNav";
+import OrgSideNav from "../../components/OrgSideNav";
 
 const OrgDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
