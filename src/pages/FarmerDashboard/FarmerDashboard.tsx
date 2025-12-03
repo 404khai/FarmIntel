@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import DashboardNav from "../components/DashboardNav";
-import FarmerSideNav from "../components/FarmerSideNav";
+import DashboardNav from "../../components/DashboardNav";
+import FarmerSideNav from "../../components/FarmerSideNav";
 import {
   LuSprout,
   LuBot, 

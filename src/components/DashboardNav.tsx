@@ -9,6 +9,7 @@ import orgLogo from "../assets/orgLogo.jpeg";
 import orgLogo2 from "../assets/orgLogo2.jpeg";
 import orgLogo3 from "../assets/orgLogo3.jpeg";
 import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-react";
+import { CreateCoopModal } from "./CreateCoopModal";
 
 interface DashboardNavProps {
   onToggleSidebar: () => void;
@@ -21,6 +22,9 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
   const notifRef = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+
 
   const cooperatives = [
     { id: 1, name: "Green Planet", image: orgLogo },
@@ -138,9 +142,13 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
             <div className="border-t border-gray-200 my-2"></div>
 
             {/* Create new button */}
-            <button className="w-full text-center text-sm font-semibold text-lime-600 py-3 hover:bg-lime-50 transition">
+            <button
+              onClick={() => setShowModal(true)}
+              className="w-full text-center text-sm font-semibold text-lime-600 py-3 hover:bg-lime-50 transition"
+            >
               + Create New Cooperative
             </button>
+
           </div>
         )}
       </div>
@@ -231,8 +239,17 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
           )}
         </div>
       </div>
+
+      <CreateCoopModal 
+        isOpen={showModal} 
+        onClose={() => setShowModal(false)} 
+      />
+
     </nav>
+
+  
   );
 };
+
 
 export default DashboardNav;

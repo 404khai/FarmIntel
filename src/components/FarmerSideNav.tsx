@@ -37,7 +37,7 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
                 <NavLink to="/FarmerDashboard/Farms" icon={<Plant02Icon />}>
                     My Crops
                 </NavLink>
-                <NavLink to="/FarmerDashboard/PestDetection" icon={<Bug02Icon />}>
+                <NavLink to="/FarmerDashboard/Detection" icon={<Bug02Icon />}>
                     Pest Detection
                 </NavLink>
                 

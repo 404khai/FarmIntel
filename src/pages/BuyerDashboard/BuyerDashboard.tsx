@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import DashboardNav from "../components/DashboardNav";
+import DashboardNav from "../../components/DashboardNav";
 import {
   LuStethoscope,
   LuSyringe,
@@ -9,7 +9,7 @@ import {
   LuPill,
   LuMessageSquareText,
 } from "react-icons/lu";
-import BuyerSideNav from "../components/BuyerSideNav";
+import BuyerSideNav from "../../components/BuyerSideNav";
 
 type Pet = {
   id: number;
