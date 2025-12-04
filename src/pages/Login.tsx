@@ -97,7 +97,7 @@ const Login: React.FC = () => {
         {/* Footer */}
         <p className="text-md text-[#8B8E98] mt-2">
           Don't have an account?
-          <Link to="/Signup" className="text-lime-400 ml-1">
+          <Link to="/SignUp" className="text-lime-400 ml-1">
             Sign Up
           </Link>
         </p>
