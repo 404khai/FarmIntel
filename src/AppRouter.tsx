@@ -13,7 +13,7 @@ import Navbar from "./components/Navbar";
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
 
 // FarmerDashboard PAGES
-import { Detection } from "./pages/FarmerDashboard/Detection";
+import Detection from "./pages/FarmerDashboard/Detection";
 
 const Layout = () => {
   const location = useLocation();
