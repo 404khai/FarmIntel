@@ -1,6 +1,6 @@
 // src/services/auth.ts
 import { api } from "./api";
-import { saveTokens } from "../utils/storage";
+import { saveTokens, clearTokens } from "../utils/storage";
 
 export interface RegisterPayload {
   email: string;
@@ -22,7 +22,7 @@ export const registerUser = async (payload: RegisterPayload) => {
   return api.post("/users/register", payload);
 };
 
-// VERIFY OTP (also saves tokens)
+// VERIFY OTP
 export const verifyOtp = async (payload: VerifyOtpPayload) => {
   const res = await api.post("/users/verify-otp", payload);
 
@@ -33,12 +33,12 @@ export const verifyOtp = async (payload: VerifyOtpPayload) => {
   return res;
 };
 
-// REQUEST OTP AGAIN
+// REQUEST NEW OTP
 export const requestOtp = async (email: string) => {
   return api.post("/users/request-otp", { email });
 };
 
-// LOGIN (saves tokens)
+// LOGIN
 export const loginUser = async (payload: LoginPayload) => {
   const res = await api.post("/users/login", payload);
 
@@ -47,4 +47,10 @@ export const loginUser = async (payload: LoginPayload) => {
   }
 
   return res;
+};
+
+// LOGOUT
+export const logoutUser = async () => {
+  clearTokens();
+  return true;
 };
