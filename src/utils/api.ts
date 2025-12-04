@@ -10,10 +10,3 @@ export const api = axios.create({
   },
 });
 
-// Reusable signup function
-export const signupUser = async (data: {
-  email: string;
-  password: string;
-}) => {
-  return api.post("/register", data);
-};

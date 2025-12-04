@@ -11,9 +11,6 @@ const Detection: React.FC = () => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
-
-  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Farmer";
-
   
 
   return (
