@@ -93,7 +93,7 @@ const Crops: React.FC = () => {
                 {filteredCrops.map((crop) => (
                   <tr key={crop.id} className="border-t hover:bg-gray-50">
                     <td className="p-4">
-                      <img src={crop.img} alt={crop.name} className="w-14 h-14 rounded-md object-cover" />
+                      <img src={crop.img} alt={crop.name} className="w-20 h-20 rounded-md object-cover" />
                     </td>
                     <td className="p-4 font-semibold">{crop.name}</td>
                     <td className="p-4">{crop.quantity}</td>
