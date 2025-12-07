@@ -14,6 +14,9 @@ import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
 
 // FarmerDashboard PAGES
 import Detection from "./pages/FarmerDashboard/Detection";
+import Crops from "./pages/FarmerDashboard/Crops";
+import Billing from "./pages/FarmerDashboard/Billing";
+import Settings from "./pages/FarmerDashboard/Settings";
 
 const Layout = () => {
   const location = useLocation();
@@ -44,6 +47,9 @@ const FarmerDashboardLayout = () => (
     <Routes>
       <Route path="/FarmerDashboard" element={<FarmerDashboard />} />
       <Route path="/FarmerDashboard/Detection" element={<Detection />} />
+      <Route path="/FarmerDashboard/Crops" element={<Crops />} />
+      <Route path="/FarmerDashboard/Billing" element={<Billing />} />
+      <Route path="/FarmerDashboard/Settings" element={<Settings />} />
     </Routes>
   </>
 );

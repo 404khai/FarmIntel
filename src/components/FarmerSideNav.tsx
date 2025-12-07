@@ -34,7 +34,7 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
 
             {/* --- FARM MANAGEMENT SECTION --- */}
             <Section title="Farm Management">
-                <NavLink to="/FarmerDashboard/Farms" icon={<Plant02Icon />}>
+                <NavLink to="/FarmerDashboard/Crops" icon={<Plant02Icon />}>
                     My Crops
                 </NavLink>
                 <NavLink to="/FarmerDashboard/Detection" icon={<Bug02Icon />}>
@@ -58,10 +58,10 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
 
                 {/* --- ACCOUNT SECTION --- */}
                 <Section title="Account">
-                <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
+                <NavLink to="/FarmerDashboard/Settings" icon={<AccountSetting02Icon />}>
                     Settings
                 </NavLink>
-                <NavLink to="/FarmerDashboard/Reports" icon={<Invoice03Icon />}>
+                <NavLink to="/FarmerDashboard/Billing" icon={<Invoice03Icon />}>
                 Billing
               </NavLink>
             </Section>
