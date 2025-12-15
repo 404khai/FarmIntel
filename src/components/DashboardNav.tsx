@@ -227,7 +227,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
           {isDropdownOpen && (
             <div className="absolute right-0 mt-50 w-48 bg-white rounded-lg shadow-lg z-50 animate-fade-in">
               <Link
-                to="/profile"
+                to="/FarmerDashboard/Profile"
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-gray-700"
               >
                 <LuUser size={16} /> My Profile

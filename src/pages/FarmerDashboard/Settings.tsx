@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import avatar from "../../assets/avatar.jpeg";
 import { AccountSetting02Icon, Notification02Icon, Plant02Icon, Invoice03Icon } from "hugeicons-react";
 
 
@@ -76,6 +77,13 @@ const Settings: React.FC = () => {
                   <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">Visible to Coop Members</span>
                 </div>
                 <form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2 flex items-center gap-4">
+                    <img src={avatar} alt="Profile" className="w-16 h-16 rounded-full object-cover border" />
+                    <div>
+                      <button type="button" className="text-sm text-lime-600">Change Picture</button>
+                      <p className="text-xs text-gray-400">PNG, JPG up to 2MB</p>
+                    </div>
+                  </div>
                   <div className="sm:col-span-2">
                     <label className="text-sm text-gray-600">Display Name</label>
                     <input className="mt-1 w-full border rounded-md px-3 py-2" defaultValue={user?.firstname || ""} />
