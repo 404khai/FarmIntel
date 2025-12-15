@@ -12,10 +12,11 @@ import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-reac
 import { CreateCoopModal } from "./CreateCoopModal";
 
 interface DashboardNavProps {
-  onToggleSidebar: () => void;
+  onToggleMobileSidebar?: () => void;
+  onToggleCollapse?: () => void;
 }
 
-const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
+const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onToggleCollapse }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -57,14 +58,21 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
   }, []);
 
   return (
-    <nav className="absolute w-full h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-0 md:pr-8 top-0 z-50">
+    <nav className="fixed w-full h-16 bg-white shadow-sm flex items-center justify-between px-4 md:px-0 md:pr-8 top-0 z-50">
       {/* Left Section */}
       <div className="flex items-center gap-3">
         <button
-          onClick={onToggleSidebar}
+          onClick={onToggleMobileSidebar}
           className="p-2 rounded-md text-gray-600 hover:bg-gray-100 md:hidden"
         >
           <HiOutlineMenuAlt2 size={26} />
+        </button>
+        <button
+          onClick={onToggleCollapse}
+          className="hidden md:inline-flex p-2 rounded-md text-gray-600 hover:bg-gray-100"
+          aria-label="Toggle sidebar"
+        >
+          <HiOutlineMenuAlt2 size={22} />
         </button>
         <Link
           to="/home"

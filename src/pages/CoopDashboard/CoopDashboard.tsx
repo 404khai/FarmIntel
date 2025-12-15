@@ -14,6 +14,7 @@ import CoopSideNav from "../../components/CoopSideNav";
 
 const CoopDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -88,12 +89,16 @@ const CoopDashboard: React.FC = () => {
       <CoopSideNav
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
+        collapsed={isSidebarCollapsed}
       />
 
       <div className="flex-1 flex flex-col">
-        <DashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <DashboardNav
+          onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
+        />
 
-        <main className="pt-20 px-6 sm:px-8 pb-10 ml-60">
+        <main className={`pt-16 px-6 sm:px-8 pb-10 ${isSidebarCollapsed ? "ml-20" : "ml-64"} h-screen overflow-y-auto`}>
           {/* Welcome */}
           <div className="mb-8">
             <h1 className="text-3xl font-semibold text-gray-800">
