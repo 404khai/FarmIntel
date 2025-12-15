@@ -17,6 +17,7 @@ import Detection from "./pages/FarmerDashboard/Detection";
 import Crops from "./pages/FarmerDashboard/Crops";
 import Billing from "./pages/FarmerDashboard/Billing";
 import Settings from "./pages/FarmerDashboard/Settings";
+import Profile from "./pages/FarmerDashboard/Profile";
 
 const Layout = () => {
   const location = useLocation();
@@ -50,6 +51,7 @@ const FarmerDashboardLayout = () => (
       <Route path="/FarmerDashboard/Crops" element={<Crops />} />
       <Route path="/FarmerDashboard/Billing" element={<Billing />} />
       <Route path="/FarmerDashboard/Settings" element={<Settings />} />
+      <Route path="/FarmerDashboard/Profile" element={<Profile />} />
     </Routes>
   </>
 );
