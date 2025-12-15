@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
-import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import avatar from "../../assets/avatar.jpeg";
 import corn from "../../assets/corn.jpeg";
@@ -9,7 +8,6 @@ import rice from "../../assets/rice.jpeg";
 
 const Profile: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -22,13 +20,12 @@ const Profile: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <FarmerSideNav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} collapsed={isSidebarCollapsed} />
       <div className="flex-1 flex flex-col">
-        <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)} />
+        <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto`}>
           <div className="mb-4">
-            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Farmers", to: "/FarmerDashboard" }, { label: farmName }]} />
+            <a href="/FarmerDashboard" className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm">Back to Dashboard</a>
           </div>
           <section className="bg-white rounded-2xl shadow-sm p-5 mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
