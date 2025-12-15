@@ -122,7 +122,7 @@ const BuyerDashboard: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className="pt-16 px-6 ml-64 sm:px-8 pb-10 h-screen overflow-y-auto">
+        <main className="pt-16 px-4 sm:px-6 md:px-8 ml-0 md:ml-64 pb-10 h-screen overflow-y-auto">
           <div className="space-y-8">
             {/* Welcome Section */}
             <div>

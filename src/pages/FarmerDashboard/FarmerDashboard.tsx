@@ -137,7 +137,7 @@ const FarmerDashboard: React.FC = () => {
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
 
-        <main className={`pt-16 px-6 sm:px-8 pb-10 ${isSidebarCollapsed ? "ml-20" : "ml-64"} h-screen overflow-y-auto`}>
+        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-semibold text-gray-800">

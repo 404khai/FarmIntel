@@ -93,7 +93,7 @@ const OrgDashboard: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className="pt-20 px-6 sm:px-8 pb-10 ml-60">
+        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 md:ml-64 h-screen overflow-y-auto">
           {/* Welcome */}
           <div className="mb-8">
             <h1 className="text-3xl font-semibold text-gray-800">
