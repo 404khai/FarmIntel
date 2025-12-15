@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import { LuTriangleAlert, LuCircleCheck, LuHeart, LuImagePlus } from "react-icons/lu";
+import Breadcrumbs from "../../components/Breadcrumbs";
 
 
 const Detection: React.FC = () => {
@@ -35,7 +36,13 @@ const Detection: React.FC = () => {
 
         <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
           <div className="mb-6">
-            <p className="text-xs sm:text-sm text-gray-500">Home / Dashboard / Disease Control</p>
+            <Breadcrumbs
+              items={[
+                { label: "Home", to: "/Home" },
+                { label: "Dashboard", to: "/FarmerDashboard" },
+                { label: "Disease Control" },
+              ]}
+            />
           </div>
 
           <div className="mb-6">
