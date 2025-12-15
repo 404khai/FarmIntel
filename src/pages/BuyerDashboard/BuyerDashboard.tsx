@@ -1,51 +1,22 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
-import {
-  LuStethoscope,
-  LuSyringe,
-  LuScissors,
-  LuSlice,
-  LuTriangleAlert,
-  LuPill,
-  LuMessageSquareText,
-} from "react-icons/lu";
+import { LuShoppingCart, LuHandshake, LuWallet, LuTrendingUp } from "react-icons/lu";
 import BuyerSideNav from "../../components/BuyerSideNav";
-
-type Pet = {
-  id: number;
-  name: string;
-  species?: string;
-  imageUrl?: string | null;
-};
-
-type Vet = {
-  id: number;
-  userId: number;
-  specialization?: string;
-  imageUrl?: string | null;
-  user: { name: string; imageUrl?: string | null };
-};
-
-type Appointment = {
-  id: number;
-  pet?: Pet;
-  vet?: Vet;
-  scheduledDate: string;
-  scheduledTime: string;
-  appointmentType: string;
-  status: string;
-};
-
-// 🧠 Appointment type pill styling (like Appointments page)
-const appointmentTypes = [
-  { type: "Checkup", color: "text-blue-600", icon: <LuStethoscope className="text-[22px] text-blue-600 bg-blue-200 rounded-full p-1" /> },
-  { type: "Vaccination", color: "text-green-600", icon: <LuSyringe className="text-[22px] text-green-600 bg-green-200 rounded-full p-1"/> },
-  { type: "Grooming", color: "text-pink-600", icon: <LuScissors className="text-[22px] text-pink-600 bg-pink-200 rounded-full p-1"/> },
-  { type: "Surgery", color: "text-red-600", icon: <LuSlice className="text-[22px] text-red-600 bg-red-200 rounded-full p-1" /> },
-  { type: "Emergency Care", color: "text-orange-600", icon: <LuTriangleAlert className="text-[22px] text-orange-600 bg-orange-200 rounded-full p-1"/> },
-  { type: "Treatment", color: "text-yellow-600", icon: <LuPill className="text-[22px] text-yellow-600 bg-yellow-200 rounded-full p-1" /> },
-  { type: "Consultation", color: "text-purple-600", icon: <LuMessageSquareText className="text-[22px] text-purple-600 bg-purple-200 rounded-full p-1" /> },
-];
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
+import corn from "../../assets/corn.jpeg";
+import tomato from "../../assets/tomato.jpeg";
+import banana from "../../assets/banana.jpeg";
+import greenPeas from "../../assets/greenPeas.jpeg";
+import rice from "../../assets/rice.jpeg";
+import okra from "../../assets/okra.jpeg";
 
 const Avatar: React.FC<{ name?: string; imageUrl?: string | null; size?: number }> = ({
   name,
@@ -81,39 +52,57 @@ const Avatar: React.FC<{ name?: string; imageUrl?: string | null; size?: number 
 
 const BuyerDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [pets] = useState<Pet[]>([]);
-  const [appointments] = useState<Appointment[]>([]);
-  const [loading] = useState(true);
+  type User = { firstname?: string; name?: string } | null;
+  const [user, setUser] = useState<User>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  
-  const upcomingAppointments = useMemo(
-    () => appointments.filter((a) => a.status === "ACCEPTED"),
-    [appointments]
-  );
+  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Buyer";
 
-  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Jane";
+  const kpis = [
+    { title: "Total Orders", value: "18", icon: <LuShoppingCart className="text-green-600" />, tint: "bg-green-50" },
+    { title: "Active RFQs", value: "5", icon: <LuTrendingUp className="text-blue-600" />, tint: "bg-blue-50" },
+    { title: "Seller Matches", value: "12", icon: <LuHandshake className="text-purple-600" />, tint: "bg-purple-50" },
+    { title: "Spend YTD", value: "$42,300", icon: <LuWallet className="text-orange-600" />, tint: "bg-orange-50" },
+  ];
 
-  const renderTypeLabel = (typeName: string) => {
-    const t = appointmentTypes.find((x) => x.type === typeName);
-    if (!t)
-      return (
-        <span className="px-2 py-1 rounded text-sm bg-gray-100 text-gray-600">
-          {typeName}
-        </span>
-      );
-    return (
-      <span className="inline-flex items-center gap-2 py-1 rounded-full bg-gray-50">
-        {t.icon}
-        <span className="text-sm font-medium text-gray-700">{t.type}</span>
-      </span>
-    );
+  type Listing = {
+    id: number;
+    name: string;
+    variety: string;
+    quantityText: string;
+    status: "Available" | "Pending" | "Sold Out";
+    img: string;
+    seller: string;
+    location: string;
   };
+
+  const listings: Listing[] = [
+    { id: 1, name: "Maize", variety: "Yellow Dent", quantityText: "2.0 Tons", status: "Available", img: corn, seller: "GreenFields Co.", location: "Kaduna" },
+    { id: 2, name: "Tomatoes", variety: "Roma", quantityText: "500 kg", status: "Available", img: tomato, seller: "FreshHarvest Ltd.", location: "Benue" },
+    { id: 3, name: "Potatoes", variety: "Russet", quantityText: "1.2 Tons", status: "Pending", img: greenPeas, seller: "Highland Farms", location: "Plateau" },
+    { id: 4, name: "Okra", variety: "Clemson Spineless", quantityText: "300 kg", status: "Sold Out", img: okra, seller: "Sunrise Agro", location: "Oyo" },
+    { id: 5, name: "Banana", variety: "Cavendish", quantityText: "150 Crates", status: "Available", img: banana, seller: "Tropical Produce", location: "Cross River" },
+    { id: 6, name: "Rice", variety: "Long Grain", quantityText: "1.8 Tons", status: "Available", img: rice, seller: "RiverBank Farms", location: "Niger" },
+  ];
+
+  const messages = [
+    { from: "GreenFields Co.", text: "Can deliver maize in 5 days.", time: "2h ago" },
+    { from: "Sunrise Agro", text: "Okra sold out, new batch next week.", time: "6h ago" },
+    { from: "FreshHarvest Ltd.", text: "Tomatoes price revised for bulk order.", time: "1d ago" },
+    { from: "RiverBank Farms", text: "Rice moisture content at 12%.", time: "2d ago" },
+  ];
+
+  const marketTrend = [
+    { month: "Jan", price: 120 },
+    { month: "Feb", price: 132 },
+    { month: "Mar", price: 125 },
+    { month: "Apr", price: 138 },
+    { month: "May", price: 145 },
+  ];
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -123,121 +112,90 @@ const BuyerDashboard: React.FC = () => {
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
         <main className="pt-16 px-4 sm:px-6 md:px-8 ml-0 md:ml-64 pb-10 h-screen overflow-y-auto">
-          <div className="space-y-8">
-            {/* Welcome Section */}
-            <div>
-              <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName}</h1>
-              <p className="text-gray-500 mt-1">
-                Here’s a quick overview of your pets and upcoming appointments.
-              </p>
-            </div>
+          <div className="mb-6">
+            <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName}</h1>
+            <p className="text-gray-500 mt-1">Your supply chain overview and marketplace activity.</p>
+          </div>
 
-            {/* Pets Section */}
-            <section className="bg-white shadow-sm rounded-xl p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">Your Pets</h2>
+          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {kpis.map((k, i) => (
+              <div key={i} className="bg-white rounded-xl p-5 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div className={`p-2 rounded-md ${k.tint}`}>{k.icon}</div>
+                  <p className="text-2xl font-semibold text-gray-800">{k.value}</p>
+                </div>
+                <p className="text-sm text-gray-600 mt-2">{k.title}</p>
+              </div>
+            ))}
+          </section>
 
-              {loading ? (
-                <p className="text-gray-500">Loading your pets...</p>
-              ) : pets.length === 0 ? (
-                <p className="text-gray-500 italic">
-                  You have no registered pets yet.
-                </p>
-              ) : (
-                <div className="flex flex-wrap gap-6">
-                  {pets.map((pet) => (
-                    <div
-                      key={pet.id}
-                      className="flex flex-col items-center bg-gray-100 rounded-xl p-4 w-40 hover:shadow-md transition"
-                    >
-                      <Avatar name={pet.name} imageUrl={pet.imageUrl ?? null} size={70} />
-                      <h3 className="mt-2 text-base font-medium text-gray-800">
-                        {pet.name}
-                      </h3>
-                      <p className="text-sm text-gray-500">{pet.species}</p>
+          <div className="grid grid-cols-12 gap-6">
+            <section className="col-span-12 lg:col-span-8 bg-white rounded-xl p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-semibold text-gray-800">Available Listings</h2>
+                <div className="text-sm text-gray-500">Showing {listings.length}</div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {listings.map((c) => (
+                  <div key={c.id} className="border rounded-xl overflow-hidden bg-white">
+                    <img src={c.img} alt={c.name} className="h-32 w-full object-cover" />
+                    <div className="p-4">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <p className="text-base font-semibold text-gray-800">{c.name}</p>
+                          <p className="text-sm text-gray-500">{c.variety}</p>
+                        </div>
+                        <span className={`text-xs px-2 py-1 rounded-full ${c.status === "Available" ? "bg-green-100 text-green-700" : c.status === "Pending" ? "bg-yellow-100 text-yellow-700" : "bg-gray-200 text-gray-700"}`}>{c.status}</span>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between">
+                        <p className="text-sm text-gray-600">{c.quantityText}</p>
+                        <p className="text-sm text-gray-500">{c.location}</p>
+                      </div>
+                      <div className="mt-3 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Avatar name={c.seller} size={28} />
+                          <span className="text-sm text-gray-700">{c.seller}</span>
+                        </div>
+                        <button className="text-sm bg-lime-600 text-white px-3 py-1 rounded-md">Request Quote</button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="col-span-12 lg:col-span-4 space-y-6">
+              <div className="bg-white rounded-xl p-5 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-800 mb-3">Recent Messages</h2>
+                <div className="space-y-3">
+                  {messages.map((m, i) => (
+                    <div key={i} className="flex items-start gap-3">
+                      <Avatar name={m.from} size={32} />
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <p className="text-sm font-medium text-gray-800">{m.from}</p>
+                          <span className="text-xs text-gray-500">{m.time}</span>
+                        </div>
+                        <p className="text-sm text-gray-600">{m.text}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
-              )}
-            </section>
-
-            {/* Upcoming Appointments */}
-            <section className="bg-white shadow-sm rounded-xl p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Upcoming Appointments
-                </h2>
               </div>
 
-              {loading ? (
-                <p className="text-gray-500">Loading appointments...</p>
-              ) : upcomingAppointments.length === 0 ? (
-                <p className="text-gray-500 italic">
-                  No upcoming appointments found.
-                </p>
-              ) : (
-                <div className="overflow-x-auto rounded-lg">
-                  <table className="min-w-full text-sm text-left">
-                    <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
-                      <tr>
-                        <th className="py-3 px-4">Pet</th>
-                        <th className="py-3 px-4">Vet</th>
-                        <th className="py-3 px-4">Type</th>
-                        <th className="py-3 px-4">Date</th>
-                        <th className="py-3 px-4">Time</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-200">
-                      {upcomingAppointments.map((a) => (
-                        <tr key={a.id} className="hover:bg-gray-50 transition">
-                          <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <Avatar
-                                name={a.pet?.name}
-                                imageUrl={a.pet?.imageUrl ?? null}
-                                size={44}
-                              />
-                              <div>
-                                <div className="font-medium text-gray-800">
-                                  {a.pet?.name || "—"}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {a.pet?.species || ""}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-
-                          <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <Avatar
-                                name={a.vet?.user?.name}
-                                imageUrl={a.vet?.user?.imageUrl ?? null}
-                                size={44}
-                              />
-                              <div>
-                                <div className="font-medium text-gray-800">
-                                  {a.vet?.user?.name || "—"}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {a.vet?.specialization || ""}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-
-                          <td className="py-3 px-4">{renderTypeLabel(a.appointmentType)}</td>
-                          <td className="py-3 px-4 text-gray-700">
-                            {a.scheduledDate}
-                          </td>
-                          <td className="py-3 px-4 text-gray-700">
-                            {a.scheduledTime}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
+              <div className="bg-white rounded-xl p-5 shadow-sm">
+                <h2 className="text-lg font-semibold text-gray-800 mb-3">Market Trend</h2>
+                <ResponsiveContainer width="100%" height={220}>
+                  <LineChart data={marketTrend}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="month" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="price" stroke="#16a34a" strokeWidth={2} dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+                <p className="text-xs text-gray-500 mt-2">Average maize price (last 5 months)</p>
+              </div>
             </section>
           </div>
         </main>
