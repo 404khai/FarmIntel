@@ -34,7 +34,7 @@ const Detection: React.FC = () => {
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
           <div className="mb-6">
             <Breadcrumbs
               items={[

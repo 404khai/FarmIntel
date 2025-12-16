@@ -3,6 +3,11 @@ import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { CreditCardPosIcon, ChartBarLineIcon, Calendar02Icon, FilterIcon, PlusSignIcon, Download02Icon } from "hugeicons-react";
+import user1 from "../../assets/user1.jpeg";
+import user2 from "../../assets/user2.jpeg";
+import user3 from "../../assets/user3.jpeg";
+import user4 from "../../assets/user4.jpeg";
+import user5 from "../../assets/user5.jpeg";
 
 const Transactions: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,9 +26,9 @@ const Transactions: React.FC = () => {
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
           <div className="flex items-center justify-between mb-3">
-            <Breadcrumbs items={[{ label: "Dashboard", to: "/FarmerDashboard" }, { label: "Transactions" }]} />
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Transactions" }]} />
             <div className="flex items-center gap-2">
               <button className="flex items-center gap-2 px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"><Download02Icon size={18} /> Export CSV</button>
               <a href="/FarmerDashboard/Crops" className="flex items-center gap-2 px-3 py-2 rounded-md bg-lime-600 text-white text-sm"><PlusSignIcon size={18} /> New Listing</a>
@@ -93,16 +98,21 @@ const Transactions: React.FC = () => {
             </div>
 
             {[
-              { id: "#4821", buyer: "Whole Foods Market", tag: "Verified Buyer", crop: "Organic Corn", qty: "500 kg", price: "$1,200.00", date: "Oct 24, 2023", status: { label: "Pending Delivery", color: "bg-yellow-100 text-yellow-700" } },
-              { id: "#4820", buyer: "Local Co-op Society", tag: "Partner", crop: "Wheat", qty: "2.0 Tons", price: "$450.00", date: "Oct 22, 2023", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
-              { id: "#4819", buyer: "Green Grocer Inc.", tag: "Retailer", crop: "Soybeans", qty: "100 kg", price: "$300.00", date: "Oct 20, 2023", status: { label: "Disputed", color: "bg-red-100 text-red-700" } },
-              { id: "#4818", buyer: "Fresh Mart", tag: "Supermarket", crop: "Tomatoes", qty: "850 kg", price: "$1,850.00", date: "Oct 18, 2023", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
+              { id: "#4821", buyer: "Whole Foods Market", avatar: user1, tag: "Verified Buyer", crop: "Organic Corn", qty: "500 kg", price: "$1,200.00", date: "Oct 24, 2023", status: { label: "Pending Delivery", color: "bg-yellow-100 text-yellow-700" } },
+              { id: "#4820", buyer: "Local Co-op Society", avatar: user2, tag: "Partner", crop: "Wheat", qty: "2.0 Tons", price: "$450.00", date: "Oct 22, 2023", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
+              { id: "#4819", buyer: "Green Grocer Inc.", avatar: user3, tag: "Retailer", crop: "Soybeans", qty: "100 kg", price: "$300.00", date: "Oct 20, 2023", status: { label: "Disputed", color: "bg-red-100 text-red-700" } },
+              { id: "#4818", buyer: "Fresh Mart", avatar: user4, tag: "Supermarket", crop: "Tomatoes", qty: "850 kg", price: "$1,850.00", date: "Oct 18, 2023", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
             ].map((r, idx) => (
               <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none">
                 <div className="col-span-2 text-sm text-gray-700">{r.id}</div>
                 <div className="col-span-3">
-                  <p className="text-sm font-medium text-gray-800">{r.buyer}</p>
-                  <p className="text-xs text-gray-500">{r.tag}</p>
+                  <div className="flex items-center gap-3">
+                    <img src={r.avatar} alt={r.buyer} className="w-8 h-8 rounded-full object-cover" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-800">{r.buyer}</p>
+                      <p className="text-xs text-gray-500">{r.tag}</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-span-2 text-sm text-gray-700">{r.crop}</div>
                 <div className="col-span-1 text-sm text-gray-700">{r.qty}</div>

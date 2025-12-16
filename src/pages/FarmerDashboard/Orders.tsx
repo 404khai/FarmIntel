@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import { Calendar02Icon, CreditCardPosIcon, ChartBarLineIcon, FilterIcon, Download02Icon } from "hugeicons-react";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import { LuCheck, LuX } from "react-icons/lu";
+import user1 from "../../assets/user1.jpeg";
+import user2 from "../../assets/user2.jpeg";
+import user3 from "../../assets/user3.jpeg";
+import user4 from "../../assets/user4.jpeg";
+import user5 from "../../assets/user5.jpeg";
 
 const Orders: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,11 +17,11 @@ const Orders: React.FC = () => {
   const [filter, setFilter] = useState<"all" | "pending" | "accepted" | "fulfilled">("all");
 
   const rows = [
-    { buyer: "Whole Foods Market", location: "Austin, TX", crop: "Organic Tomatoes", variant: "Roma Variety • 500 kg", id: "#ORD-2491", date: "Oct 12, 2023", total: "$1,250.00", status: { label: "Pending", color: "bg-yellow-100 text-yellow-700", key: "pending" } },
-    { buyer: "Local Bistro", location: "Downtown", crop: "Fresh Basil", variant: "Genovese • 50 kg", id: "#ORD-2488", date: "Oct 11, 2023", total: "$450.00", status: { label: "Accepted", color: "bg-emerald-100 text-emerald-700", key: "accepted" } },
-    { buyer: "Green Market Co-op", location: "Springfield", crop: "Sweet Corn", variant: "Yellow • 1200 ears", id: "#ORD-2485", date: "Oct 10, 2023", total: "$600.00", status: { label: "Pending", color: "bg-yellow-100 text-yellow-700", key: "pending" } },
-    { buyer: "Mark’s Diner", location: "Uptown", crop: "Potatoes", variant: "Russet • 200 kg", id: "#ORD-2470", date: "Oct 08, 2023", total: "$320.00", status: { label: "Fulfilled", color: "bg-gray-100 text-gray-700", key: "fulfilled" } },
-    { buyer: "The Table Restaurant", location: "Westside", crop: "Kale", variant: "Lacinato • 20 bunches", id: "#ORD-2465", date: "Oct 05, 2023", total: "$80.00", status: { label: "Rejected", color: "bg-red-100 text-red-700", key: "rejected" } },
+    { buyer: "Whole Foods Market", avatar: user1, location: "Austin, TX", crop: "Organic Tomatoes", variant: "Roma Variety • 500 kg", id: "#ORD-2491", date: "Oct 12, 2023", total: "$1,250.00", status: { label: "Pending", color: "bg-yellow-100 text-yellow-700", key: "pending" } },
+    { buyer: "Local Bistro", avatar: user2, location: "Downtown", crop: "Fresh Basil", variant: "Genovese • 50 kg", id: "#ORD-2488", date: "Oct 11, 2023", total: "$450.00", status: { label: "Accepted", color: "bg-emerald-100 text-emerald-700", key: "accepted" } },
+    { buyer: "Green Market Co-op", avatar: user3, location: "Springfield", crop: "Sweet Corn", variant: "Yellow • 1200 ears", id: "#ORD-2485", date: "Oct 10, 2023", total: "$600.00", status: { label: "Pending", color: "bg-yellow-100 text-yellow-700", key: "pending" } },
+    { buyer: "Mark’s Diner", avatar: user4, location: "Uptown", crop: "Potatoes", variant: "Russet • 200 kg", id: "#ORD-2470", date: "Oct 08, 2023", total: "$320.00", status: { label: "Fulfilled", color: "bg-gray-100 text-gray-700", key: "fulfilled" } },
+    { buyer: "The Table Restaurant", avatar: user5, location: "Westside", crop: "Kale", variant: "Lacinato • 20 bunches", id: "#ORD-2465", date: "Oct 05, 2023", total: "$80.00", status: { label: "Rejected", color: "bg-red-100 text-red-700", key: "rejected" } },
   ];
 
   const filtered = rows.filter(r => filter === "all" ? true : r.status.key === filter);
@@ -34,6 +40,9 @@ const Orders: React.FC = () => {
         />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+          <div className="mb-4">
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Orders" }]} />
+          </div>
           <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-3xl font-semibold text-gray-800">Incoming Orders</h1>
@@ -106,7 +115,7 @@ const Orders: React.FC = () => {
               <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none">
                 <div className="col-span-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gray-200" />
+                    <img src={r.avatar} alt={r.buyer} className="w-9 h-9 rounded-full object-cover" />
                     <div>
                       <p className="text-sm font-medium text-gray-800">{r.buyer}</p>
                       <p className="text-xs text-gray-500">{r.location}</p>

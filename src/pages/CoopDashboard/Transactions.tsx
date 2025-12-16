@@ -3,6 +3,11 @@ import DashboardNav from "../../components/DashboardNav";
 import CoopSideNav from "../../components/CoopSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { CreditCardPosIcon, HourglassIcon, Calendar02Icon, FilterIcon, Download02Icon } from "hugeicons-react";
+import user1 from "../../assets/user1.jpeg";
+import user2 from "../../assets/user2.jpeg";
+import user3 from "../../assets/user3.jpeg";
+import user4 from "../../assets/user4.jpeg";
+import user5 from "../../assets/user5.jpeg";
 
 const Transactions: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,10 +16,10 @@ const Transactions: React.FC = () => {
   const [cropFilter, setCropFilter] = useState("All");
 
   const rows = [
-    { id: "#TRX-9928", farmer: { name: "John Doe", tag: "Member #442" }, buyer: { name: "Whole Foods Co-op", tag: "Retailer" }, crop: { name: "Organic Wheat", qty: "500 kg" }, amount: "$450.00", date: "Oct 24, 2023\n10:42 AM", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
-    { id: "#TRX-9929", farmer: { name: "Sarah Smith", tag: "Member #891" }, buyer: { name: "Green Market", tag: "Wholesaler" }, crop: { name: "Sweet Corn", qty: "1.2 Tons" }, amount: "$1,120.00", date: "Oct 23, 2023\n02:15 PM", status: { label: "Pending", color: "bg-yellow-100 text-yellow-700" } },
-    { id: "#TRX-9930", farmer: { name: "Albert Liu", tag: "Member #102" }, buyer: { name: "FreshDirect", tag: "Distributor" }, crop: { name: "Soybeans", qty: "800 kg" }, amount: "$640.00", date: "Oct 23, 2023\n09:00 AM", status: { label: "Disputed", color: "bg-red-100 text-red-700" } },
-    { id: "#TRX-9931", farmer: { name: "Maria Garcia", tag: "Member #350" }, buyer: { name: "EcoFoods", tag: "Retailer" }, crop: { name: "Barley", qty: "200 kg" }, amount: "$180.00", date: "Oct 22, 2023\n04:30 PM", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
+    { id: "#TRX-9928", farmer: { name: "John Doe", tag: "Member #442", avatar: user1 }, buyer: { name: "Whole Foods Co-op", tag: "Retailer", avatar: user2 }, crop: { name: "Organic Wheat", qty: "500 kg" }, amount: "$450.00", date: "Oct 24, 2023\n10:42 AM", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
+    { id: "#TRX-9929", farmer: { name: "Sarah Smith", tag: "Member #891", avatar: user3 }, buyer: { name: "Green Market", tag: "Wholesaler", avatar: user4 }, crop: { name: "Sweet Corn", qty: "1.2 Tons" }, amount: "$1,120.00", date: "Oct 23, 2023\n02:15 PM", status: { label: "Pending", color: "bg-yellow-100 text-yellow-700" } },
+    { id: "#TRX-9930", farmer: { name: "Albert Liu", tag: "Member #102", avatar: user5 }, buyer: { name: "FreshDirect", tag: "Distributor", avatar: user1 }, crop: { name: "Soybeans", qty: "800 kg" }, amount: "$640.00", date: "Oct 23, 2023\n09:00 AM", status: { label: "Disputed", color: "bg-red-100 text-red-700" } },
+    { id: "#TRX-9931", farmer: { name: "Maria Garcia", tag: "Member #350", avatar: user2 }, buyer: { name: "EcoFoods", tag: "Retailer", avatar: user3 }, crop: { name: "Barley", qty: "200 kg" }, amount: "$180.00", date: "Oct 22, 2023\n04:30 PM", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
   ];
 
   const filtered = rows.filter((r) => (statusFilter === "All" || r.status.label === statusFilter) && (cropFilter === "All" || r.crop.name.includes(cropFilter)));
@@ -110,12 +115,22 @@ const Transactions: React.FC = () => {
               <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none">
                 <div className="col-span-2 text-sm font-medium text-lime-700">{r.id}</div>
                 <div className="col-span-2">
-                  <p className="text-sm font-medium text-gray-800">{r.farmer.name}</p>
-                  <p className="text-xs text-gray-500">{r.farmer.tag}</p>
+                  <div className="flex items-center gap-3">
+                    <img src={r.farmer.avatar} alt={r.farmer.name} className="w-8 h-8 rounded-full object-cover" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-800">{r.farmer.name}</p>
+                      <p className="text-xs text-gray-500">{r.farmer.tag}</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-sm font-medium text-gray-800">{r.buyer.name}</p>
-                  <p className="text-xs text-gray-500">{r.buyer.tag}</p>
+                  <div className="flex items-center gap-3">
+                    <img src={r.buyer.avatar} alt={r.buyer.name} className="w-8 h-8 rounded-full object-cover" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-800">{r.buyer.name}</p>
+                      <p className="text-xs text-gray-500">{r.buyer.tag}</p>
+                    </div>
+                  </div>
                 </div>
                 <div className="col-span-3">
                   <p className="text-sm font-medium text-gray-800">{r.crop.name}</p>
