@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import OrgDashboardNav from "../../components/OrgDashboardNav";
-import {
-  LuCloudRain,
-  LuSprout,
-  LuThermometer,
-  LuDroplets,
-  LuChartBarStacked,
-  LuTractor,
-  LuLeaf,
-  LuTriangleAlert,
-} from "react-icons/lu";
+import { LuClock, LuTrendingUp, LuCircleCheck, LuBadgePercent } from "react-icons/lu";
 import OrgSideNav from "../../components/OrgSideNav";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 
 const OrgDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -21,66 +21,54 @@ const OrgDashboard: React.FC = () => {
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Farmer";
+  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Developer";
 
-  // 🌾 Example FarmIntel dashboard stats
-  const stats = [
+  const kpis = [
     {
-      title: "Soil Health Index",
-      value: "87%",
-      icon: <LuLeaf className="text-green-600 text-2xl" />,
-      subtitle: "Optimal condition",
-      color: "bg-green-50",
+      title: "API Requests",
+      value: "124,580",
+      icon: <LuTrendingUp className="text-indigo-600 text-2xl" />,
+      subtitle: "Past 30 days",
+      color: "bg-indigo-50",
     },
     {
-      title: "Moisture Level",
-      value: "62%",
-      icon: <LuDroplets className="text-blue-600 text-2xl" />,
-      subtitle: "Moderate hydration",
-      color: "bg-blue-50",
-    },
-    {
-      title: "Avg Temperature",
-      value: "27°C",
-      icon: <LuThermometer className="text-orange-600 text-2xl" />,
-      subtitle: "Stable range",
-      color: "bg-orange-50",
-    },
-    {
-      title: "Predicted Yield",
-      value: "5.4 tons/ha",
-      icon: <LuChartBarStacked className="text-purple-600 text-2xl" />,
-      subtitle: "AI forecast",
-      color: "bg-purple-50",
-    },
-    {
-      title: "Rainfall (Next 7 days)",
-      value: "38mm",
-      icon: <LuCloudRain className="text-cyan-600 text-2xl" />,
-      subtitle: "Expected showers",
-      color: "bg-cyan-50",
-    },
-    {
-      title: "Active Machines",
-      value: "6",
-      icon: <LuTractor className="text-yellow-600 text-2xl" />,
-      subtitle: "Operational",
-      color: "bg-yellow-50",
-    },
-    {
-      title: "Crops Under Watch",
-      value: "12",
-      icon: <LuSprout className="text-emerald-600 text-2xl" />,
-      subtitle: "Growth stage",
+      title: "Success Rate",
+      value: "99.2%",
+      icon: <LuCircleCheck className="text-emerald-600 text-2xl" />,
+      subtitle: "2,430 errors",
       color: "bg-emerald-50",
     },
     {
-      title: "Alerts",
-      value: "2",
-      icon: <LuTriangleAlert className="text-red-600 text-2xl" />,
-      subtitle: "Irrigation needed",
-      color: "bg-red-50",
+      title: "Avg Latency",
+      value: "184 ms",
+      icon: <LuClock className="text-orange-600 text-2xl" />,
+      subtitle: "P95: 420 ms",
+      color: "bg-orange-50",
     },
+    {
+      title: "Current Plan",
+      value: "Pro",
+      icon: <LuBadgePercent className="text-purple-600 text-2xl" />,
+      subtitle: "Renews Jan 28",
+      color: "bg-purple-50",
+    },
+  ];
+
+  const volumeData = [
+    { day: "Mon", requests: 4200 },
+    { day: "Tue", requests: 5100 },
+    { day: "Wed", requests: 4800 },
+    { day: "Thu", requests: 5300 },
+    { day: "Fri", requests: 6100 },
+    { day: "Sat", requests: 3500 },
+    { day: "Sun", requests: 2900 },
+  ];
+
+  const activities = [
+    { id: "evt_8f21", action: "Key created", detail: "Read-only key for staging", time: "2h ago" },
+    { id: "evt_8f22", action: "Plan upgraded", detail: "Pro → Business", time: "1d ago" },
+    { id: "evt_8f23", action: "Webhook delivered", detail: "/v1/events: 245ms", time: "2d ago" },
+    { id: "evt_8f24", action: "Docs viewed", detail: "Authentication & rate limits", time: "3d ago" },
   ];
 
   return (
@@ -94,42 +82,76 @@ const OrgDashboard: React.FC = () => {
         <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
         <main className="pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 md:ml-64 h-screen overflow-y-auto">
-          {/* Welcome */}
           <div className="mb-8">
-            <h1 className="text-3xl font-semibold text-gray-800">
-              Hi, {firstName} 👋
-            </h1>
-            <p className="text-gray-500 mt-1">
-              Here’s a smart overview of your farm’s performance.
-            </p>
+            <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName} 👋</h1>
+            <p className="text-gray-500 mt-1">Your API and organization overview.</p>
           </div>
 
-          {/* 🌿 Responsive Widget Grid */}
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, i) => (
-              <div
-                key={i}
-                className={`flex flex-col justify-between p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 ${stat.color}`}
-              >
+            {kpis.map((k, i) => (
+              <div key={i} className={`flex flex-col justify-between p-5 rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 bg-white`}>
                 <div className="flex items-center justify-between">
-                  <div className="p-2 rounded-xl bg-white shadow-sm">
-                    {stat.icon}
-                  </div>
-                  <span className="text-xl font-semibold text-gray-800">
-                    {stat.value}
-                  </span>
+                  <div className={`p-2 rounded-xl shadow-sm ${k.color}`}>{k.icon}</div>
+                  <span className="text-xl font-semibold text-gray-800">{k.value}</span>
                 </div>
                 <div className="mt-4">
-                  <p className="text-sm font-medium text-gray-700">
-                    {stat.title}
-                  </p>
-                  <p className="text-xs text-gray-500">{stat.subtitle}</p>
+                  <p className="text-sm font-medium text-gray-700">{k.title}</p>
+                  <p className="text-xs text-gray-500">{k.subtitle}</p>
                 </div>
               </div>
             ))}
           </section>
 
-          {/* You can later add ML charts, yield forecast graphs, etc. below */}
+          <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+            <div className="lg:col-span-7 bg-white rounded-2xl shadow-sm p-5">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-800">Request Volume</h3>
+                <div className="text-xs text-gray-500">Last 7 days</div>
+              </div>
+              <div className="h-64">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={volumeData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" tick={{ fontSize: 12 }} />
+                    <YAxis tick={{ fontSize: 12 }} />
+                    <Tooltip />
+                    <Bar dataKey="requests" fill="#84cc16" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 space-y-6">
+              <div className="bg-white rounded-2xl shadow-sm p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-gray-800">Recent Activity</h3>
+                  <button className="text-xs text-lime-600">View all</button>
+                </div>
+                <div className="divide-y">
+                {activities.map((a) => (
+                    <div key={a.id} className="py-3 flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">{a.action}</p>
+                        <p className="text-xs text-gray-500">{a.detail}</p>
+                      </div>
+                      <span className="text-xs text-gray-400">{a.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-sm p-5">
+                <h3 className="text-lg font-semibold text-gray-800 mb-3">Quick Actions</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <button className="px-3 py-2 text-sm bg-lime-600 text-white rounded-md">Create API Key</button>
+                  <button className="px-3 py-2 text-sm bg-gray-100 text-gray-800 rounded-md">View Documentation</button>
+                  <button className="px-3 py-2 text-sm bg-gray-100 text-gray-800 rounded-md">Manage Webhooks</button>
+                  <button className="px-3 py-2 text-sm bg-black text-white rounded-md">Upgrade Plan</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
         </main>
       </div>
     </div>

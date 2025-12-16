@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, BookOpen02Icon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, Key01Icon } from "hugeicons-react";
+import { AccountSetting02Icon, BookOpen02Icon, DashboardSquare02Icon, Invoice03Icon, Key01Icon } from "hugeicons-react";
+import { LuLogOut } from "react-icons/lu";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -32,33 +33,32 @@ const OrgSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
                 </NavLink>
             </Section>
 
-            {/* --- FARM MANAGEMENT SECTION --- */}
-            <Section title="API Key Management">
-                <NavLink to="/OrgDashboard/Farms" icon={<Key01Icon />}>
-                    API Key
+            {/* --- DEVELOPER SECTION --- */}
+            <Section title="Developer">
+                <NavLink to="/OrgDashboard/APIKeys" icon={<Key01Icon />}>
+                    API Keys
                 </NavLink>
-                <NavLink to="/OrgDashboard" icon={<BookOpen02Icon />}>
-                    Docs
+                <NavLink to="/OrgDashboard/Docs" icon={<BookOpen02Icon />}>
+                    Documentation
                 </NavLink>
-                
             </Section>
 
 
 
                 {/* --- ACCOUNT SECTION --- */}
             <Section title="Account">
-                <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />}>
+                <NavLink to="/OrgDashboard/Settings" icon={<AccountSetting02Icon />}>
                     Settings
                 </NavLink>
-                <NavLink to="/FarmerDashboard/Reports" icon={<Invoice03Icon />}>
-                Billing
-              </NavLink>
+                <NavLink to="/OrgDashboard/Billing" icon={<Invoice03Icon />}>
+                    Billing & Plans
+                </NavLink>
             </Section>
 
-            {/* --- SUPPORT SECTION --- */}
-            <Section title="Support">
-                <NavLink to="/FarmerDashboard/Help" icon={<HelpCircleIcon />}>
-                    Help & Resources
+            {/* --- SESSION --- */}
+            <Section title="Session">
+                <NavLink to="/logout" icon={<LuLogOut />}>
+                    Log Out
                 </NavLink>
             </Section>
 
