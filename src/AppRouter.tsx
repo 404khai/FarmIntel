@@ -20,6 +20,7 @@ import Messages from "./pages/FarmerDashboard/Messages";
 import Reports from "./pages/FarmerDashboard/Reports";
 import Orders from "./pages/FarmerDashboard/Orders";
 import Transactions from "./pages/FarmerDashboard/Transactions";
+import Help from "./pages/FarmerDashboard/Help";
 
 // BuyerDashboard PAGES
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
@@ -36,6 +37,7 @@ import Notifications from "./pages/FarmerDashboard/Notifications";
 import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
 import Members from "./pages/CoopDashboard/Members";
 import CoopAnalytics from "./pages/CoopDashboard/Analytics";
+import CoopTransactions from "./pages/CoopDashboard/Transactions";
 
 
 
@@ -76,6 +78,7 @@ const FarmerDashboardLayout = () => (
       <Route path="/FarmerDashboard/Reports" element={<Reports />} />
       <Route path="/FarmerDashboard/Orders" element={<Orders />} />
       <Route path="/FarmerDashboard/Transactions" element={<Transactions />} />
+      <Route path="/FarmerDashboard/Help" element={<Help />} />
     </Routes>
   </>
 );
@@ -87,6 +90,7 @@ const CoopDashboardLayout = () => (
       <Route path="/CoopDashboard" element={<CoopDashboard />} /> 
       <Route path="/CoopDashboard/Members" element={<Members />} /> 
       <Route path="/CoopDashboard/Analytics" element={<CoopAnalytics />} /> 
+      <Route path="/CoopDashboard/Transactions" element={<CoopTransactions />} /> 
     </Routes>
   </>
 );
