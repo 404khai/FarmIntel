@@ -5,20 +5,12 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Home from "./pages/Home";
 import './App.css'
-import FarmerDashboard from "./pages/FarmerDashboard/FarmerDashboard";
+
 import Footer from "./components/Footer";
-import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
-import Members from "./pages/CoopDashboard/Members";
-import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import Navbar from "./components/Navbar";
-import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
-import APIKeys from "./pages/OrgDashboard/APIKeys";
-import Docs from "./pages/OrgDashboard/Docs";
-import OrgSettings from "./pages/OrgDashboard/Settings";
-import OrgBilling from "./pages/OrgDashboard/Billing";
-import Notifications from "./pages/FarmerDashboard/Notifications";
 
 // FarmerDashboard PAGES
+import FarmerDashboard from "./pages/FarmerDashboard/FarmerDashboard";
 import Detection from "./pages/FarmerDashboard/Detection";
 import Crops from "./pages/FarmerDashboard/Crops";
 import Billing from "./pages/FarmerDashboard/Billing";
@@ -28,6 +20,24 @@ import Messages from "./pages/FarmerDashboard/Messages";
 import Reports from "./pages/FarmerDashboard/Reports";
 import Orders from "./pages/FarmerDashboard/Orders";
 import Transactions from "./pages/FarmerDashboard/Transactions";
+
+// BuyerDashboard PAGES
+import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
+
+// OrgDashboard PAGES
+import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
+import APIKeys from "./pages/OrgDashboard/APIKeys";
+import Docs from "./pages/OrgDashboard/Docs";
+import OrgSettings from "./pages/OrgDashboard/Settings";
+import OrgBilling from "./pages/OrgDashboard/Billing";
+import Notifications from "./pages/FarmerDashboard/Notifications";
+
+// CoopDashboard PAGES
+import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
+import Members from "./pages/CoopDashboard/Members";
+import CoopAnalytics from "./pages/CoopDashboard/Analytics";
+
+
 
 const Layout = () => {
   const location = useLocation();
@@ -76,6 +86,7 @@ const CoopDashboardLayout = () => (
     <Routes>
       <Route path="/CoopDashboard" element={<CoopDashboard />} /> 
       <Route path="/CoopDashboard/Members" element={<Members />} /> 
+      <Route path="/CoopDashboard/Analytics" element={<CoopAnalytics />} /> 
     </Routes>
   </>
 );
