@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import tomato from "../../assets/tomato.jpeg";
 import corn from "../../assets/corn.jpeg";
 import { Search01Icon, SmartPhone02Icon, MoreVerticalIcon } from "hugeicons-react";
@@ -68,7 +69,10 @@ const Messages: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)} />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+          <div className="mb-4">
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Messages" }]} />
+          </div>
           <div className="grid grid-cols-12 gap-6">
             <section className="col-span-12 lg:col-span-3 bg-white rounded-2xl shadow-sm border border-gray-100">
               <div className="p-4 border-b">
@@ -195,4 +199,3 @@ const Messages: React.FC = () => {
 };
 
 export default Messages;
-

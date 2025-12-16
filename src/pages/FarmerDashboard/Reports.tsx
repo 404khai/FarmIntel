@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import {
   ResponsiveContainer,
@@ -59,7 +60,10 @@ const Reports: React.FC = () => {
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+          <div className="mb-4">
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Reports" }]} />
+          </div>
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800">Reports Dashboard</h1>
@@ -184,4 +188,3 @@ const Reports: React.FC = () => {
 };
 
 export default Reports;
-

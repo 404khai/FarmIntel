@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import DashboardNav from "../../components/DashboardNav";
-import FarmerSideNav from "../../components/FarmerSideNav";
+import BackToDashboardPill from "../../components/BackToDashboardPill";
+import Breadcrumbs from "../../components/Breadcrumbs";
 import { CreditCardPosIcon, Invoice03Icon, ChartBarLineIcon, Wallet01Icon } from "hugeicons-react";
 
 type User = { firstname?: string; name?: string } | null;
 
 const Billing: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<User>(null);
   const [billingCycle, setBillingCycle] = useState<"Monthly" | "Yearly">("Monthly");
 
@@ -20,18 +20,16 @@ const Billing: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <FarmerSideNav
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        collapsed={isSidebarCollapsed}
-      />
       <div className="flex-1 flex flex-col">
-        <DashboardNav
-          onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-          onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
-        />
+        <DashboardNav />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto`}>
+          <div className="mb-4">
+            <BackToDashboardPill to="/FarmerDashboard" />
+          </div>
+          <div className="mb-4">
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Billing" }]} />
+          </div>
           <div className="mb-6">
             <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800">Billing & Subscription</h1>
             <p className="text-gray-500 mt-1">Manage your farm’s subscription tier to connect with more buyers and increase yield.</p>
