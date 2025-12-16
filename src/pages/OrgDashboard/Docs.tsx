@@ -128,20 +128,18 @@ print(r.json())`}
 
                 <div className="mt-4">
                   <p className="text-xs font-semibold text-gray-500 mb-2">Response 200 OK</p>
-                  <pre className="bg-gray-100 rounded-lg p-4 text-xs overflow-auto">
-                    {
-                      "data": [
-                        {
-                          "id": "cr_12934",
-                          "name": "Roma Tomato",
-                          "category": "vegetable",
-                          "price_per_kg": 2.45,
-                          "available_quantity": 5000,
-                          "organic": true
-                        }
-                      ]
-                    }
-                  </pre>
+                  <pre className="bg-gray-100 rounded-lg p-4 text-xs overflow-auto">{`{
+  "data": [
+    {
+      "id": "cr_12934",
+      "name": "Roma Tomato",
+      "category": "vegetable",
+      "price_per_kg": 2.45,
+      "available_quantity": 5000,
+      "organic": true
+    }
+  ]
+}`}</pre>
                 </div>
               </article>
 
