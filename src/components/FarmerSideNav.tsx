@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon, Store04Icon } from "hugeicons-react";
+import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon, Store04Icon, CreditCardPosIcon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -55,16 +55,6 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collap
                 <NavLink to="/FarmerDashboard/Reports" icon={<DocumentAttachmentIcon />} collapsed={collapsed}>
                     Reports
                 </NavLink>
-                </Section>
-
-                {/* --- ACCOUNT SECTION --- */}
-                <Section title="Account" collapsed={collapsed}>
-                <NavLink to="/FarmerDashboard/Settings" icon={<AccountSetting02Icon />} collapsed={collapsed}>
-                    Settings
-                </NavLink>
-                <NavLink to="/FarmerDashboard/Billing" icon={<Invoice03Icon />} collapsed={collapsed}>
-                Billing
-              </NavLink>
             </Section>
 
             <Section title="Orders" collapsed={collapsed}>
@@ -74,6 +64,16 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collap
                 <NavLink to="/FarmerDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed}>
                     Transactions
                 </NavLink>
+            </Section>
+
+                {/* --- ACCOUNT SECTION --- */}
+            <Section title="Account" collapsed={collapsed}>
+                <NavLink to="/FarmerDashboard/Settings" icon={<AccountSetting02Icon />} collapsed={collapsed}>
+                    Settings
+                </NavLink>
+                <NavLink to="/FarmerDashboard/Billing" icon={<CreditCardPosIcon />} collapsed={collapsed}>
+                Billing
+              </NavLink>
             </Section>
 
             {/* --- SUPPORT SECTION --- */}

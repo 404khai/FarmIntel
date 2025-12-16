@@ -28,38 +28,32 @@ const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapse
           {/* --- HOME SECTION --- */}
           {/* --- OVERVIEW SECTION --- */}
             <Section title="Overview" collapsed={collapsed}>
-                <NavLink to="/FarmerDashboard" icon={<DashboardSquare02Icon />} collapsed={collapsed}>
+                <NavLink to="/CoopDashboard" icon={<DashboardSquare02Icon />} collapsed={collapsed}>
                     Dashboard
                 </NavLink>
             </Section>
 
             {/* --- FARM MANAGEMENT SECTION --- */}
-            <Section title="Farm Management" collapsed={collapsed}>
+            <Section title="Coop Management" collapsed={collapsed}>
                 <NavLink to="/CoopDashboard/Members" icon={<UserGroupIcon />} collapsed={collapsed}>
                     Members
-                </NavLink>
-                <NavLink to="/CoopDashboard" icon={<Plant02Icon />} collapsed={collapsed}>
-                    Farms (Aggregated)
                 </NavLink>
             </Section>
 
             {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
             <Section title="Insights" collapsed={collapsed}>
-              <NavLink to="/FarmerDashboard/Recommendations" icon={<AnalysisTextLinkIcon />} collapsed={collapsed}>
+              <NavLink to="/CoopDashboard/Analytics" icon={<AnalysisTextLinkIcon />} collapsed={collapsed}>
                 Analytics
               </NavLink>
-              <NavLink to="/FarmerDashboard/MarketInsights" icon={<AiIdeaIcon />} collapsed={collapsed}>
-                Buyer Connections
+              <NavLink to="/CoopDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed}>
+                Transactions
               </NavLink>
             </Section>
 
                 {/* --- ACCOUNT SECTION --- */}
             <Section title="Account" collapsed={collapsed}>
-              <NavLink to="/FarmerDashboard/Profile" icon={<AccountSetting02Icon />} collapsed={collapsed}>
+              <NavLink to="/CoopDashboard/Profile" icon={<AccountSetting02Icon />} collapsed={collapsed}>
                 Settings
-              </NavLink>
-              <NavLink to="/FarmerDashboard/Reports" icon={<Invoice03Icon />} collapsed={collapsed}>
-                Billing
               </NavLink>
             </Section>
 
