@@ -25,6 +25,8 @@ import Settings from "./pages/FarmerDashboard/Settings";
 import Profile from "./pages/FarmerDashboard/Profile";
 import Messages from "./pages/FarmerDashboard/Messages";
 import Reports from "./pages/FarmerDashboard/Reports";
+import Orders from "./pages/FarmerDashboard/Orders";
+import Transactions from "./pages/FarmerDashboard/Transactions";
 
 const Layout = () => {
   const location = useLocation();
@@ -61,6 +63,8 @@ const FarmerDashboardLayout = () => (
       <Route path="/FarmerDashboard/Profile" element={<Profile />} />
       <Route path="/FarmerDashboard/Messages" element={<Messages />} />
       <Route path="/FarmerDashboard/Reports" element={<Reports />} />
+      <Route path="/FarmerDashboard/Orders" element={<Orders />} />
+      <Route path="/FarmerDashboard/Transactions" element={<Transactions />} />
     </Routes>
   </>
 );

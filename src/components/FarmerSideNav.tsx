@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon } from "hugeicons-react";
+import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon, Store04Icon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -65,6 +65,15 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collap
                 <NavLink to="/FarmerDashboard/Billing" icon={<Invoice03Icon />} collapsed={collapsed}>
                 Billing
               </NavLink>
+            </Section>
+
+            <Section title="Orders" collapsed={collapsed}>
+                <NavLink to="/FarmerDashboard/Orders" icon={<Store04Icon />} collapsed={collapsed}>
+                    Orders
+                </NavLink>
+                <NavLink to="/FarmerDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed}>
+                    Transactions
+                </NavLink>
             </Section>
 
             {/* --- SUPPORT SECTION --- */}
