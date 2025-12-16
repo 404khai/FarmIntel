@@ -11,6 +11,7 @@ import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import Navbar from "./components/Navbar";
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
+import APIKeys from "./pages/OrgDashboard/APIKeys";
 import Notifications from "./pages/FarmerDashboard/Notifications";
 
 // FarmerDashboard PAGES
@@ -83,7 +84,8 @@ const BuyerDashboardLayout = () => (
 const OrgDashboardLayout = () => (
   <>
     <Routes>
-      <Route path="/OrgDashboard" element={<OrgDashboard />} /> 
+      <Route path="/OrgDashboard" element={<OrgDashboard />} />
+      <Route path="/OrgDashboard/APIKeys" element={<APIKeys />} />
     </Routes>
   </>
 );
