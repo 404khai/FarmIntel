@@ -8,6 +8,7 @@ import './App.css'
 import FarmerDashboard from "./pages/FarmerDashboard/FarmerDashboard";
 import Footer from "./components/Footer";
 import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
+import Members from "./pages/CoopDashboard/Members";
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import Navbar from "./components/Navbar";
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
@@ -25,6 +26,8 @@ import Settings from "./pages/FarmerDashboard/Settings";
 import Profile from "./pages/FarmerDashboard/Profile";
 import Messages from "./pages/FarmerDashboard/Messages";
 import Reports from "./pages/FarmerDashboard/Reports";
+import Orders from "./pages/FarmerDashboard/Orders";
+import Transactions from "./pages/FarmerDashboard/Transactions";
 
 const Layout = () => {
   const location = useLocation();
@@ -61,6 +64,8 @@ const FarmerDashboardLayout = () => (
       <Route path="/FarmerDashboard/Profile" element={<Profile />} />
       <Route path="/FarmerDashboard/Messages" element={<Messages />} />
       <Route path="/FarmerDashboard/Reports" element={<Reports />} />
+      <Route path="/FarmerDashboard/Orders" element={<Orders />} />
+      <Route path="/FarmerDashboard/Transactions" element={<Transactions />} />
     </Routes>
   </>
 );
@@ -70,6 +75,7 @@ const CoopDashboardLayout = () => (
   <>
     <Routes>
       <Route path="/CoopDashboard" element={<CoopDashboard />} /> 
+      <Route path="/CoopDashboard/Members" element={<Members />} /> 
     </Routes>
   </>
 );

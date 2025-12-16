@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import OrgDashboardNav from "../../components/OrgDashboardNav";
+import BackToDashboardPill from "../../components/BackToDashboardPill";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { CreditCardPosIcon, Invoice03Icon, ChartBarLineIcon, Wallet01Icon } from "hugeicons-react";
 import { LuCheck } from "react-icons/lu";
@@ -15,9 +16,9 @@ const Billing: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-24 ml-0 min-h-screen overflow-y-auto">
+        <main className="pt-20 px-4 sm:px-6 md:px-8 pb-24 ml-0 min-h-screen overflow-y-auto">
           <div className="mb-4">
-            <a href="/OrgDashboard" className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm">Back to Dashboard</a>
+            <BackToDashboardPill to="/OrgDashboard" />
           </div>
 
           <div className="flex items-center justify-between mb-4">
