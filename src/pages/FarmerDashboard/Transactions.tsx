@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import { CreditCardPosIcon, ChartBarLineIcon, Calendar02Icon, FilterIcon, PlusSignIcon, DownloadSquareIcon } from "hugeicons-react";
+import { CreditCardPosIcon, ChartBarLineIcon, Calendar02Icon, FilterIcon, PlusSignIcon, Download02Icon } from "hugeicons-react";
 
 const Transactions: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -25,7 +25,7 @@ const Transactions: React.FC = () => {
           <div className="flex items-center justify-between mb-3">
             <Breadcrumbs items={[{ label: "Dashboard", to: "/FarmerDashboard" }, { label: "Transactions" }]} />
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-2 px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"><DownloadSquareIcon size={18} /> Export CSV</button>
+              <button className="flex items-center gap-2 px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"><Download02Icon size={18} /> Export CSV</button>
               <a href="/FarmerDashboard/Crops" className="flex items-center gap-2 px-3 py-2 rounded-md bg-lime-600 text-white text-sm"><PlusSignIcon size={18} /> New Listing</a>
             </div>
           </div>

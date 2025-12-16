@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
+import BackToDashboardPill from "../../components/BackToDashboardPill";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import avatar from "../../assets/avatar.jpeg";
 import corn from "../../assets/corn.jpeg";
@@ -23,9 +24,9 @@ const Profile: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto`}>
           <div className="mb-4">
-            <a href="/FarmerDashboard" className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm">Back to Dashboard</a>
+            <BackToDashboardPill to="/FarmerDashboard" />
           </div>
           <section className="bg-white rounded-2xl shadow-sm p-5 mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
