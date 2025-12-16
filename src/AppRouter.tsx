@@ -11,6 +11,7 @@ import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import Navbar from "./components/Navbar";
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
+import Notifications from "./pages/FarmerDashboard/Notifications";
 
 // FarmerDashboard PAGES
 import Detection from "./pages/FarmerDashboard/Detection";
@@ -87,6 +88,13 @@ const OrgDashboardLayout = () => (
   </>
 );
 
+const NotificationsLayout = () => (
+  <>
+    <Routes>
+      <Route path="/notifications" element={<Notifications />} />
+    </Routes>
+  </>
+);
 const AppRouter = () => {
   const location = useLocation();
 
@@ -94,6 +102,7 @@ const AppRouter = () => {
   const isCoopDashboardRoute = location.pathname.startsWith("/CoopDashboard");
   const isBuyerDashboardRoute = location.pathname.startsWith("/BuyerDashboard");
   const isOrgDashboardRoute = location.pathname.startsWith("/OrgDashboard");
+  const isNotificationsRoute = location.pathname.startsWith("/notifications");
 
 
   if (isFarmerDashboardRoute) {
@@ -107,6 +116,9 @@ const AppRouter = () => {
   }
   else if (isOrgDashboardRoute) {
     return <OrgDashboardLayout />; 
+  }
+  else if (isNotificationsRoute) {
+    return <NotificationsLayout />;
   }
   else {
     return <Layout />;

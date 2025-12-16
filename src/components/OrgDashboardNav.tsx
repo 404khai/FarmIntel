@@ -6,7 +6,7 @@ import { RxCaretDown } from "react-icons/rx";
 import avatar from "../assets/org.jpeg";
 import logo from "../assets/logo.png";
 
-import { Notification02Icon, Search01Icon } from "hugeicons-react";
+import { Notification02Icon, Search01Icon, HelpCircleIcon } from "hugeicons-react";
 
 interface DashboardNavProps {
   onToggleSidebar: () => void;
@@ -110,6 +110,14 @@ const OrgDashboardNav: React.FC<DashboardNavProps> = ({ onToggleSidebar }) => {
             </div>
           )}
         </div>
+
+        <Link
+          to="/support"
+          className="hidden md:flex items-center gap-2 px-3 py-2 rounded-md bg-[#3a3a3a10] hover:bg-gray-200 transition text-gray-700"
+        >
+          <HelpCircleIcon size={18} />
+          <span className="text-sm">Support</span>
+        </Link>
 
         {/* Profile Dropdown */}
         <div
