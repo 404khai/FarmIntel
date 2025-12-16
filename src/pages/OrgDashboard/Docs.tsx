@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import OrgDashboardNav from "../../components/OrgDashboardNav";
-import OrgSideNav from "../../components/OrgSideNav";
 import { BookOpen02Icon, Search01Icon } from "hugeicons-react";
 
 const Docs: React.FC = () => {
@@ -9,11 +8,13 @@ const Docs: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <OrgSideNav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex-1 flex flex-col">
         <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 md:ml-64 min-h-screen overflow-y-auto">
+        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto">
+          <div className="mb-4">
+            <a href="/OrgDashboard" className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm">Back to Dashboard</a>
+          </div>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <BookOpen02Icon />

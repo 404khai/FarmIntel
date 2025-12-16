@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import OrgDashboardNav from "../../components/OrgDashboardNav";
-import OrgSideNav from "../../components/OrgSideNav";
 import { AccountSetting02Icon, Key01Icon, Invoice03Icon, Notification02Icon, UserGroupIcon } from "hugeicons-react";
 import { LuLogOut, LuImagePlus, LuTrash2, LuCheck } from "react-icons/lu";
 
@@ -28,11 +27,13 @@ const Settings: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <OrgSideNav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="flex-1 flex flex-col">
         <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-24 ml-0 md:ml-64 min-h-screen overflow-y-auto">
+        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-24 ml-0 min-h-screen overflow-y-auto">
+          <div className="mb-4">
+            <a href="/OrgDashboard" className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm">Back to Dashboard</a>
+          </div>
           <div className="grid grid-cols-12 gap-6">
             <aside className="col-span-12 lg:col-span-3">
               <div className="bg-white rounded-2xl shadow-sm p-4">
@@ -139,7 +140,7 @@ const Settings: React.FC = () => {
             </section>
           </div>
 
-          <div className="fixed bottom-0 left-0 right-0 md:left-64 bg-white border-t p-4 flex items-center justify-end gap-3">
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 flex items-center justify-end gap-3">
             <button className="px-3 py-2 text-sm bg-gray-100 text-gray-800 rounded-md">Cancel</button>
             <button className="px-3 py-2 text-sm bg-emerald-600 text-white rounded-md flex items-center gap-2"><LuCheck /> Save Changes</button>
           </div>
