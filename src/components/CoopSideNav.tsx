@@ -35,13 +35,12 @@ const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapse
 
             {/* --- FARM MANAGEMENT SECTION --- */}
             <Section title="Farm Management" collapsed={collapsed}>
-                <NavLink to="/FarmerDashboard/Farms" icon={<UserGroupIcon />} collapsed={collapsed}>
+                <NavLink to="/CoopDashboard/Members" icon={<UserGroupIcon />} collapsed={collapsed}>
                     Members
                 </NavLink>
-                <NavLink to="/FarmerDashboard/PestDetection" icon={<Plant02Icon />} collapsed={collapsed}>
+                <NavLink to="/CoopDashboard" icon={<Plant02Icon />} collapsed={collapsed}>
                     Farms (Aggregated)
                 </NavLink>
-                
             </Section>
 
             {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}

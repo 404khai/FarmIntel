@@ -8,6 +8,7 @@ import './App.css'
 import FarmerDashboard from "./pages/FarmerDashboard/FarmerDashboard";
 import Footer from "./components/Footer";
 import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
+import Members from "./pages/CoopDashboard/Members";
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import Navbar from "./components/Navbar";
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
@@ -74,6 +75,7 @@ const CoopDashboardLayout = () => (
   <>
     <Routes>
       <Route path="/CoopDashboard" element={<CoopDashboard />} /> 
+      <Route path="/CoopDashboard/Members" element={<Members />} /> 
     </Routes>
   </>
 );
