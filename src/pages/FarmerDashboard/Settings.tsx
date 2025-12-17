@@ -4,22 +4,100 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 import BackToDashboardPill from "../../components/BackToDashboardPill";
 import avatar from "../../assets/avatar.jpeg";
 import { AccountSetting02Icon, Notification02Icon, Plant02Icon, Invoice03Icon } from "hugeicons-react";
-
+import { CountrySelect, StateSelect, CitySelect } from "react-country-state-city";
+import "react-country-state-city/dist/react-country-state-city.css";
+import { fetchCurrentUser, updateUserProfile, type UserPayload } from "../../utils/user";
+import toast, { Toaster } from "react-hot-toast";
 
 const Settings: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserPayload | null>(null);
+  const [countryId, setCountryId] = useState<number>(0);
+  const [stateId, setStateId] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const [formData, setFormData] = useState<Partial<UserPayload>>({});
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    // Try to get fresh user data on mount
+    fetchCurrentUser().then(user => {
+       if (user) {
+         setUser(user);
+         // Flatten the nested data for the form
+         setFormData({
+            ...user,
+            farm_name: user?.farmer?.farm_name || user?.farm_name,
+            bio: user?.farmer?.about || user?.bio
+         });
+       }
+    });
   }, []);
-  
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      toast.error("Image size must be less than 2MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+       const base64String = reader.result as string; 
+       // Depending on backend, we might send base64 or upload via FormData.
+       // Assuming backend accepts base64 in profile_pic field or separate endpoint.
+       // If backend needs FormData, we should use a different strategy.
+       // For now, let's assume we update the local preview and send base64 or file content.
+       
+       // Strategy: Send base64 if backend supports it in JSON payload
+       // Or create a FormData object if not.
+       // Let's try sending it as part of the update payload if supported, 
+       // but typically file uploads need multipart/form-data.
+       
+       // We will modify updateUserProfile to handle potential file uploads if needed,
+       // or just call a separate upload endpoint.
+       
+       // For this implementation, I will assume we send the base64 string 
+       // as "profile_pic" in the JSON payload, which is a common simple pattern.
+       // If that fails, we can switch to FormData.
+       
+       setFormData(prev => ({ ...prev, profile_pic: base64String }));
+       
+       // Auto-save or wait for save button? 
+       // User "when I press Change picture" implies immediate action or selection.
+       // Let's just update state for now and let save handle it, 
+       // OR trigger an immediate upload if desired. 
+       // The prompt says "when save changes button is pressed...", so we just set state.
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleSave = async () => {
+    setIsLoading(true);
+    try {
+      const updatedUser = await updateUserProfile(formData);
+      setUser(updatedUser);
+      toast.success("Profile updated successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to update profile");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="flex min-h-screen bg-white">
       <div className="flex-1 flex flex-col">
         <DashboardNav />
+        <Toaster position="top-right" />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 h-screen overflow-y-auto`}>
           <div className="mb-4">
@@ -70,46 +148,149 @@ const Settings: React.FC = () => {
                   <h2 className="text-lg font-semibold text-gray-800">Public Profile</h2>
                   <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">Visible to Coop Members</span>
                 </div>
-                <form className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <form className="grid grid-cols-1 sm:grid-cols-2 gap-4" onSubmit={(e) => { e.preventDefault(); handleSave(); }}>
                   <div className="sm:col-span-2 flex items-center gap-4">
-                    <img src={avatar} alt="Profile" className="w-16 h-16 rounded-full object-cover border" />
+                    <div className="relative group">
+
+                      <img 
+                        src={formData.profile_pic || user?.profile_pic || avatar} 
+                        alt="Profile" 
+                        className="w-16 h-16 rounded-full object-cover border cursor-pointer group-hover:opacity-75"
+                        onClick={() => document.getElementById('profile-upload')?.click()}
+                      />
+                      <input 
+                        type="file" 
+                        id="profile-upload" 
+                        className="hidden" 
+                        accept="image/png, image/jpeg"
+                        onChange={handleImageChange}
+                      />
+                    </div>
                     <div>
-                      <button type="button" className="text-sm text-lime-600">Change Picture</button>
+                      <button 
+                        type="button" 
+                        className="text-sm text-lime-600 font-medium hover:text-lime-700" 
+                        onClick={() => document.getElementById('profile-upload')?.click()}
+                      >
+                        Change Picture
+                      </button>
                       <p className="text-xs text-gray-400">PNG, JPG up to 2MB</p>
                     </div>
                   </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-sm text-gray-600">Display Name</label>
-                    <input className="mt-1 w-full border rounded-md px-3 py-2" defaultValue={user?.firstname || ""} />
-                    <p className="text-xs text-gray-400 mt-1">This is how you will appear to other farmers and buyers.</p>
+                  <div>
+                    <label className="text-sm text-gray-600">First Name</label>
+                    <input 
+                      name="first_name"
+                      className="mt-1 w-full border rounded-md px-3 py-2" 
+                      value={formData.first_name || formData.firstname || ""}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div>
-                    <label className="text-sm text-gray-600">Full Name</label>
-                    <input className="mt-1 w-full border rounded-md px-3 py-2" defaultValue={user?.name || ""} />
+                    <label className="text-sm text-gray-600">Last Name</label>
+                    <input 
+                      name="last_name"
+                      className="mt-1 w-full border rounded-md px-3 py-2" 
+                      value={formData.last_name || ""}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-600">Farm Name</label>
+                    <input 
+                      name="farm_name"
+                      className="mt-1 w-full border rounded-md px-3 py-2" 
+                      value={formData.farm_name || ""}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div>
                     <label className="text-sm text-gray-600">Email Address</label>
-                    <input type="email" className="mt-1 w-full border rounded-md px-3 py-2" defaultValue={user?.email || ""} />
+                    <input 
+                      name="email"
+                      type="email" 
+                      className="mt-1 w-full border rounded-md px-3 py-2" 
+                      value={formData.email || ""}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div>
                     <label className="text-sm text-gray-600">Phone Number</label>
-                    <input className="mt-1 w-full border rounded-md px-3 py-2" defaultValue={user?.phone || ""} />
+                    <input 
+                      name="phone"
+                      className="mt-1 w-full border rounded-md px-3 py-2" 
+                      value={formData.phone || ""}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-600">Country</label>
+                    <div className="mt-1">
+                      <CountrySelect 
+                        onChange={(e: any) => {
+                          setCountryId(e.id);
+                          setFormData(prev => ({ ...prev, country: e.name }));
+                        }} 
+                        placeHolder={formData.country || "Select Country"} 
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-600">State</label>
+                    <div className="mt-1">
+                      <StateSelect 
+                        countryid={countryId} 
+                        onChange={(e: any) => {
+                          setStateId(e.id);
+                          setFormData(prev => ({ ...prev, state: e.name }));
+                        }} 
+                        placeHolder={formData.state || "Select State"} 
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-600">City</label>
+                    <div className="mt-1">
+                      <CitySelect 
+                        countryid={countryId} 
+                        stateid={stateId} 
+                        onChange={(e: any) => {
+                          setFormData(prev => ({ ...prev, city: e.name }));
+                        }}
+                        placeHolder={formData.city || "Select City"} 
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="text-sm text-gray-600">Role</label>
-                    <select className="mt-1 w-full border rounded-md px-3 py-2">
-                      <option>Farmer</option>
-                      <option>Coop Admin</option>
-                      <option>Buyer</option>
+                    <select 
+                      name="role"
+                      disabled
+                      className="mt-1 w-full border rounded-md px-3 py-2 bg-gray-50"
+                      value={formData.role || "farmer"}
+                      onChange={handleInputChange}
+                    >
+                      <option value="farmer">Farmer</option>
+                      <option value="org">Coop Admin</option>
+                      <option value="buyer">Buyer</option>
                     </select>
                   </div>
                   <div className="sm:col-span-2">
                     <label className="text-sm text-gray-600">Bio / Farm Description</label>
-                    <textarea rows={4} className="mt-1 w-full border rounded-md px-3 py-2" placeholder="Tell others about your farm" />
+                    <textarea 
+                      name="bio"
+                      rows={4} 
+                      className="mt-1 w-full border rounded-md px-3 py-2" 
+                      placeholder="Tell others about your farm" 
+                      value={formData.bio || ""}
+                      onChange={handleInputChange}
+                    />
                   </div>
                   <div className="sm:col-span-2 flex items-center justify-end gap-3">
-                    <button type="button" className="px-4 py-2 rounded-md border">Cancel</button>
-                    <button type="button" className="px-4 py-2 bg-lime-600 text-white rounded-md">Save Changes</button>
+                    <button type="button" className="px-4 py-2 rounded-md border" onClick={() => window.location.reload()}>Cancel</button>
+                    <button type="submit" disabled={isLoading} className="px-4 py-2 bg-lime-600 text-white rounded-md disabled:bg-lime-400">
+                      {isLoading ? "Saving..." : "Save Changes"}
+                    </button>
                   </div>
                 </form>
               </section>

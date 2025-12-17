@@ -26,22 +26,24 @@ import {
 } from "recharts";
 import user1 from "../../assets/user1.jpeg";
 import user2 from "../../assets/user2.jpeg";
+  import { getFirstName, fetchCurrentUser, type UserPayload } from "../../utils/user";
 
 const FarmerDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  type User = { firstname?: string; name?: string } | null;
-  const [user, setUser] = useState<User>(null);
+  
+  const [user, setUser] = useState<UserPayload | null>(null);
   const [showCompleteProfileBanner, setShowCompleteProfileBanner] = useState(false);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
+    fetchCurrentUser().then(u => {
+      if (u) setUser(u);
+    });
     const justSignedUp = localStorage.getItem("justSignedUp") === "true";
     if (justSignedUp) setShowCompleteProfileBanner(true);
   }, []);
 
-  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Farmer";
+  const firstName = user?.first_name || user?.name?.split(" ")[0] || "Farmer";
 
   const heroStats = [
     { title: "Alerts", value: "5", subtitle: "3 pests, 2 diseases", icon: <LuTriangleAlert className="text-red-600 text-xl" />, tint: "bg-red-50" },

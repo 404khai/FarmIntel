@@ -4,33 +4,23 @@ import FarmerSideNav from "../../components/FarmerSideNav";
 import { Search01Icon, PlusSignIcon } from "hugeicons-react";
 import { LuPencil, LuTrash2, LuImagePlus } from "react-icons/lu";
 import corn from "../../assets/corn.jpeg";
-import tomato from "../../assets/tomato.jpeg";
-import banana from "../../assets/banana.jpeg";
-import greenPeas from "../../assets/greenPeas.jpeg";
-import rice from "../../assets/rice.jpeg";
-import okra from "../../assets/okra.jpeg";
 import Breadcrumbs from "../../components/Breadcrumbs";
 
-const mockCrops = [
-  { id: 1, name: "Maize", variety: "Yellow Dent", quantityText: "2.0 Tons", harvestDate: "Oct 20, 2023", status: "Pending", img: corn },
-  { id: 2, name: "Tomatoes", variety: "Roma (Plum)", quantityText: "500 kg", harvestDate: "Oct 24, 2023", status: "Available", img: tomato },
-  { id: 3, name: "Green Peas", variety: "Russet", quantityText: "1.2 Tons", harvestDate: "Oct 15, 2023", status: "Available", img: greenPeas },
-  { id: 4, name: "Okra", variety: "Red Creole", quantityText: "300 kg", harvestDate: "Oct 10, 2023", status: "Sold Out", img: okra },
-  { id: 5, name: "Banana", variety: "Savoy", quantityText: "150 Heads", harvestDate: "Oct 05, 2023", status: "Sold Out", img: banana },
-  { id: 6, name: "Rice", variety: "Long Grain", quantityText: "1.8 Tons", harvestDate: "Oct 12, 2023", status: "Available", img: rice },
-];
+import { fetchCrops, createCrop, updateCrop, deleteCrop, type Crop } from "../../utils/crops";
+import toast, { Toaster } from "react-hot-toast";
 
 const Crops: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [crops, setCrops] = useState(mockCrops);
+  const [crops, setCrops] = useState<Crop[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date_desc");
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [form, setForm] = useState({
     name: "",
     variety: "",
@@ -42,6 +32,12 @@ const Crops: React.FC = () => {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
+    
+    fetchCrops().then(data => setCrops(data)).catch(err => {
+        console.error(err);
+        toast.error("Failed to load crops");
+        // Fallback to empty or previous if needed, but for now we trust the fetch
+    });
   }, []);
 
   const filteredCrops = useMemo(() => {
@@ -66,6 +62,7 @@ const Crops: React.FC = () => {
           onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
+        <Toaster position="top-right" />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
           <div className="mb-4">
@@ -81,6 +78,7 @@ const Crops: React.FC = () => {
                 setEditingId(null);
                 setForm({ name: "", variety: "", quantityText: "", harvestDate: "", status: "Available" });
                 setPreviewUrl(null);
+                setSelectedFile(null);
                 setShowModal(true);
               }}
               className="hidden sm:flex items-center gap-2 bg-lime-600 text-white px-4 py-2 rounded-lg"
@@ -148,6 +146,7 @@ const Crops: React.FC = () => {
                   <th className="p-4">Quantity</th>
                   <th className="p-4">Harvest Date</th>
                   <th className="p-4">Status</th>
+                  <th className="p-4">Price/kg (₦)</th>
                   <th className="p-4">Actions</th>
                 </tr>
               </thead>
@@ -156,7 +155,7 @@ const Crops: React.FC = () => {
                   <tr key={crop.id} className="border-t hover:bg-gray-50">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <img src={crop.img} alt={crop.name} className="w-12 h-12 rounded-md object-cover" />
+                        <img src={crop.img || corn} alt={crop.name} className="w-12 h-12 rounded-md object-cover" />
                         <div>
                           <p className="font-semibold text-gray-800">{crop.name}</p>
                           <p className="text-xs text-gray-400">ID: #{4620 + crop.id}</p>
@@ -169,6 +168,7 @@ const Crops: React.FC = () => {
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 rounded-full ${crop.status === "Available" ? "bg-emerald-100 text-emerald-700" : crop.status === "Pending" ? "bg-yellow-100 text-yellow-700" : "bg-gray-200 text-gray-700"}`}>{crop.status}</span>
                     </td>
+                    <td className="p-4">${(crop.pricePerKg || 0).toLocaleString()}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <button
@@ -183,7 +183,8 @@ const Crops: React.FC = () => {
                               harvestDate: crop.harvestDate,
                               status: crop.status,
                             });
-                            setPreviewUrl(crop.img);
+                            setPreviewUrl(crop.img || null);
+                            setSelectedFile(null);
                             setShowModal(true);
                           }}
                         >
@@ -192,8 +193,16 @@ const Crops: React.FC = () => {
                         <button
                           className="p-2 rounded-md bg-red-50 text-red-700 hover:bg-red-100"
                           title="Remove"
-                          onClick={() => {
-                            setCrops((prev) => prev.filter((c) => c.id !== crop.id));
+                          onClick={async () => {
+                              if (!window.confirm("Are you sure?")) return;
+                              try {
+                                  await deleteCrop(crop.id);
+                                  setCrops((prev) => prev.filter((c) => c.id !== crop.id));
+                                  toast.success("Crop deleted");
+                              } catch(e) {
+                                  console.error(e);
+                                  toast.error("Failed to delete crop");
+                              }
                           }}
                         >
                           <LuTrash2 size={16} />
@@ -237,6 +246,7 @@ const Crops: React.FC = () => {
                           if (file) {
                             const url = URL.createObjectURL(file);
                             setPreviewUrl(url);
+                            setSelectedFile(file);
                           }
                         }}
                       />
@@ -291,7 +301,7 @@ const Crops: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center justify-end gap-3 p-4 border-t">
+                  <div className="flex items-center justify-end gap-3 p-4 border-t">
                   <button
                     className="px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"
                     onClick={() => setShowModal(false)}
@@ -300,39 +310,32 @@ const Crops: React.FC = () => {
                   </button>
                   <button
                     className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm"
-                    onClick={() => {
-                      if (editingId) {
-                        setCrops((prev) =>
-                          prev.map((c) =>
-                            c.id === editingId
-                              ? {
-                                  ...c,
-                                  name: form.name || c.name,
-                                  variety: form.variety || c.variety,
-                                  quantityText: form.quantityText || c.quantityText,
-                                  harvestDate: form.harvestDate || c.harvestDate,
-                                  status: form.status || c.status,
-                                  img: previewUrl || c.img,
-                                }
-                              : c
-                          )
-                        );
-                      } else {
-                        const nextId = Math.max(...crops.map((c) => c.id)) + 1;
-                        setCrops((prev) => [
-                          {
-                            id: nextId,
-                            name: form.name || "New Crop",
-                            variety: form.variety || "Variety",
-                            quantityText: form.quantityText || "0 kg",
-                            harvestDate: form.harvestDate || new Date().toLocaleDateString(),
-                            status: form.status,
-                            img: previewUrl || corn,
-                          },
-                          ...prev,
-                        ]);
+                    onClick={async () => {
+                      const formData = new FormData();
+                      formData.append("name", form.name);
+                      formData.append("variety", form.variety);
+                      formData.append("quantityText", form.quantityText);
+                      formData.append("harvestDate", form.harvestDate);
+                      formData.append("status", form.status);
+                      if (selectedFile) {
+                        formData.append("image", selectedFile);
                       }
-                      setShowModal(false);
+
+                      try {
+                        if (editingId) {
+                          const updated = await updateCrop(editingId, formData);
+                          setCrops((prev) => prev.map((c) => (c.id === editingId ? updated : c)));
+                          toast.success("Crop updated successfully");
+                        } else {
+                          const created = await createCrop(formData);
+                          setCrops((prev) => [created, ...prev]);
+                          toast.success("Crop added successfully");
+                        }
+                        setShowModal(false);
+                      } catch (e) {
+                        console.error(e);
+                        toast.error("Failed to save crop");
+                      }
                     }}
                   >
                     {editingId ? "Update" : "Create"}
