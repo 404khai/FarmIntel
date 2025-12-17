@@ -4,11 +4,11 @@ export interface Crop {
   id: number;
   name: string;
   variety: string;
-  quantityText: string;
+  quantity_kg: number;
   harvestDate: string;
   status: string;
   img?: string | null;
-  pricePerKg?: number;
+  price_per_kg?: number;
 }
 
 export const fetchCrops = async (): Promise<Crop[]> => {

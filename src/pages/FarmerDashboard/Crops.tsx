@@ -24,9 +24,10 @@ const Crops: React.FC = () => {
   const [form, setForm] = useState({
     name: "",
     variety: "",
-    quantityText: "",
+    quantity: "",
     harvestDate: "",
     status: "Available",
+    pricePerKg: "",
   });
 
   useEffect(() => {
@@ -76,7 +77,7 @@ const Crops: React.FC = () => {
             <button
               onClick={() => {
                 setEditingId(null);
-                setForm({ name: "", variety: "", quantityText: "", harvestDate: "", status: "Available" });
+                setForm({ name: "", variety: "", quantity: "", harvestDate: "", status: "Available", pricePerKg: "" });
                 setPreviewUrl(null);
                 setSelectedFile(null);
                 setShowModal(true);
@@ -143,7 +144,7 @@ const Crops: React.FC = () => {
                 <tr>
                   <th className="p-4">Crop Name</th>
                   <th className="p-4">Variety</th>
-                  <th className="p-4">Quantity</th>
+                  <th className="p-4">Quantity (kg)</th>
                   <th className="p-4">Harvest Date</th>
                   <th className="p-4">Status</th>
                   <th className="p-4">Price/kg (₦)</th>
@@ -163,12 +164,12 @@ const Crops: React.FC = () => {
                       </div>
                     </td>
                     <td className="p-4">{crop.variety}</td>
-                    <td className="p-4">{crop.quantityText}</td>
+                    <td className="p-4">{(crop.quantity_kg || 0).toLocaleString()}kg</td>
                     <td className="p-4">{crop.harvestDate}</td>
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 rounded-full ${crop.status === "Available" ? "bg-emerald-100 text-emerald-700" : crop.status === "Pending" ? "bg-yellow-100 text-yellow-700" : "bg-gray-200 text-gray-700"}`}>{crop.status}</span>
                     </td>
-                    <td className="p-4">${(crop.pricePerKg || 0).toLocaleString()}</td>
+                    <td className="p-4">₦{(crop.price_per_kg || 0).toLocaleString()}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <button
@@ -179,9 +180,10 @@ const Crops: React.FC = () => {
                             setForm({
                               name: crop.name,
                               variety: crop.variety,
-                              quantityText: crop.quantityText,
+                              quantity: crop.quantity_kg.toString() || "",
                               harvestDate: crop.harvestDate,
                               status: crop.status,
+                              pricePerKg: crop.price_per_kg?.toString() || "",
                             });
                             setPreviewUrl(crop.img || null);
                             setSelectedFile(null);
@@ -270,12 +272,23 @@ const Crops: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <label className="text-sm text-gray-600">Quantity</label>
+                      <label className="text-sm text-gray-600">Quantity (kg)</label>
                       <input
+                        type="number"
                         className="mt-1 w-full border rounded-md px-3 py-2"
-                        placeholder="e.g., 500 kg or 2.0 Tons"
-                        value={form.quantityText}
-                        onChange={(e) => setForm((f) => ({ ...f, quantityText: e.target.value }))}
+                        placeholder="50"
+                        value={form.quantity}
+                        onChange={(e) => setForm((f) => ({ ...f, quantity: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Price per Kg (₦)</label>
+                      <input
+                        type="number"
+                        className="mt-1 w-full border rounded-md px-3 py-2"
+                        placeholder="0.00"
+                        value={form.pricePerKg}
+                        onChange={(e) => setForm((f) => ({ ...f, pricePerKg: e.target.value }))}
                       />
                     </div>
                     <div>
@@ -314,9 +327,10 @@ const Crops: React.FC = () => {
                       const formData = new FormData();
                       formData.append("name", form.name);
                       formData.append("variety", form.variety);
-                      formData.append("quantityText", form.quantityText);
+                      formData.append("quantity_kg", form.quantity);
                       formData.append("harvestDate", form.harvestDate);
                       formData.append("status", form.status);
+                      formData.append("price_per_kg", form.pricePerKg);
                       if (selectedFile) {
                         formData.append("image", selectedFile);
                       }
