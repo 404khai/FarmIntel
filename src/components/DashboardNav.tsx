@@ -6,13 +6,12 @@ import { RxCaretDown } from "react-icons/rx";
 import avatar from "../assets/avatar.jpeg";
 import logo from "../assets/logo.png";
 import orgLogo from "../assets/orgLogo.jpeg";
-import orgLogo2 from "../assets/orgLogo2.jpeg";
-import orgLogo3 from "../assets/orgLogo3.jpeg";
 import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-react";
 import { CreateCoopModal } from "./CreateCoopModal";
 import { getFirstName, getStoredUser } from "../utils/user";
 import { logoutUser } from "../utils/auth";
 import { useNavigate } from "react-router-dom";
+import { fetchCooperatives, type Cooperative } from "../utils/coops";
 
 interface DashboardNavProps {
   onToggleMobileSidebar?: () => void;
@@ -35,13 +34,16 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
 
   const [showModal, setShowModal] = useState(false);
   const [firstName, setFirstName] = useState<string>("Farmer");
+  const [cooperatives, setCooperatives] = useState<Cooperative[]>([]);
 
-
-  const cooperatives = [
-    { id: 1, name: "Green Planet", image: orgLogo },
-    { id: 2, name: "Plant Powered", image: orgLogo2 },
-    { id: 2, name: "Garden Society", image: orgLogo3 },
-  ];
+  const loadCooperatives = async () => {
+    try {
+      const data = await fetchCooperatives();
+      setCooperatives(data);
+    } catch (error) {
+      console.error("Failed to load cooperatives:", error);
+    }
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen((prev) => !prev);
@@ -70,6 +72,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
   useEffect(() => {
     const user = getStoredUser();
     setFirstName(getFirstName(user));
+    loadCooperatives();
   }, []);
 
   return (
@@ -112,21 +115,22 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
         <div className="bg-[#3a3a3a10] rounded-md px-4 py-1 flex gap-3 items-center max-w-md cursor-pointer">
           {/* Overlapping images */}
           <div className="relative flex">
-            <img
-              src={orgLogo}
-              alt=""
-              className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10]"
-            />
-            <img
-              src={orgLogo2}
-              alt=""
-              className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10] -ml-4 z-10"
-            />
-            <img
-              src={orgLogo3}
-              alt=""
-              className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10] -ml-4 z-10"
-            />
+            {cooperatives.length > 0 ? (
+              cooperatives.slice(0, 3).map((coop, idx) => (
+                <img
+                  key={coop.id}
+                  src={coop.img || orgLogo}
+                  alt=""
+                  className={`w-8 h-8 rounded-full border-2 border-[#3a3a3a10] ${
+                    idx > 0 ? "-ml-4 z-10" : ""
+                  }`}
+                />
+              ))
+            ) : (
+              <div className="w-8 h-8 rounded-full border-2 border-[#3a3a3a10] bg-gray-200 flex items-center justify-center">
+                <LuHouse size={14} className="text-gray-400" />
+              </div>
+            )}
           </div>
 
           <p className="font-medium text-sm text-gray-700">
@@ -144,21 +148,28 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
           >
 
             <ul className="max-h-60 overflow-y-auto">
-              {cooperatives.map((coop) => (
-                <li
-                  key={coop.id}
-                  className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer"
-                >
-                  <img
-                    src={coop.image}
-                    alt={coop.name}
-                    className="w-8 h-8 rounded-full"
-                  />
-                  <span className="text-gray-700 font-medium text-sm">
-                    {coop.name}
-                  </span>
+              {cooperatives.length > 0 ? (
+                cooperatives.map((coop) => (
+                  <li
+                    key={coop.id}
+                    onClick={() => navigate(`/CoopDashboard?id=${coop.id}`)}
+                    className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 cursor-pointer"
+                  >
+                    <img
+                      src={coop.img || orgLogo}
+                      alt={coop.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <span className="text-gray-700 font-medium text-sm">
+                      {coop.name}
+                    </span>
+                  </li>
+                ))
+              ) : (
+                <li className="px-4 py-3 text-sm text-gray-400 text-center">
+                  No cooperatives yet
                 </li>
-              ))}
+              )}
             </ul>
 
             {/* Divider */}
@@ -266,7 +277,10 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
 
       <CreateCoopModal 
         isOpen={showModal} 
-        onClose={() => setShowModal(false)} 
+        onClose={() => {
+          setShowModal(false);
+          loadCooperatives();
+        }} 
       />
 
     </nav>
