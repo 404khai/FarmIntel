@@ -13,7 +13,12 @@ export interface UserPayload {
   is_verified?: boolean;
   role?: "farmer" | "buyer" | "org" | "admin";
   name?: string;
-  firstname?: string;
+  bio?: string;
+  created_at?: string;
+  farmer?: {
+    farm_name?: string;
+    about?: string;
+  };
 }
 
 export const setStoredUser = (user: UserPayload) => {
@@ -32,7 +37,7 @@ export const getStoredUser = (): UserPayload | null => {
 
 export const getFirstName = (u?: UserPayload | null): string => {
   const user = u ?? getStoredUser();
-  const fromModel = user?.first_name ?? user?.firstname;
+  const fromModel = user?.first_name ?? user?.first_name;
   if (fromModel && fromModel.trim()) return fromModel.trim();
   if (user?.name) return user.name.split(" ")[0];
   if (user?.email) return user.email.split("@")[0];
@@ -66,4 +71,13 @@ export const fetchCurrentUser = async (): Promise<UserPayload | null> => {
   } catch {
     return getStoredUser();
   }
+};
+
+export const updateUserProfile = async (
+  data: Partial<UserPayload>
+): Promise<UserPayload> => {
+  const res = await api.patch("/users/me", data);
+  const updated = res?.data?.user || res?.data;
+  if (updated) setStoredUser(updated);
+  return updated;
 };

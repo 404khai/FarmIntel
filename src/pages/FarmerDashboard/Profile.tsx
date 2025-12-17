@@ -6,7 +6,7 @@ import avatar from "../../assets/avatar.jpeg";
 import corn from "../../assets/corn.jpeg";
 import tomato from "../../assets/tomato.jpeg";
 import rice from "../../assets/rice.jpeg";
-import { getFirstName } from "../../utils/user";
+import { getFullName, fetchCurrentUser } from "../../utils/user";
 
 const Profile: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -17,8 +17,7 @@ const Profile: React.FC = () => {
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  const name = getFirstName(user);
-  const farmName = "Green Valley Acres";
+  const name = getFullName(user);
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -34,12 +33,17 @@ const Profile: React.FC = () => {
               <div className="flex items-center gap-4">
                 <img src={avatar} alt={name} className="w-16 h-16 rounded-full object-cover" />
                 <div>
+
                   <div className="flex items-center gap-2">
                     <h1 className="text-xl sm:text-2xl font-semibold text-gray-800">{name}</h1>
                     <span className="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-700">Active</span>
                   </div>
-                  <p className="text-sm text-gray-600">Owner at <span className="font-medium text-gray-800">{farmName}</span></p>
-                  <p className="text-xs text-gray-500">Salem District, Zone 4 • ID: #FI-8829 • Member since 2019</p>
+                  <p className="text-sm text-gray-600">Owner at <span className="font-medium text-gray-800">{user?.farmer?.farm_name || "Farm Name"}</span></p>
+                  <p className="text-xs text-gray-500">
+                    {user?.city ? `${user.city}, ` : "Salem District, "} 
+                    {user?.state ? `${user.state}` : "Zone 4"} • 
+                    Member since {user?.created_at ? new Date(user.created_at).getFullYear() : "2019"}
+                  </p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
