@@ -50,7 +50,9 @@ export const loginUser = async (payload: LoginPayload) => {
 };
 
 // LOGOUT
+// LOGOUT
 export const logoutUser = async () => {
   clearTokens();
+  localStorage.removeItem("user");
   return true;
 };

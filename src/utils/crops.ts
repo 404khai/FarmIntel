@@ -4,7 +4,7 @@ export interface Crop {
   id: number;
   name: string;
   variety: string;
-  quantityText: string;
+  quantity: number;
   harvestDate: string;
   status: string;
   img?: string | null;

@@ -11,6 +11,8 @@ import orgLogo3 from "../assets/orgLogo3.jpeg";
 import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-react";
 import { CreateCoopModal } from "./CreateCoopModal";
 import { getFirstName, getStoredUser } from "../utils/user";
+import { logoutUser } from "../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 interface DashboardNavProps {
   onToggleMobileSidebar?: () => void;
@@ -22,6 +24,12 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
   const [isNotifOpen, setIsNotifOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const notifRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await logoutUser();
+    navigate("/Login");
+  };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -246,6 +254,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
                 <LuHouse size={16} /> Back to Home
               </Link>
               <button
+                onClick={handleLogout}
                 className="flex items-center gap-2 w-full text-left px-4 py-2 hover:bg-gray-50 text-red-500"
               >
                 <LuLogOut size={16} /> Log Out

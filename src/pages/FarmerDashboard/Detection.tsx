@@ -1,24 +1,45 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import { LuTriangleAlert, LuCircleCheck, LuHeart, LuImagePlus } from "react-icons/lu";
 import Breadcrumbs from "../../components/Breadcrumbs";
 
 
+import { detectDisease, type DetectionResult } from "../../utils/detector";
+import toast, { Toaster } from "react-hot-toast";
+
 const Detection: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [user, setUser] = useState<any>(null);
 
   const [dragActive, setDragActive] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [result, setResult] = useState<DetectionResult | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-  }, []);
+  const handleAnalyze = async () => {
+    if (!selectedFile) return;
+    setIsAnalyzing(true);
+    setResult(null);
+    try {
+      const data = await detectDisease(selectedFile);
+      setResult(data);
+      toast.success("Analysis complete!");
+    } catch (e) {
+      console.error(e);
+      toast.error("Analysis failed. Please try again.");
+    } finally {
+      setIsAnalyzing(false);
+    }
+  };
+
+  const clearSelection = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setResult(null);
+  };
   
 
   return (
@@ -33,6 +54,7 @@ const Detection: React.FC = () => {
           onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
+        <Toaster position="top-right" />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
           <div className="mb-6">
@@ -62,13 +84,53 @@ const Detection: React.FC = () => {
                 if (f) {
                   setSelectedFile(f);
                   setPreviewUrl(URL.createObjectURL(f));
+                  setResult(null);
                 }
               }}
               className={`border-2 border-dashed rounded-xl p-6 sm:p-8 flex flex-col items-center justify-center text-center ${dragActive ? "border-lime-500 bg-lime-50" : "border-gray-200"}`}
             >
               {previewUrl ? (
-                <div className="w-full max-w-[800px]">
-                  <img src={previewUrl} alt="preview" className="w-full max-h-80 object-contain rounded-lg" />
+                <div className="w-full max-w-[800px] flex flex-col items-center">
+                  <img src={previewUrl} alt="preview" className="w-full max-h-80 object-contain rounded-lg mb-4" />
+                  
+                  {result ? (
+                    <div className="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 text-left">
+                       <div className="flex items-center justify-between">
+                          <h3 className="text-xl font-bold text-gray-800">Result: <span className="text-lime-600">{result.disease}</span></h3>
+                          <span className="text-sm px-3 py-1 bg-lime-100 text-lime-700 rounded-full font-medium">{(result.confidence * 100).toFixed(1)}% Confidence</span>
+                       </div>
+                       
+                       {result.candidates && result.candidates.length > 0 && (
+                         <div className="mt-3">
+                           <p className="text-sm font-medium text-gray-600 mb-1">Other possibilities:</p>
+                           <ul className="space-y-1">
+                             {result.candidates.map((c, idx) => (
+                               <li key={idx} className="text-sm text-gray-500 flex justify-between w-full max-w-xs">
+                                 <span>{c.label}</span>
+                                 <span>{(c.score * 100).toFixed(1)}%</span>
+                               </li>
+                             ))}
+                           </ul>
+                         </div>
+                       )}
+
+                       <div className="mt-4 flex gap-3">
+                         <button onClick={clearSelection} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm">Analyze Another</button>
+                         <button className="px-4 py-2 bg-lime-600 text-white rounded-lg text-sm">View Treatment Plan</button>
+                       </div>
+                    </div>
+                  ) : (
+                    <div className="flex gap-3">
+                      <button onClick={clearSelection} className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg text-sm">Cancel</button>
+                      <button 
+                        onClick={handleAnalyze} 
+                        disabled={isAnalyzing}
+                        className={`px-4 py-2 bg-lime-600 text-white rounded-lg text-sm flex items-center gap-2 ${isAnalyzing ? "opacity-70 cursor-not-allowed" : "hover:bg-lime-700"}`}
+                      >
+                        {isAnalyzing ? "Analyzing..." : "Analyze Image"}
+                      </button>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <>
@@ -91,6 +153,7 @@ const Detection: React.FC = () => {
                   const f = e.target.files?.[0] || null;
                   setSelectedFile(f);
                   setPreviewUrl(f ? URL.createObjectURL(f) : null);
+                  setResult(null);
                 }}
                 className="hidden"
               />
