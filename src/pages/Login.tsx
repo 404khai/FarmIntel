@@ -1,18 +1,45 @@
-// src/pages/SignUp.tsx
-import React from "react";
-import { Link } from "react-router-dom";
+// src/pages/Login.tsx
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import loginImg from "../assets/login.jpeg";
 import google from "../assets/google.png";
-import { VscEyeClosed } from "react-icons/vsc";
+import { VscEyeClosed, VscEye } from "react-icons/vsc";
+import { loginUser } from "../utils/auth";
+import toast from "react-hot-toast";
 
 const Login: React.FC = () => {
-  
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const load = toast.loading("Logging in...");
+    try {
+      const res = await loginUser({ email, password });
+      toast.dismiss(load);
+      toast.success(res?.data?.message || "Logged in");
+      const user = res?.data?.user || { email };
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.removeItem("justSignedUp");
+      navigate("/FarmerDashboard");
+    } catch (err: any) {
+      toast.dismiss(load);
+      const msg = err?.response?.data?.message || "Login failed";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center gap-2 justify-center w-full min-h-screen bg-black ">
     
-      <form
+      <form onSubmit={handleSubmit}
         
         className="flex flex-col items-center justify-center gap-4  rounded-xl p-10 md:h-[450px] font-inter w-full max-w-md"
       >
@@ -56,6 +83,8 @@ const Login: React.FC = () => {
             type="email"
             placeholder="name@mail.com"
             className="placeholder-[#b0b0b0] placeholder:text-xs pl-3 pr-3 py-2 bg-[#3a3a3a41] text-white rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -70,26 +99,29 @@ const Login: React.FC = () => {
           </label>
           <input
             id="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             placeholder="input password"
             className="placeholder-[#b0b0b0] placeholder:text-xs pl-3 pr-3 py-2 bg-[#3a3a3a41] text-white rounded-md outline-none focus:ring-2 focus:ring-black transition-all duration-300"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <span
-            
-            className="absolute right-3 bottom-2.5 cursor-pointer text-gray-600 hover:text-black transition"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 bottom-2.5 cursor-pointer text-gray-300"
           >
-            <VscEyeClosed className="text-[#efefef]"/> 
+            {showPassword ? <VscEye className="text-[#efefef]" /> : <VscEyeClosed className="text-[#efefef]" />}
           </span>
         </div>
 
         {/* Submit */}
-        <Link to="/FarmerDashboard"
+        <button
           type="submit"
-          className="w-2/5 flex justify-center py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300"
+          disabled={loading}
+          className="w-2/5 flex justify-center py-2 mt-2 p-1 bg-lime-600 text-white rounded-md hover:scale-105 transition-all duration-300 disabled:opacity-50"
         >
-          Log In
-        </Link>
+          {loading ? "Logging in..." : "Log In"}
+        </button>
 
       
          

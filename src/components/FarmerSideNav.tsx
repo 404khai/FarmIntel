@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon, Store04Icon, CreditCardPosIcon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
@@ -113,14 +113,19 @@ interface NavLinkProps {
   collapsed?: boolean;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, icon, children, collapsed = false }) => (
-  <Link
-    to={to}
-    className={`font-sans flex items-center ${collapsed ? "justify-center" : "gap-3"} py-3 px-5 text-gray-600 hover:text-lime-600 hover:bg-lime-400/10 border-l-4 border-transparent hover:border-lime-600 transition-all duration-200`}
-  >
-    <span className="text-xl">{icon}</span>
-    {!collapsed && <span className="text-[14px] font-medium">{children}</span>}
-  </Link>
-);
+const NavLink: React.FC<NavLinkProps> = ({ to, icon, children, collapsed = false }) => {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+  const base = `font-sans flex items-center ${collapsed ? "justify-center" : "gap-3"} py-3 px-5 border-l-4 transition-all duration-200`;
+  const inactive = `text-gray-600 hover:text-lime-600 hover:bg-lime-400/10 border-transparent hover:border-lime-600`;
+  const active = `text-lime-600 bg-lime-400/10 border-lime-600`;
+
+  return (
+    <Link to={to} className={`${base} ${isActive ? active : inactive}`} aria-current={isActive ? "page" : undefined}>
+      <span className="text-xl">{icon}</span>
+      {!collapsed && <span className="text-[14px] font-medium">{children}</span>}
+    </Link>
+  );
+};
 
 export default FarmerSideNav;

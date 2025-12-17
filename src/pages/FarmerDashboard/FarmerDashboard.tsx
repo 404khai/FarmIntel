@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
+import { Link } from "react-router-dom";
 import {
   LuSprout,
   LuBot, 
@@ -10,6 +11,7 @@ import {
   LuThermometer,
   LuDroplets,
   LuCloudRain,
+  LuBadgeAlert,
 } from "react-icons/lu";
 import {
   ResponsiveContainer,
@@ -22,16 +24,21 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import user1 from "../../assets/user1.jpeg";
+import user2 from "../../assets/user2.jpeg";
 
 const FarmerDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   type User = { firstname?: string; name?: string } | null;
   const [user, setUser] = useState<User>(null);
+  const [showCompleteProfileBanner, setShowCompleteProfileBanner] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
+    const justSignedUp = localStorage.getItem("justSignedUp") === "true";
+    if (justSignedUp) setShowCompleteProfileBanner(true);
   }, []);
 
   const firstName = user?.firstname || user?.name?.split(" ")[0] || "Farmer";
@@ -100,17 +107,40 @@ const FarmerDashboard: React.FC = () => {
           onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
         />
 
-        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
           <div className="mb-6 flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-semibold text-gray-800">Good Morning, {firstName}</h1>
               <p className="text-gray-500 mt-1">Here’s what’s happening on your farm today.</p>
             </div>
-            <div className="flex items-center gap-3">
-              <button className="px-4 py-2 rounded-lg bg-gray-100 text-gray-800">Export Report</button>
-              <button className="px-4 py-2 rounded-lg bg-lime-600 text-white">Log Harvest</button>
-            </div>
+            
           </div>
+
+          {showCompleteProfileBanner && (
+            <div className="mb-6 rounded-2xl border border-lime-200 bg-lime-50 p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-lime-100 text-lime-700">
+                  <LuBadgeAlert />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Complete your profile to get better matches</p>
+                  <p className="text-xs text-gray-600">Add contact details and farm info to improve buyer trust.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link to="/FarmerDashboard/Settings" className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm">Go to Settings</Link>
+                <button
+                  onClick={() => {
+                    setShowCompleteProfileBanner(false);
+                    localStorage.removeItem("justSignedUp");
+                  }}
+                  className="px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="grid grid-cols-12 gap-6">
             <section className="col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
@@ -152,17 +182,17 @@ const FarmerDashboard: React.FC = () => {
               </div>
               <div className="mt-3 space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-200" />
+                  <img src={user2} alt="Sarah" className="w-8 h-8 rounded-full object-cover" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-800">Sarah, FreshFoods</p>
+                    <p className="text-sm font-medium text-gray-800">Sarah Wilson</p>
                     <p className="text-xs text-gray-500">10 mins ago</p>
                     <p className="text-sm text-gray-600 mt-1">Hi John, is the sweet corn shipment ready for pickup tomorrow morning?</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gray-200" />
+                  <img src={user1} alt="David" className="w-8 h-8 rounded-full object-cover" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-800">David, GreenEarth</p>
+                    <p className="text-sm font-medium text-gray-800">David Green</p>
                     <p className="text-xs text-gray-500">2 hours ago</p>
                     <p className="text-sm text-gray-600 mt-1">We accepted your offer for 200 tons of Wheat. Can we discuss logistics?</p>
                   </div>

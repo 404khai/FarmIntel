@@ -98,7 +98,7 @@ const APIKeys: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <OrgDashboardNav onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
-        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-10 ml-0 md:ml-64 min-h-screen overflow-y-auto">
+        <main className="pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 md:ml-64 min-h-screen overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
               <Key01Icon />

@@ -20,6 +20,8 @@ export default function OtpModal({ email, close }) {
       toast.dismiss(load);
       toast.success("OTP Verified!");
 
+      localStorage.setItem("user", JSON.stringify({ email }));
+      localStorage.setItem("justSignedUp", "true");
       close();
       navigate("/FarmerDashboard");
     } catch (err: any) {
