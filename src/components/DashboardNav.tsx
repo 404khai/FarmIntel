@@ -10,6 +10,7 @@ import orgLogo2 from "../assets/orgLogo2.jpeg";
 import orgLogo3 from "../assets/orgLogo3.jpeg";
 import { Notification02Icon, Search01Icon, UnfoldMoreIcon } from "hugeicons-react";
 import { CreateCoopModal } from "./CreateCoopModal";
+import { getFirstName, getStoredUser } from "../utils/user";
 
 interface DashboardNavProps {
   onToggleMobileSidebar?: () => void;
@@ -25,6 +26,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
   const [isOpen, setIsOpen] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
+  const [firstName, setFirstName] = useState<string>("Farmer");
 
 
   const cooperatives = [
@@ -55,6 +57,11 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const user = getStoredUser();
+    setFirstName(getFirstName(user));
   }, []);
 
   return (
@@ -219,7 +226,7 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
           
 
           <p className="hidden sm:block font-medium text-gray-700">
-            Hi, Noah
+            Hi, {firstName}
           </p>
 
           <RxCaretDown size={18} />

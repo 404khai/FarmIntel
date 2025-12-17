@@ -6,6 +6,7 @@ import avatar from "../../assets/avatar.jpeg";
 import corn from "../../assets/corn.jpeg";
 import tomato from "../../assets/tomato.jpeg";
 import rice from "../../assets/rice.jpeg";
+import { getFirstName } from "../../utils/user";
 
 const Profile: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -16,7 +17,7 @@ const Profile: React.FC = () => {
     if (storedUser) setUser(JSON.parse(storedUser));
   }, []);
 
-  const name = user?.name || "John Doe";
+  const name = getFirstName(user);
   const farmName = "Green Valley Acres";
 
   return (

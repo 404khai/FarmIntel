@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import { Search01Icon, PlusSignIcon } from "hugeicons-react";
+import { LuPencil, LuTrash2, LuImagePlus } from "react-icons/lu";
 import corn from "../../assets/corn.jpeg";
 import tomato from "../../assets/tomato.jpeg";
 import banana from "../../assets/banana.jpeg";
@@ -23,10 +24,20 @@ const Crops: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<any>(null);
-  const [crops] = useState(mockCrops);
+  const [crops, setCrops] = useState(mockCrops);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("date_desc");
+  const [showModal, setShowModal] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [form, setForm] = useState({
+    name: "",
+    variety: "",
+    quantityText: "",
+    harvestDate: "",
+    status: "Available",
+  });
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -65,7 +76,15 @@ const Crops: React.FC = () => {
               <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800">My Crop Inventory</h2>
               <p className="text-gray-500 mt-1">Manage your active harvest listings, update stock levels, and track sales performance within the cooperative.</p>
             </div>
-            <button className="hidden sm:flex items-center gap-2 bg-lime-600 text-white px-4 py-2 rounded-lg">
+            <button
+              onClick={() => {
+                setEditingId(null);
+                setForm({ name: "", variety: "", quantityText: "", harvestDate: "", status: "Available" });
+                setPreviewUrl(null);
+                setShowModal(true);
+              }}
+              className="hidden sm:flex items-center gap-2 bg-lime-600 text-white px-4 py-2 rounded-lg"
+            >
               <PlusSignIcon size={18} /> Add New Crop
             </button>
           </div>
@@ -151,14 +170,177 @@ const Crops: React.FC = () => {
                       <span className={`text-xs px-2 py-1 rounded-full ${crop.status === "Available" ? "bg-emerald-100 text-emerald-700" : crop.status === "Pending" ? "bg-yellow-100 text-yellow-700" : "bg-gray-200 text-gray-700"}`}>{crop.status}</span>
                     </td>
                     <td className="p-4">
-                      <button className="text-lime-700 hover:underline mr-3">Update</button>
-                      <button className="text-red-600 hover:underline">Remove</button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          className="p-2 rounded-md bg-blue-50 text-blue-700 hover:bg-blue-100"
+                          title="Update"
+                          onClick={() => {
+                            setEditingId(crop.id);
+                            setForm({
+                              name: crop.name,
+                              variety: crop.variety,
+                              quantityText: crop.quantityText,
+                              harvestDate: crop.harvestDate,
+                              status: crop.status,
+                            });
+                            setPreviewUrl(crop.img);
+                            setShowModal(true);
+                          }}
+                        >
+                          <LuPencil size={16} />
+                        </button>
+                        <button
+                          className="p-2 rounded-md bg-red-50 text-red-700 hover:bg-red-100"
+                          title="Remove"
+                          onClick={() => {
+                            setCrops((prev) => prev.filter((c) => c.id !== crop.id));
+                          }}
+                        >
+                          <LuTrash2 size={16} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+
+          {showModal && (
+            <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/40">
+              <div className="bg-white w-full max-w-xl rounded-2xl shadow-lg">
+                <div className="flex items-center justify-between p-4 border-b">
+                  <h3 className="text-lg font-semibold text-gray-800">{editingId ? "Update Crop" : "Add New Crop"}</h3>
+                  <button
+                    className="px-3 py-1 rounded-md bg-gray-100 text-gray-800 text-sm"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="p-4 space-y-4">
+                  <div>
+                    <label className="text-sm text-gray-600">Image</label>
+                    <div className="mt-2 flex items-center gap-3">
+                      {previewUrl ? (
+                        <img src={previewUrl} alt="preview" className="w-16 h-16 rounded-md object-cover border" />
+                      ) : (
+                        <div className="w-16 h-16 rounded-md border flex items-center justify-center text-gray-400">
+                          <LuImagePlus />
+                        </div>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const url = URL.createObjectURL(file);
+                            setPreviewUrl(url);
+                          }
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="text-sm text-gray-600">Crop Name</label>
+                      <input
+                        className="mt-1 w-full border rounded-md px-3 py-2"
+                        value={form.name}
+                        onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Variety</label>
+                      <input
+                        className="mt-1 w-full border rounded-md px-3 py-2"
+                        value={form.variety}
+                        onChange={(e) => setForm((f) => ({ ...f, variety: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Quantity</label>
+                      <input
+                        className="mt-1 w-full border rounded-md px-3 py-2"
+                        placeholder="e.g., 500 kg or 2.0 Tons"
+                        value={form.quantityText}
+                        onChange={(e) => setForm((f) => ({ ...f, quantityText: e.target.value }))}
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm text-gray-600">Harvest Date</label>
+                      <input
+                        type="date"
+                        className="mt-1 w-full border rounded-md px-3 py-2"
+                        value={form.harvestDate}
+                        onChange={(e) => setForm((f) => ({ ...f, harvestDate: e.target.value }))}
+                      />
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label className="text-sm text-gray-600">Status</label>
+                      <select
+                        className="mt-1 w-full border rounded-md px-3 py-2"
+                        value={form.status}
+                        onChange={(e) => setForm((f) => ({ ...f, status: e.target.value }))}
+                      >
+                        <option>Available</option>
+                        <option>Pending</option>
+                        <option>Sold Out</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end gap-3 p-4 border-t">
+                  <button
+                    className="px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm"
+                    onClick={() => {
+                      if (editingId) {
+                        setCrops((prev) =>
+                          prev.map((c) =>
+                            c.id === editingId
+                              ? {
+                                  ...c,
+                                  name: form.name || c.name,
+                                  variety: form.variety || c.variety,
+                                  quantityText: form.quantityText || c.quantityText,
+                                  harvestDate: form.harvestDate || c.harvestDate,
+                                  status: form.status || c.status,
+                                  img: previewUrl || c.img,
+                                }
+                              : c
+                          )
+                        );
+                      } else {
+                        const nextId = Math.max(...crops.map((c) => c.id)) + 1;
+                        setCrops((prev) => [
+                          {
+                            id: nextId,
+                            name: form.name || "New Crop",
+                            variety: form.variety || "Variety",
+                            quantityText: form.quantityText || "0 kg",
+                            harvestDate: form.harvestDate || new Date().toLocaleDateString(),
+                            status: form.status,
+                            img: previewUrl || corn,
+                          },
+                          ...prev,
+                        ]);
+                      }
+                      setShowModal(false);
+                    }}
+                  >
+                    {editingId ? "Update" : "Create"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       </div>
     </div>
