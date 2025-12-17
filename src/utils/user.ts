@@ -1,6 +1,7 @@
 import { api } from "./api";
 
 export interface UserPayload {
+  farm_name: string | undefined;
   id?: number;
   email: string;
   first_name?: string | null;

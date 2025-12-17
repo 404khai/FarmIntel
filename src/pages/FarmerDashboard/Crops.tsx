@@ -164,12 +164,12 @@ const Crops: React.FC = () => {
                       </div>
                     </td>
                     <td className="p-4">{crop.variety}</td>
-                    <td className="p-4">{(crop.quantity || 0).toLocaleString()}kg</td>
+                    <td className="p-4">{(crop.quantity_kg || 0).toLocaleString()}kg</td>
                     <td className="p-4">{crop.harvestDate}</td>
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 rounded-full ${crop.status === "Available" ? "bg-emerald-100 text-emerald-700" : crop.status === "Pending" ? "bg-yellow-100 text-yellow-700" : "bg-gray-200 text-gray-700"}`}>{crop.status}</span>
                     </td>
-                    <td className="p-4">₦{(crop.pricePerKg || 0).toLocaleString()}</td>
+                    <td className="p-4">₦{(crop.price_per_kg || 0).toLocaleString()}</td>
                     <td className="p-4">
                       <div className="flex items-center gap-2">
                         <button
@@ -180,10 +180,10 @@ const Crops: React.FC = () => {
                             setForm({
                               name: crop.name,
                               variety: crop.variety,
-                              quantity: crop.quantity.toString() || "",
+                              quantity: crop.quantity_kg.toString() || "",
                               harvestDate: crop.harvestDate,
                               status: crop.status,
-                              pricePerKg: crop.pricePerKg?.toString() || "",
+                              pricePerKg: crop.price_per_kg?.toString() || "",
                             });
                             setPreviewUrl(crop.img || null);
                             setSelectedFile(null);
@@ -327,10 +327,10 @@ const Crops: React.FC = () => {
                       const formData = new FormData();
                       formData.append("name", form.name);
                       formData.append("variety", form.variety);
-                      formData.append("quantityText", form.quantity);
+                      formData.append("quantity_kg", form.quantity);
                       formData.append("harvestDate", form.harvestDate);
                       formData.append("status", form.status);
-                      formData.append("pricePerKg", form.pricePerKg);
+                      formData.append("price_per_kg", form.pricePerKg);
                       if (selectedFile) {
                         formData.append("image", selectedFile);
                       }

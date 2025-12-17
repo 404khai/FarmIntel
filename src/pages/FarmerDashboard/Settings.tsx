@@ -17,7 +17,14 @@ const Settings: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  const [formData, setFormData] = useState<Partial<UserPayload>>({});
+  // Extended type to handle flattened form fields
+  interface SettingsFormData extends Partial<UserPayload> {
+    farm_name?: string;
+    bio?: string;
+    firstname?: string; // Handle potential legacy field if needed, mostly for type safety in destruct
+  }
+
+  const [formData, setFormData] = useState<SettingsFormData>({});
 
   useEffect(() => {
     // Try to get fresh user data on mount
@@ -82,12 +89,45 @@ const Settings: React.FC = () => {
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      const updatedUser = await updateUserProfile(formData);
+      // Construct payload matching strictly what API likely expects
+      // We map the flat form state back to the nested structure for the backend
+      // We also exclude 'firstname' which is a legacy field not in UserPayload
+      const { farm_name, bio, firstname, ...rest } = formData;
+      
+      const payload: Partial<UserPayload> = {
+        ...rest,
+        // Ensure email and other top level fields are included if modified
+        email: formData.email, 
+        first_name: formData.first_name,
+        last_name: formData.last_name,
+        phone: formData.phone,
+        country: formData.country,
+        state: formData.state,
+        city: formData.city,
+        profile_pic: formData.profile_pic,
+        
+        // Nested farmer data
+        farmer: {
+          farm_name: farm_name,
+          about: bio
+        }
+      };
+
+      const updatedUser = await updateUserProfile(payload);
       setUser(updatedUser);
       toast.success("Profile updated successfully");
+      
+      // Update form data to reflect what came back from server to ensure sync
+      const newFormState: SettingsFormData = {
+        ...updatedUser,
+        farm_name: updatedUser?.farmer?.farm_name || updatedUser?.farm_name,
+        bio: updatedUser?.farmer?.about || updatedUser?.bio
+      };
+      setFormData(newFormState);
+
     } catch (error) {
       console.error(error);
-      toast.error("Failed to update profile");
+      toast.error("Failed to update profile. Please check your inputs.");
     } finally {
       setIsLoading(false);
     }
@@ -182,7 +222,7 @@ const Settings: React.FC = () => {
                     <input 
                       name="first_name"
                       className="mt-1 w-full border rounded-md px-3 py-2" 
-                      value={formData.first_name || formData.firstname || ""}
+                      value={formData.first_name || ""}
                       onChange={handleInputChange}
                     />
                   </div>

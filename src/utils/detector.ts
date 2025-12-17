@@ -1,9 +1,15 @@
 import { api } from "./api";
 
 export interface DetectionResult {
-  disease: string;
-  confidence: number;
-  candidates?: Array<{ label: string; score: number }>;
+  status: string;
+  prediction: {
+    label: string;
+    confidence: number;
+  };
+  alternatives?: Array<{
+    label: string;
+    confidence: number;
+  }>;
 }
 
 export const detectDisease = async (image: File): Promise<DetectionResult> => {

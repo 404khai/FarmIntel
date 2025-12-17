@@ -96,18 +96,18 @@ const Detection: React.FC = () => {
                   {result ? (
                     <div className="w-full bg-gray-50 p-4 rounded-xl border border-gray-100 text-left">
                        <div className="flex items-center justify-between">
-                          <h3 className="text-xl font-bold text-gray-800">Result: <span className="text-lime-600">{result.disease}</span></h3>
-                          <span className="text-sm px-3 py-1 bg-lime-100 text-lime-700 rounded-full font-medium">{(result.confidence * 100).toFixed(1)}% Confidence</span>
+                          <h3 className="text-xl font-bold text-gray-800">Result: <span className="text-lime-600">{result.prediction.label.replace(/_/g, " ")}</span></h3>
+                          <span className="text-sm px-3 py-1 bg-lime-100 text-lime-700 rounded-full font-medium">{(result.prediction.confidence * 100).toFixed(1)}% Confidence</span>
                        </div>
                        
-                       {result.candidates && result.candidates.length > 0 && (
+                       {result.alternatives && result.alternatives.length > 0 && (
                          <div className="mt-3">
                            <p className="text-sm font-medium text-gray-600 mb-1">Other possibilities:</p>
                            <ul className="space-y-1">
-                             {result.candidates.map((c, idx) => (
+                             {result.alternatives.map((c, idx) => (
                                <li key={idx} className="text-sm text-gray-500 flex justify-between w-full max-w-xs">
-                                 <span>{c.label}</span>
-                                 <span>{(c.score * 100).toFixed(1)}%</span>
+                                 <span>{c.label.replace(/_/g, " ")}</span>
+                                 <span>{(c.confidence * 100).toFixed(1)}%</span>
                                </li>
                              ))}
                            </ul>
