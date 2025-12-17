@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import DashboardNav from "../../components/DashboardNav";
-import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import BackToDashboardPill from "../../components/BackToDashboardPill";
 import avatar from "../../assets/avatar.jpeg";
 import { AccountSetting02Icon, Notification02Icon, Plant02Icon, Invoice03Icon } from "hugeicons-react";
 
 
 const Settings: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {
@@ -19,20 +18,15 @@ const Settings: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <FarmerSideNav
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        collapsed={isSidebarCollapsed}
-      />
       <div className="flex-1 flex flex-col">
-        <DashboardNav
-          onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-          onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
-        />
+        <DashboardNav />
 
-        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} h-screen overflow-y-auto`}>
+        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 h-screen overflow-y-auto`}>
           <div className="mb-4">
-            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Settings" }]} />
+            <BackToDashboardPill to="/FarmerDashboard" />
+          </div>
+          <div className="mb-4">
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Settings" }]} />
           </div>
 
           <div className="mb-6">

@@ -13,9 +13,9 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 const mockCrops = [
   { id: 1, name: "Maize", variety: "Yellow Dent", quantityText: "2.0 Tons", harvestDate: "Oct 20, 2023", status: "Pending", img: corn },
   { id: 2, name: "Tomatoes", variety: "Roma (Plum)", quantityText: "500 kg", harvestDate: "Oct 24, 2023", status: "Available", img: tomato },
-  { id: 3, name: "Potatoes", variety: "Russet", quantityText: "1.2 Tons", harvestDate: "Oct 15, 2023", status: "Available", img: greenPeas },
-  { id: 4, name: "Onions", variety: "Red Creole", quantityText: "300 kg", harvestDate: "Oct 10, 2023", status: "Sold Out", img: okra },
-  { id: 5, name: "Cabbage", variety: "Savoy", quantityText: "150 Heads", harvestDate: "Oct 05, 2023", status: "Sold Out", img: banana },
+  { id: 3, name: "Green Peas", variety: "Russet", quantityText: "1.2 Tons", harvestDate: "Oct 15, 2023", status: "Available", img: greenPeas },
+  { id: 4, name: "Okra", variety: "Red Creole", quantityText: "300 kg", harvestDate: "Oct 10, 2023", status: "Sold Out", img: okra },
+  { id: 5, name: "Banana", variety: "Savoy", quantityText: "150 Heads", harvestDate: "Oct 05, 2023", status: "Sold Out", img: banana },
   { id: 6, name: "Rice", variety: "Long Grain", quantityText: "1.8 Tons", harvestDate: "Oct 12, 2023", status: "Available", img: rice },
 ];
 
