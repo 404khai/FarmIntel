@@ -4,7 +4,7 @@ export interface Cooperative {
   id: number;
   name: string;
   description: string;
-  img: string | null;
+  image_url: string | null;
   created_at?: string;
 }
 

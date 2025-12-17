@@ -7,7 +7,7 @@ export interface UserPayload {
   first_name?: string | null;
   last_name?: string | null;
   phone?: string | null;
-  profile_pic?: string | null;
+  profile_pic_url?: string | null;
   country?: string | null;
   state?: string | null;
   city?: string | null;
@@ -60,7 +60,7 @@ export const getEmail = (u?: UserPayload | null): string => {
 
 export const getAvatarUrl = (u?: UserPayload | null): string | null => {
   const user = u ?? getStoredUser();
-  return user?.profile_pic || null;
+  return user?.profile_pic_url || null;
 };
 
 export const fetchCurrentUser = async (): Promise<UserPayload | null> => {

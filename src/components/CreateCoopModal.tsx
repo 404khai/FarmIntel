@@ -44,7 +44,7 @@ export const CreateCoopModal: React.FC<CreateCoopModalProps> = ({
       const formData = new FormData();
       formData.append("name", name);
       formData.append("description", description);
-      formData.append("img", selectedFile);
+      formData.append("image_url", selectedFile);
 
       await createCooperative(formData);
       toast.success("Cooperative created successfully!");

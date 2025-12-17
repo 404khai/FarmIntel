@@ -75,7 +75,7 @@ const Settings: React.FC = () => {
        // as "profile_pic" in the JSON payload, which is a common simple pattern.
        // If that fails, we can switch to FormData.
        
-       setFormData(prev => ({ ...prev, profile_pic: base64String }));
+       setFormData(prev => ({ ...prev, profile_pic_url: base64String }));
        
        // Auto-save or wait for save button? 
        // User "when I press Change picture" implies immediate action or selection.
@@ -104,7 +104,7 @@ const Settings: React.FC = () => {
         country: formData.country,
         state: formData.state,
         city: formData.city,
-        profile_pic: formData.profile_pic,
+        profile_pic_url: formData.profile_pic_url,
         
         // Nested farmer data
         farmer: {
@@ -193,7 +193,7 @@ const Settings: React.FC = () => {
                     <div className="relative group">
 
                       <img 
-                        src={formData.profile_pic || user?.profile_pic || avatar} 
+                        src={formData.profile_pic_url || user?.profile_pic_url || avatar} 
                         alt="Profile" 
                         className="w-16 h-16 rounded-full object-cover border cursor-pointer group-hover:opacity-75"
                         onClick={() => document.getElementById('profile-upload')?.click()}

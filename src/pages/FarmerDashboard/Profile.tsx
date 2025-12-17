@@ -31,7 +31,7 @@ const Profile: React.FC = () => {
           <section className="bg-white rounded-2xl shadow-sm p-5 mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-4">
-                <img src={avatar} alt={name} className="w-16 h-16 rounded-full object-cover" />
+                <img src={user?.profile_pic_url || avatar} alt={name} className="w-16 h-16 rounded-full object-cover" />
                 <div>
 
                   <div className="flex items-center gap-2">

@@ -12,7 +12,6 @@ import toast, { Toaster } from "react-hot-toast";
 const Crops: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const [crops, setCrops] = useState<Crop[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -31,9 +30,6 @@ const Crops: React.FC = () => {
   });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-    
     fetchCrops().then(data => setCrops(data)).catch(err => {
         console.error(err);
         toast.error("Failed to load crops");
@@ -156,7 +152,7 @@ const Crops: React.FC = () => {
                   <tr key={crop.id} className="border-t hover:bg-gray-50">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <img src={crop.img || corn} alt={crop.name} className="w-12 h-12 rounded-md object-cover" />
+                        <img src={crop.image_url || corn} alt={crop.name} className="w-12 h-12 rounded-md object-cover" />
                         <div>
                           <p className="font-semibold text-gray-800">{crop.name}</p>
                           <p className="text-xs text-gray-400">ID: #{4620 + crop.id}</p>
@@ -185,7 +181,7 @@ const Crops: React.FC = () => {
                               status: crop.status,
                               pricePerKg: crop.price_per_kg?.toString() || "",
                             });
-                            setPreviewUrl(crop.img || null);
+                            setPreviewUrl(crop.image_url || null);
                             setSelectedFile(null);
                             setShowModal(true);
                           }}
@@ -332,7 +328,7 @@ const Crops: React.FC = () => {
                       formData.append("status", form.status);
                       formData.append("price_per_kg", form.pricePerKg);
                       if (selectedFile) {
-                        formData.append("image", selectedFile);
+                        formData.append("image_url", selectedFile);
                       }
 
                       try {
