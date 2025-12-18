@@ -75,18 +75,18 @@ const BuyerDashboard: React.FC = () => {
     variety: string;
     quantityText: string;
     status: "Available" | "Pending" | "Sold Out";
-    img: string;
+    image_url: string;
     seller: string;
     location: string;
   };
 
   const listings: Listing[] = [
-    { id: 1, name: "Maize", variety: "Yellow Dent", quantityText: "2.0 Tons", status: "Available", img: corn, seller: "GreenFields Co.", location: "Kaduna" },
-    { id: 2, name: "Tomatoes", variety: "Roma", quantityText: "500 kg", status: "Available", img: tomato, seller: "FreshHarvest Ltd.", location: "Benue" },
-    { id: 3, name: "Potatoes", variety: "Russet", quantityText: "1.2 Tons", status: "Pending", img: greenPeas, seller: "Highland Farms", location: "Plateau" },
-    { id: 4, name: "Okra", variety: "Clemson Spineless", quantityText: "300 kg", status: "Sold Out", img: okra, seller: "Sunrise Agro", location: "Oyo" },
-    { id: 5, name: "Banana", variety: "Cavendish", quantityText: "150 Crates", status: "Available", img: banana, seller: "Tropical Produce", location: "Cross River" },
-    { id: 6, name: "Rice", variety: "Long Grain", quantityText: "1.8 Tons", status: "Available", img: rice, seller: "RiverBank Farms", location: "Niger" },
+    { id: 1, name: "Maize", variety: "Yellow Dent", quantityText: "2.0 Tons", status: "Available", image_url: corn, seller: "GreenFields Co.", location: "Kaduna" },
+    { id: 2, name: "Tomatoes", variety: "Roma", quantityText: "500 kg", status: "Available", image_url: tomato, seller: "FreshHarvest Ltd.", location: "Benue" },
+    { id: 3, name: "Potatoes", variety: "Russet", quantityText: "1.2 Tons", status: "Pending", image_url: greenPeas, seller: "Highland Farms", location: "Plateau" },
+    { id: 4, name: "Okra", variety: "Clemson Spineless", quantityText: "300 kg", status: "Sold Out", image_url: okra, seller: "Sunrise Agro", location: "Oyo" },
+    { id: 5, name: "Banana", variety: "Cavendish", quantityText: "150 Crates", status: "Available", image_url: banana, seller: "Tropical Produce", location: "Cross River" },
+    { id: 6, name: "Rice", variety: "Long Grain", quantityText: "1.8 Tons", status: "Available", image_url: rice, seller: "RiverBank Farms", location: "Niger" },
   ];
 
   const messages = [
@@ -138,7 +138,7 @@ const BuyerDashboard: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                 {listings.map((c) => (
                   <div key={c.id} className="border rounded-xl overflow-hidden bg-white">
-                    <img src={c.img} alt={c.name} className="h-32 w-full object-cover" />
+                    <img src={c.image_url} alt={c.name} className="h-32 w-full object-cover" />
                     <div className="p-4">
                       <div className="flex items-start justify-between">
                         <div>

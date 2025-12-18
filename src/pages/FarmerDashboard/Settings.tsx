@@ -6,8 +6,10 @@ import avatar from "../../assets/avatar.jpeg";
 import { AccountSetting02Icon, Notification02Icon, Plant02Icon, Invoice03Icon } from "hugeicons-react";
 import { CountrySelect, StateSelect, CitySelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
-import { fetchCurrentUser, updateUserProfile, type UserPayload } from "../../utils/user";
+import { fetchCurrentUser, updateUserProfile, type UserPayload, getStoredUser } from "../../utils/user";
 import toast, { Toaster } from "react-hot-toast";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 const Settings: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -20,11 +22,18 @@ const Settings: React.FC = () => {
   // Extended type to handle flattened form fields
   interface SettingsFormData extends Partial<UserPayload> {
     farm_name?: string;
-    bio?: string;
     firstname?: string; // Handle potential legacy field if needed, mostly for type safety in destruct
   }
 
-  const [formData, setFormData] = useState<SettingsFormData>({});
+  const [formData, setFormData] = useState<SettingsFormData>(() => {
+    const stored = getStoredUser();
+    if (!stored) return {};
+    return {
+      ...stored,
+      farm_name: stored?.farm_name,
+      firstname: stored?.first_name || (stored as any)?.firstname
+    };
+  });
 
   useEffect(() => {
     // Try to get fresh user data on mount
@@ -34,8 +43,7 @@ const Settings: React.FC = () => {
          // Flatten the nested data for the form
          setFormData({
             ...user,
-            farm_name: user?.farmer?.farm_name || user?.farm_name,
-            bio: user?.farmer?.about || user?.bio
+            farm_name: user?.farm_name
          });
        }
     });
@@ -55,35 +63,25 @@ const Settings: React.FC = () => {
       return;
     }
 
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-       const base64String = reader.result as string; 
-       // Depending on backend, we might send base64 or upload via FormData.
-       // Assuming backend accepts base64 in profile_pic field or separate endpoint.
-       // If backend needs FormData, we should use a different strategy.
-       // For now, let's assume we update the local preview and send base64 or file content.
-       
-       // Strategy: Send base64 if backend supports it in JSON payload
-       // Or create a FormData object if not.
-       // Let's try sending it as part of the update payload if supported, 
-       // but typically file uploads need multipart/form-data.
-       
-       // We will modify updateUserProfile to handle potential file uploads if needed,
-       // or just call a separate upload endpoint.
-       
-       // For this implementation, I will assume we send the base64 string 
-       // as "profile_pic" in the JSON payload, which is a common simple pattern.
-       // If that fails, we can switch to FormData.
-       
-       setFormData(prev => ({ ...prev, profile_pic: base64String }));
-       
-       // Auto-save or wait for save button? 
-       // User "when I press Change picture" implies immediate action or selection.
-       // Let's just update state for now and let save handle it, 
-       // OR trigger an immediate upload if desired. 
-       // The prompt says "when save changes button is pressed...", so we just set state.
-    };
-    reader.readAsDataURL(file);
+    const load = toast.loading("Updating profile picture...");
+    try {
+      const uploadData = new FormData();
+      uploadData.append("profile_pic_url", file);
+
+      const updatedUser = await updateUserProfile(uploadData);
+      setUser(updatedUser);
+      setFormData(prev => ({ 
+        ...prev, 
+        ...updatedUser,
+        farm_name: updatedUser?.farm_name 
+      }));
+      toast.dismiss(load);
+      toast.success("Profile picture updated successfully");
+    } catch (error) {
+      console.error(error);
+      toast.dismiss(load);
+      toast.error("Failed to update profile picture");
+    }
   };
 
   const handleSave = async () => {
@@ -92,11 +90,10 @@ const Settings: React.FC = () => {
       // Construct payload matching strictly what API likely expects
       // We map the flat form state back to the nested structure for the backend
       // We also exclude 'firstname' which is a legacy field not in UserPayload
-      const { farm_name, bio, firstname, ...rest } = formData;
+      const { farm_name, firstname, ...rest } = formData;
       
       const payload: Partial<UserPayload> = {
         ...rest,
-        // Ensure email and other top level fields are included if modified
         email: formData.email, 
         first_name: formData.first_name,
         last_name: formData.last_name,
@@ -104,14 +101,14 @@ const Settings: React.FC = () => {
         country: formData.country,
         state: formData.state,
         city: formData.city,
-        profile_pic: formData.profile_pic,
-        
-        // Nested farmer data
-        farmer: {
-          farm_name: farm_name,
-          about: bio
-        }
+        farm_name: farm_name,
       };
+
+      // Remove profile_pic_url from JSON payload if it's potentially a local URL or base64 
+      // (though in this new logic it should be a real URL from Cloudinary)
+      if (payload.profile_pic_url && (payload.profile_pic_url.startsWith('data:') || payload.profile_pic_url.startsWith('blob:'))) {
+        delete payload.profile_pic_url;
+      }
 
       const updatedUser = await updateUserProfile(payload);
       setUser(updatedUser);
@@ -120,8 +117,7 @@ const Settings: React.FC = () => {
       // Update form data to reflect what came back from server to ensure sync
       const newFormState: SettingsFormData = {
         ...updatedUser,
-        farm_name: updatedUser?.farmer?.farm_name || updatedUser?.farm_name,
-        bio: updatedUser?.farmer?.about || updatedUser?.bio
+        farm_name: updatedUser?.farm_name 
       };
       setFormData(newFormState);
 
@@ -193,7 +189,7 @@ const Settings: React.FC = () => {
                     <div className="relative group">
 
                       <img 
-                        src={formData.profile_pic || user?.profile_pic || avatar} 
+                        src={formData.profile_pic_url || user?.profile_pic_url || avatar} 
                         alt="Profile" 
                         className="w-16 h-16 rounded-full object-cover border cursor-pointer group-hover:opacity-75"
                         onClick={() => document.getElementById('profile-upload')?.click()}
@@ -254,14 +250,19 @@ const Settings: React.FC = () => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  <div>
-                    <label className="text-sm text-gray-600">Phone Number</label>
-                    <input 
-                      name="phone"
-                      className="mt-1 w-full border rounded-md px-3 py-2" 
-                      value={formData.phone || ""}
-                      onChange={handleInputChange}
-                    />
+                  <div className="flex flex-col">
+                    <label className="text-sm text-gray-600 mb-1">Phone Number</label>
+                    <div className="phone-input-container">
+                      <PhoneInput
+                        international
+                        countryCallingCodeEditable={false}
+                        defaultCountry="NG"
+                        placeholder="Enter phone number"
+                        value={formData.phone || ""}
+                        onChange={(value) => setFormData(prev => ({ ...prev, phone: value }))}
+                        className="w-full border rounded-md px-3 py-2 outline-none focus:ring-2 focus:ring-lime-500"
+                      />
+                    </div>
                   </div>
                   <div>
                     <label className="text-sm text-gray-600">Country</label>
@@ -315,17 +316,7 @@ const Settings: React.FC = () => {
                       <option value="buyer">Buyer</option>
                     </select>
                   </div>
-                  <div className="sm:col-span-2">
-                    <label className="text-sm text-gray-600">Bio / Farm Description</label>
-                    <textarea 
-                      name="bio"
-                      rows={4} 
-                      className="mt-1 w-full border rounded-md px-3 py-2" 
-                      placeholder="Tell others about your farm" 
-                      value={formData.bio || ""}
-                      onChange={handleInputChange}
-                    />
-                  </div>
+                  
                   <div className="sm:col-span-2 flex items-center justify-end gap-3">
                     <button type="button" className="px-4 py-2 rounded-md border" onClick={() => window.location.reload()}>Cancel</button>
                     <button type="submit" disabled={isLoading} className="px-4 py-2 bg-lime-600 text-white rounded-md disabled:bg-lime-400">

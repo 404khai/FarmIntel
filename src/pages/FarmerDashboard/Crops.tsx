@@ -12,7 +12,6 @@ import toast, { Toaster } from "react-hot-toast";
 const Crops: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [user, setUser] = useState<any>(null);
   const [crops, setCrops] = useState<Crop[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -25,15 +24,12 @@ const Crops: React.FC = () => {
     name: "",
     variety: "",
     quantity: "",
-    harvestDate: "",
+    harvest_date: "",
     status: "Available",
-    pricePerKg: "",
+    price_per_kg: "",
   });
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-    
     fetchCrops().then(data => setCrops(data)).catch(err => {
         console.error(err);
         toast.error("Failed to load crops");
@@ -46,8 +42,8 @@ const Crops: React.FC = () => {
     if (filter === "available") list = list.filter((c) => c.status === "Available");
     if (filter === "pending") list = list.filter((c) => c.status === "Pending");
     if (filter === "soldout") list = list.filter((c) => c.status === "Sold Out");
-    if (sortBy === "date_desc") list = list.sort((a, b) => (new Date(b.harvestDate).getTime() - new Date(a.harvestDate).getTime()));
-    if (sortBy === "date_asc") list = list.sort((a, b) => (new Date(a.harvestDate).getTime() - new Date(b.harvestDate).getTime()));
+    if (sortBy === "date_desc") list = list.sort((a, b) => (new Date(b.harvest_date).getTime() - new Date(a.harvest_date).getTime()));
+    if (sortBy === "date_asc") list = list.sort((a, b) => (new Date(a.harvest_date).getTime() - new Date(b.harvest_date).getTime()));
     return list;
   }, [crops, search, filter, sortBy]);
 
@@ -77,7 +73,7 @@ const Crops: React.FC = () => {
             <button
               onClick={() => {
                 setEditingId(null);
-                setForm({ name: "", variety: "", quantity: "", harvestDate: "", status: "Available", pricePerKg: "" });
+                setForm({ name: "", variety: "", quantity: "", harvest_date: "", status: "Available", price_per_kg: "" });
                 setPreviewUrl(null);
                 setSelectedFile(null);
                 setShowModal(true);
@@ -156,7 +152,7 @@ const Crops: React.FC = () => {
                   <tr key={crop.id} className="border-t hover:bg-gray-50">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <img src={crop.img || corn} alt={crop.name} className="w-12 h-12 rounded-md object-cover" />
+                        <img src={crop.image_url || corn} alt={crop.name} className="w-12 h-12 rounded-md object-cover" />
                         <div>
                           <p className="font-semibold text-gray-800">{crop.name}</p>
                           <p className="text-xs text-gray-400">ID: #{4620 + crop.id}</p>
@@ -165,7 +161,7 @@ const Crops: React.FC = () => {
                     </td>
                     <td className="p-4">{crop.variety}</td>
                     <td className="p-4">{(crop.quantity_kg || 0).toLocaleString()}kg</td>
-                    <td className="p-4">{crop.harvestDate}</td>
+                    <td className="p-4">{crop.harvest_date}</td>
                     <td className="p-4">
                       <span className={`text-xs px-2 py-1 rounded-full ${crop.status === "Available" ? "bg-emerald-100 text-emerald-700" : crop.status === "Pending" ? "bg-yellow-100 text-yellow-700" : "bg-gray-200 text-gray-700"}`}>{crop.status}</span>
                     </td>
@@ -181,11 +177,11 @@ const Crops: React.FC = () => {
                               name: crop.name,
                               variety: crop.variety,
                               quantity: crop.quantity_kg.toString() || "",
-                              harvestDate: crop.harvestDate,
+                              harvest_date: crop.harvest_date,
                               status: crop.status,
-                              pricePerKg: crop.price_per_kg?.toString() || "",
+                              price_per_kg: crop.price_per_kg?.toString() || "",
                             });
-                            setPreviewUrl(crop.img || null);
+                            setPreviewUrl(crop.image_url || null);
                             setSelectedFile(null);
                             setShowModal(true);
                           }}
@@ -287,8 +283,8 @@ const Crops: React.FC = () => {
                         type="number"
                         className="mt-1 w-full border rounded-md px-3 py-2"
                         placeholder="0.00"
-                        value={form.pricePerKg}
-                        onChange={(e) => setForm((f) => ({ ...f, pricePerKg: e.target.value }))}
+                        value={form.price_per_kg}
+                        onChange={(e) => setForm((f) => ({ ...f, price_per_kg: e.target.value }))}
                       />
                     </div>
                     <div>
@@ -296,8 +292,8 @@ const Crops: React.FC = () => {
                       <input
                         type="date"
                         className="mt-1 w-full border rounded-md px-3 py-2"
-                        value={form.harvestDate}
-                        onChange={(e) => setForm((f) => ({ ...f, harvestDate: e.target.value }))}
+                        value={form.harvest_date}
+                        onChange={(e) => setForm((f) => ({ ...f, harvest_date: e.target.value }))}
                       />
                     </div>
                     <div className="sm:col-span-2">
@@ -328,11 +324,11 @@ const Crops: React.FC = () => {
                       formData.append("name", form.name);
                       formData.append("variety", form.variety);
                       formData.append("quantity_kg", form.quantity);
-                      formData.append("harvestDate", form.harvestDate);
+                      formData.append("harvest_date", form.harvest_date);
                       formData.append("status", form.status);
-                      formData.append("price_per_kg", form.pricePerKg);
+                      formData.append("price_per_kg", form.price_per_kg);
                       if (selectedFile) {
-                        formData.append("image", selectedFile);
+                        formData.append("image_url", selectedFile);
                       }
 
                       try {
