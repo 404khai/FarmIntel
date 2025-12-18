@@ -13,3 +13,16 @@
   --font-mono: 'DM Mono', monospace;
   --font-sans: 'Nunito', sans-serif;
 }
+
+.PhoneInputInput {
+  outline: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+  padding: 0;
+  font-size: 0.875rem;
+}
+
+.PhoneInputCountry {
+  margin-right: 0.5rem;
+}

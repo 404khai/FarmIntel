@@ -1,7 +1,6 @@
 import { api } from "./api";
 
 export interface UserPayload {
-  farm_name: string | undefined;
   id?: number;
   email: string;
   first_name?: string | null;
@@ -14,16 +13,15 @@ export interface UserPayload {
   is_verified?: boolean;
   role?: "farmer" | "buyer" | "org" | "admin";
   name?: string;
-  bio?: string;
   created_at?: string;
-  farmer?: {
-    farm_name?: string;
-    about?: string;
-  };
+  farm_name?: string;
+  crops?: any[];
 }
 
 export const setStoredUser = (user: UserPayload) => {
-  localStorage.setItem("user", JSON.stringify(user));
+  const existing = getStoredUser();
+  const merged = { ...existing, ...user };
+  localStorage.setItem("user", JSON.stringify(merged));
 };
 
 export const getStoredUser = (): UserPayload | null => {
@@ -67,18 +65,27 @@ export const fetchCurrentUser = async (): Promise<UserPayload | null> => {
   try {
     const res = await api.get("/users/me");
     const user = res?.data?.user || res?.data;
-    if (user) setStoredUser(user);
-    return user || null;
+    if (user) {
+      setStoredUser(user);
+      return getStoredUser();
+    }
+    return null;
   } catch {
     return getStoredUser();
   }
 };
 
 export const updateUserProfile = async (
-  data: Partial<UserPayload>
+  data: Partial<UserPayload> | FormData
 ): Promise<UserPayload> => {
-  const res = await api.patch("/users/me", data);
+  const isFormData = data instanceof FormData;
+  const res = await api.patch("/users/me", data, {
+    headers: isFormData ? { "Content-Type": "multipart/form-data" } : {}
+  });
   const updated = res?.data?.user || res?.data;
-  if (updated) setStoredUser(updated);
+  if (updated) {
+    setStoredUser(updated);
+    return getStoredUser() as UserPayload;
+  }
   return updated;
 };

@@ -5,7 +5,7 @@ export interface Crop {
   name: string;
   variety: string;
   quantity_kg: number;
-  harvestDate: string;
+  harvest_date: string;
   status: string;
   image_url?: string | null;
   price_per_kg?: number;
