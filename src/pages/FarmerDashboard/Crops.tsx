@@ -11,7 +11,18 @@ import toast, { Toaster } from "react-hot-toast";
 
 const Crops: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    return localStorage.getItem("farmerSidebarCollapsed") === "true";
+  });
+  
+  const handleToggleCollapse = () => {
+    setIsSidebarCollapsed(prev => {
+      const newState = !prev;
+      localStorage.setItem("farmerSidebarCollapsed", String(newState));
+      return newState;
+    });
+  };
+
   const [crops, setCrops] = useState<Crop[]>([]);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -57,7 +68,7 @@ const Crops: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <DashboardNav
           onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-          onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
+          onToggleCollapse={handleToggleCollapse}
         />
         <Toaster position="top-right" />
 

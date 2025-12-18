@@ -12,7 +12,17 @@ import user5 from "../../assets/user5.jpeg";
 
 const Orders: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    return localStorage.getItem("farmerSidebarCollapsed") === "true";
+  });
+  
+  const handleToggleCollapse = () => {
+    setIsSidebarCollapsed(prev => {
+      const newState = !prev;
+      localStorage.setItem("farmerSidebarCollapsed", String(newState));
+      return newState;
+    });
+  };
 
   const [filter, setFilter] = useState<"all" | "pending" | "accepted" | "fulfilled">("all");
 
@@ -36,7 +46,7 @@ const Orders: React.FC = () => {
       <div className="flex-1 flex flex-col">
         <DashboardNav
           onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-          onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)}
+          onToggleCollapse={handleToggleCollapse}
         />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>

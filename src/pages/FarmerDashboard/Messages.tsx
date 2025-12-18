@@ -43,7 +43,17 @@ const Avatar: React.FC<{ name?: string; imageUrl?: string | null; size?: number 
 
 const Messages: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    return localStorage.getItem("farmerSidebarCollapsed") === "true";
+  });
+  
+  const handleToggleCollapse = () => {
+    setIsSidebarCollapsed(prev => {
+      const newState = !prev;
+      localStorage.setItem("farmerSidebarCollapsed", String(newState));
+      return newState;
+    });
+  };
   const [activeTab, setActiveTab] = useState<"All" | "Farmers" | "Buyers">("All");
   const [selectedChatId, setSelectedChatId] = useState<number>(1);
 
@@ -67,7 +77,7 @@ const Messages: React.FC = () => {
     <div className="flex min-h-screen bg-white">
       <FarmerSideNav isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} collapsed={isSidebarCollapsed} />
       <div className="flex-1 flex flex-col">
-        <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)} />
+        <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={handleToggleCollapse} />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
           <div className="mb-4">
