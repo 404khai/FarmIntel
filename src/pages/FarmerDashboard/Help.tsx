@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
+import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import corn from "../../assets/corn.jpeg";
 
 const Help: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    return localStorage.getItem("farmerSidebarCollapsed") === "true";
+  });
+
+  const handleToggleCollapse = () => {
+    setIsSidebarCollapsed(prev => {
+      const newState = !prev;
+      localStorage.setItem("farmerSidebarCollapsed", String(newState));
+      return newState;
+    });
+  };
 
   const topics = [
     { title: "Getting Started", desc: "Account setup, profile, onboarding" },
@@ -23,10 +35,18 @@ const Help: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
+      <FarmerSideNav
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        collapsed={isSidebarCollapsed}
+      />
       <div className="flex-1 flex flex-col">
-        <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
+        <DashboardNav
+          onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          onToggleCollapse={handleToggleCollapse}
+        />
 
-        <main className="pt-16 px-4 sm:px-6 md:px-8 pb-16 ml-0 min-h-screen overflow-y-auto">
+        <main className={`pt-16 px-4 sm:px-6 md:px-8 pb-16 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
           <div className="mb-4">
             <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Help & Resources" }]} />
           </div>

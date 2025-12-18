@@ -12,7 +12,6 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 
 const Settings: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [user, setUser] = useState<UserPayload | null>(null);
   const [countryId, setCountryId] = useState<number>(0);
   const [stateId, setStateId] = useState<number>(0);
@@ -131,11 +130,11 @@ const Settings: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col h-screen overflow-hidden">
         <DashboardNav />
         <Toaster position="top-right" />
 
-        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 h-screen overflow-y-auto`}>
+        <main className="pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 h-screen overflow-y-auto">
           <div className="mb-4">
             <BackToDashboardPill to="/FarmerDashboard" />
           </div>

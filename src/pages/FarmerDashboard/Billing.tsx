@@ -1,29 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import BackToDashboardPill from "../../components/BackToDashboardPill";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { CreditCardPosIcon, Invoice03Icon, ChartBarLineIcon, Wallet01Icon } from "hugeicons-react";
 
-type User = { firstname?: string; name?: string } | null;
-
 const Billing: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [user, setUser] = useState<User>(null);
   const [billingCycle, setBillingCycle] = useState<"Monthly" | "Yearly">("Monthly");
-
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) setUser(JSON.parse(storedUser));
-  }, []);
-
-  const firstName = user?.firstname || user?.name?.split(" ")[0] || "Farmer";
 
   return (
     <div className="flex min-h-screen bg-white">
       <div className="flex-1 flex flex-col">
         <DashboardNav />
 
-        <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto`}>
+        <main className="pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 min-h-screen overflow-y-auto">
           <div className="mb-4">
             <BackToDashboardPill to="/FarmerDashboard" />
           </div>

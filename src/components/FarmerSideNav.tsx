@@ -24,7 +24,7 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collap
         className={`fixed top-0 left-0 h-full ${collapsed ? "w-20" : "w-64"} bg-white shadow-lg transform transition-all duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
-        <div className="flex flex-col h-full pt-24 pb-6 overflow-y-auto">
+        <div className={`flex flex-col h-full pt-24 pb-6 ${collapsed ? "overflow-y-visible" : "overflow-y-auto"}`}>
           {/* --- HOME SECTION --- */}
           {/* --- OVERVIEW SECTION --- */}
             <Section title="Overview" collapsed={collapsed}>
@@ -121,9 +121,17 @@ const NavLink: React.FC<NavLinkProps> = ({ to, icon, children, collapsed = false
   const active = `text-lime-600 bg-lime-400/10 border-lime-600`;
 
   return (
-    <Link to={to} className={`${base} ${isActive ? active : inactive}`} aria-current={isActive ? "page" : undefined}>
+    <Link to={to} className={`${base} ${isActive ? active : inactive} group relative`} aria-current={isActive ? "page" : undefined}>
       <span className="text-xl">{icon}</span>
       {!collapsed && <span className="text-[14px] font-medium">{children}</span>}
+      
+      {collapsed && (
+        <div className="absolute left-full top-1/2 -translate-y-1/2 ml-3 px-3 py-1.5 bg-gray-900 text-white text-[12px] font-semibold rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-x-1 transition-all duration-200 pointer-events-none whitespace-nowrap z-[9999] shadow-2xl">
+          {children}
+          {/* Tooltip Arrow */}
+          <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-gray-900 rotate-45" />
+        </div>
+      )}
     </Link>
   );
 };
