@@ -27,6 +27,7 @@ import {
 import user1 from "../../assets/user1.jpeg";
 import user2 from "../../assets/user2.jpeg";
   import { getFirstName, fetchCurrentUser, type UserPayload } from "../../utils/user";
+  import { fetchFarmerStats, type FarmerStats } from "../../utils/stats";
 
 const FarmerDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -35,11 +36,15 @@ const FarmerDashboard: React.FC = () => {
   });
   
   const [user, setUser] = useState<UserPayload | null>(null);
+  const [stats, setStats] = useState<FarmerStats | null>(null);
   const [showCompleteProfileBanner, setShowCompleteProfileBanner] = useState(false);
 
   useEffect(() => {
     fetchCurrentUser().then(u => {
       if (u) setUser(u);
+    });
+    fetchFarmerStats().then(s => {
+      if (s) setStats(s);
     });
     const justSignedUp = localStorage.getItem("justSignedUp") === "true";
     if (justSignedUp) setShowCompleteProfileBanner(true);
@@ -57,9 +62,27 @@ const FarmerDashboard: React.FC = () => {
 
   const heroStats = [
     { title: "Alerts", value: "5", subtitle: "3 pests, 2 diseases", icon: <LuTriangleAlert className="text-red-600 text-xl" />, tint: "bg-red-50" },
-    { title: "Soil Moisture", value: "62%", subtitle: "Sector 1 & 2", icon: <LuDroplets className="text-blue-600 text-xl" />, tint: "bg-blue-50" },
-    { title: "Temperature", value: "24°C", subtitle: "Max 28°C today", icon: <LuThermometer className="text-orange-600 text-xl" />, tint: "bg-orange-50" },
-    { title: "Expected Rainfall", value: "18mm", subtitle: "Heavy rain exp.", icon: <LuCloudRain className="text-cyan-600 text-xl" />, tint: "bg-cyan-50" },
+    { 
+      title: "Soil Moisture", 
+      value: stats ? `${stats.stats.soil_moisture} ${stats.unit_details.soil_moisture}` : "62%", 
+      subtitle: stats ? `In ${stats.location.city}` : "Sector 1 & 2", 
+      icon: <LuDroplets className="text-blue-600 text-xl" />, 
+      tint: "bg-blue-50" 
+    },
+    { 
+      title: "Temperature", 
+      value: stats ? `${stats.stats.temperature}${stats.unit_details.temperature}` : "24°C", 
+      subtitle: "Max 28°C today", 
+      icon: <LuThermometer className="text-orange-600 text-xl" />, 
+      tint: "bg-orange-50" 
+    },
+    { 
+      title: "Expected Rainfall", 
+      value: stats ? `${stats.stats.expected_rainfall}${stats.unit_details.precipitation}` : "18mm", 
+      subtitle: stats ? `In ${stats.location.city}` : "Heavy rain exp.", 
+      icon: <LuCloudRain className="text-cyan-600 text-xl" />, 
+      tint: "bg-cyan-50" 
+    },
     { title: "Est. Revenue", value: "$12.5k", subtitle: "This month", icon: <LuChartBar className="text-green-600 text-xl" />, tint: "bg-green-50" },
   ];
 
@@ -100,9 +123,9 @@ const FarmerDashboard: React.FC = () => {
   ];
 
   const weatherData = [
-    { label: "Rainfall", value: "32mm", icon: "🌦" },
+    { label: "Rainfall", value: stats ? `${stats.stats.expected_rainfall}${stats.unit_details.precipitation}` : "32mm", icon: "🌦" },
     { label: "Humidity", value: "64%", icon: "💧" },
-    { label: "Temperature", value: "28°C", icon: "🌞" },
+    { label: "Temperature", value: stats ? `${stats.stats.temperature}${stats.unit_details.temperature}` : "28°C", icon: "🌞" },
     { label: "Sunshine", value: "7.2h", icon: "☀️" },
   ];
 
@@ -216,7 +239,7 @@ const FarmerDashboard: React.FC = () => {
             <section className="col-span-12 sm:col-span-6 lg:col-span-3 bg-green-50 p-5 rounded-2xl">
               <h3 className="text-sm font-semibold text-gray-800">Weather</h3>
               <p className="text-xs text-gray-600 mt-1">Rain expected in 2 hours. Cover sensitive seedlings in Sector 2.</p>
-              <div className="mt-3 text-2xl font-semibold text-gray-800">24°C</div>
+              <div className="mt-3 text-2xl font-semibold text-gray-800">{stats ? `${stats.stats.temperature}${stats.unit_details.temperature}` : "24°C"}</div>
             </section>
 
             <section className="col-span-12 sm:col-span-6 lg:col-span-5 bg-white p-5 rounded-2xl shadow-sm">

@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { AccountSetting02Icon, AiIdeaIcon, AnalysisTextLinkIcon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, Plant02Icon, UserGroupIcon } from "hugeicons-react";
+import { Link, useSearchParams } from "react-router-dom";
+import { AccountSetting02Icon, AnalysisTextLinkIcon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, UserGroupIcon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -9,6 +9,9 @@ interface PetOwnerSideNavProps {
 }
 
 const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapsed = false }) => {
+  const [searchParams] = useSearchParams();
+  const coopId = searchParams.get("id");
+
   return (
     <>
       {/* --- Overlay for Mobile --- */}
@@ -25,44 +28,38 @@ const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapse
           ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}
       >
         <div className="flex flex-col h-full pt-24 pb-6 overflow-y-auto">
-          {/* --- HOME SECTION --- */}
-          {/* --- OVERVIEW SECTION --- */}
-            <Section title="Overview" collapsed={collapsed}>
-                <NavLink to="/CoopDashboard" icon={<DashboardSquare02Icon />} collapsed={collapsed}>
-                    Dashboard
-                </NavLink>
-            </Section>
+          <Section title="Overview" collapsed={collapsed}>
+            <NavLink to="/CoopDashboard" icon={<DashboardSquare02Icon />} collapsed={collapsed} coopId={coopId}>
+              Dashboard
+            </NavLink>
+          </Section>
 
-            {/* --- FARM MANAGEMENT SECTION --- */}
-            <Section title="Coop Management" collapsed={collapsed}>
-                <NavLink to="/CoopDashboard/Members" icon={<UserGroupIcon />} collapsed={collapsed}>
-                    Members
-                </NavLink>
-            </Section>
+          <Section title="Coop Management" collapsed={collapsed}>
+            <NavLink to="/CoopDashboard/Members" icon={<UserGroupIcon />} collapsed={collapsed} coopId={coopId}>
+              Members
+            </NavLink>
+          </Section>
 
-            {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
-            <Section title="Insights" collapsed={collapsed}>
-              <NavLink to="/CoopDashboard/Analytics" icon={<AnalysisTextLinkIcon />} collapsed={collapsed}>
-                Analytics
-              </NavLink>
-              <NavLink to="/CoopDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed}>
-                Transactions
-              </NavLink>
-            </Section>
+          <Section title="Insights" collapsed={collapsed}>
+            <NavLink to="/CoopDashboard/Analytics" icon={<AnalysisTextLinkIcon />} collapsed={collapsed} coopId={coopId}>
+              Analytics
+            </NavLink>
+            <NavLink to="/CoopDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed} coopId={coopId}>
+              Transactions
+            </NavLink>
+          </Section>
 
-                {/* --- ACCOUNT SECTION --- */}
-            <Section title="Account" collapsed={collapsed}>
-              <NavLink to="/CoopDashboard/Profile" icon={<AccountSetting02Icon />} collapsed={collapsed}>
-                Settings
-              </NavLink>
-            </Section>
+          <Section title="Account" collapsed={collapsed}>
+            <NavLink to="/CoopDashboard/Profile" icon={<AccountSetting02Icon />} collapsed={collapsed} coopId={coopId}>
+              Settings
+            </NavLink>
+          </Section>
 
-            {/* --- SUPPORT SECTION --- */}
-            <Section title="Support" collapsed={collapsed}>
-                <NavLink to="/FarmerDashboard/Help" icon={<HelpCircleIcon />} collapsed={collapsed}>
-                    Help & Resources
-                </NavLink>
-            </Section>
+          <Section title="Support" collapsed={collapsed}>
+            <NavLink to="/FarmerDashboard/Help" icon={<HelpCircleIcon />} collapsed={collapsed}>
+              Help & Resources
+            </NavLink>
+          </Section>
 
         </div>
       </aside>
@@ -70,7 +67,6 @@ const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapse
   );
 };
 
-// --- Reusable section wrapper ---
 const Section: React.FC<{ title: string; children: React.ReactNode; collapsed?: boolean }> = ({
   title,
   children,
@@ -86,22 +82,25 @@ const Section: React.FC<{ title: string; children: React.ReactNode; collapsed?: 
   </div>
 );
 
-// --- Reusable NavLink component ---
 interface NavLinkProps {
   to: string;
   icon: React.ReactNode;
   children: React.ReactNode;
   collapsed?: boolean;
+  coopId?: string | null;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ to, icon, children, collapsed = false }) => (
-  <Link
-    to={to}
-    className={`font-sans flex items-center ${collapsed ? "justify-center" : "gap-3"} py-3 px-5 text-gray-600 hover:text-lime-600 hover:bg-lime-400/10 border-l-4 border-transparent hover:border-lime-600 transition-all duration-200`}
-  >
-    <span className="text-xl">{icon}</span>
-    {!collapsed && <span className="text-[14px] font-medium">{children}</span>}
-  </Link>
-);
+const NavLink: React.FC<NavLinkProps> = ({ to, icon, children, collapsed = false, coopId }) => {
+  const fullPath = coopId ? `${to}?id=${coopId}` : to;
+  return (
+    <Link
+      to={fullPath}
+      className={`font-sans flex items-center ${collapsed ? "justify-center" : "gap-3"} py-3 px-5 text-gray-600 hover:text-lime-600 hover:bg-lime-400/10 border-l-4 border-transparent hover:border-lime-600 transition-all duration-200`}
+    >
+      <span className="text-xl">{icon}</span>
+      {!collapsed && <span className="text-[14px] font-medium">{children}</span>}
+    </Link>
+  );
+};
 
 export default CoopSideNav;

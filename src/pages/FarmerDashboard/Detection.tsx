@@ -124,9 +124,19 @@ const Detection: React.FC = () => {
                          </div>
                        )}
 
+                       {result.treatment && (
+                         <div className="mt-4 p-4 bg-lime-50 rounded-lg border border-lime-100">
+                            <h4 className="font-semibold text-lime-800 mb-2 flex items-center gap-2">
+                              <LuHeart className="text-lime-600" /> Recommended Treatment
+                            </h4>
+                            <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                              {typeof result.treatment === 'string' ? result.treatment : result.treatment.treatment_plan}
+                            </p>
+                         </div>
+                       )}
+
                        <div className="mt-4 flex gap-3">
                          <button onClick={clearSelection} className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm">Analyze Another</button>
-                         <button className="px-4 py-2 bg-lime-600 text-white rounded-lg text-sm">View Treatment Plan</button>
                        </div>
                     </div>
                   ) : (
@@ -170,32 +180,7 @@ const Detection: React.FC = () => {
             </div>
           </section>
 
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            <div className="bg-white rounded-xl p-5 shadow-sm flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Overall Health Score</p>
-                <p className="text-2xl font-semibold text-gray-800 mt-1">92%</p>
-                <p className="text-xs text-emerald-600">↑ +2%</p>
-              </div>
-              <LuHeart className="text-emerald-600 text-2xl" />
-            </div>
-            <div className="bg-white rounded-xl p-5 shadow-sm flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Active Alerts</p>
-                <p className="text-2xl font-semibold text-gray-800 mt-1">2</p>
-                <p className="text-xs text-red-600">Requires Attention</p>
-              </div>
-              <LuTriangleAlert className="text-red-600 text-2xl" />
-            </div>
-            <div className="bg-white rounded-xl p-5 shadow-sm flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600">Resolved (This Month)</p>
-                <p className="text-2xl font-semibold text-gray-800 mt-1">15</p>
-                <p className="text-xs text-emerald-600">↑ +5%</p>
-              </div>
-              <LuCircleCheck className="text-blue-600 text-2xl" />
-            </div>
-          </section>
+
 
           <section className="grid grid-cols-1 md:grid-cols-12 gap-6">
             <div className="md:col-span-8 space-y-6">
