@@ -1,19 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import DashboardNav from "../../components/DashboardNav";
 import CoopSideNav from "../../components/CoopSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import { UserGroupIcon, Motorbike02Icon, Store04Icon, FilterIcon, Calendar02Icon, SortByDown02Icon, PlusSignIcon } from "hugeicons-react";
+import { 
+  UserGroupIcon, 
+  Motorbike02Icon, 
+  Store04Icon, 
+  FilterIcon, 
+  SortByDown02Icon, 
+  PlusSignIcon 
+} from "hugeicons-react";
+import { fetchCooperativeMembers, type CooperativeMember } from "../../utils/coops";
+import { getFullName } from "../../utils/user";
+import toast from "react-hot-toast";
 
 const Members: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [members, setMembers] = useState<CooperativeMember[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const [searchParams] = useSearchParams();
+  const coopId = searchParams.get("id");
 
-  const rows = [
-    { name: "John Doe", id: "FI-2023-891", role: { label: "Farmer", color: "bg-emerald-100 text-emerald-700" }, location: "Springfield, IL\nNorth Branch", email: "john.doe@farm.com", phone: "+1 (555) 123-4567", status: { label: "Active", dot: "bg-emerald-500" } },
-    { name: "Sarah Connor", id: "FI-2023-102", role: { label: "Buyer", color: "bg-blue-100 text-blue-700" }, location: "Chicago, IL\nUrban Market Co-op", email: "sarah.c@freshmarket.com", phone: "+1 (555) 987-6543", status: { label: "Active", dot: "bg-emerald-500" } },
-    { name: "Mike Ross", id: "FI-2023-334", role: { label: "Farmer", color: "bg-emerald-100 text-emerald-700" }, location: "Decatur, IL\nSouth Fields", email: "mike.ross@agri.net", phone: "+1 (555) 444-2222", status: { label: "Pending", dot: "bg-yellow-500" } },
-    { name: "Jessica Pearson", id: "FI-2023-112", role: { label: "Buyer", color: "bg-blue-100 text-blue-700" }, location: "Peoria, IL\nPeason Whole Foods", email: "jp@pearson.com", phone: "+1 (555) 777-9999", status: { label: "Deactivated", dot: "bg-gray-400" } },
-  ];
+  useEffect(() => {
+    const loadMembers = async () => {
+      if (!coopId) {
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const data = await fetchCooperativeMembers(parseInt(coopId));
+        setMembers(data);
+      } catch (error) {
+        toast.error("Failed to load cooperative members");
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadMembers();
+  }, [coopId]);
+
+  const getRoleStyle = (role: string) => {
+    switch (role?.toLowerCase()) {
+      case "owner":
+        return { label: "Owner", color: "bg-amber-100 text-amber-700" };
+      case "member_farmer":
+      case "farmer":
+        return { label: "Farmer", color: "bg-emerald-100 text-emerald-700" };
+      case "member_buyer":
+      case "buyer":
+        return { label: "Buyer", color: "bg-blue-100 text-blue-700" };
+      default:
+        return { label: role || "Member", color: "bg-gray-100 text-gray-700" };
+    }
+  };
+
+  const getStatusStyle = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "active":
+        return { label: "Active", dot: "bg-emerald-500" };
+      case "pending":
+        return { label: "Pending", dot: "bg-yellow-500" };
+      case "deactivated":
+        return { label: "Deactivated", dot: "bg-gray-400" };
+      default:
+        return { label: status || "Unknown", dot: "bg-gray-200" };
+    }
+  };
+
+  const farmersCount = members.filter(m => m.role.includes("farmer")).length;
+  const buyersCount = members.filter(m => m.role.includes("buyer")).length;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -39,7 +98,7 @@ const Members: React.FC = () => {
                 <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-lime-50 text-lime-600"><UserGroupIcon size={16} /></span>
               </div>
               <div className="mt-2">
-                <p className="text-3xl font-bold text-gray-800">1,240</p>
+                <p className="text-3xl font-bold text-gray-800">{isLoading ? "..." : members.length}</p>
                 <p className="text-xs mt-1"><span className="px-2 py-[2px] rounded-full bg-emerald-100 text-emerald-700">+12%</span> <span className="text-gray-500">from last month</span></p>
               </div>
             </div>
@@ -50,8 +109,10 @@ const Members: React.FC = () => {
                 <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-yellow-50 text-yellow-600"><Motorbike02Icon size={16} /></span>
               </div>
               <div className="mt-2">
-                <p className="text-3xl font-bold text-gray-800">850</p>
-                <div className="mt-2 w-full h-2 bg-gray-200 rounded-full"><div className="h-2 bg-yellow-500 rounded-full" style={{ width: "70%" }} /></div>
+                <p className="text-3xl font-bold text-gray-800">{isLoading ? "..." : farmersCount}</p>
+                <div className="mt-2 w-full h-2 bg-gray-200 rounded-full">
+                    <div className="h-2 bg-yellow-500 rounded-full" style={{ width: members.length > 0 ? `${(farmersCount / members.length) * 100}%` : "0%" }} />
+                </div>
               </div>
             </div>
 
@@ -61,8 +122,10 @@ const Members: React.FC = () => {
                 <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-blue-50 text-blue-600"><Store04Icon size={16} /></span>
               </div>
               <div className="mt-2">
-                <p className="text-3xl font-bold text-gray-800">390</p>
-                <div className="mt-2 w-full h-2 bg-gray-200 rounded-full"><div className="h-2 bg-blue-500 rounded-full" style={{ width: "40%" }} /></div>
+                <p className="text-3xl font-bold text-gray-800">{isLoading ? "..." : buyersCount}</p>
+                <div className="mt-2 w-full h-2 bg-gray-200 rounded-full">
+                    <div className="h-2 bg-blue-500 rounded-full" style={{ width: members.length > 0 ? `${(buyersCount / members.length) * 100}%` : "0%" }} />
+                </div>
               </div>
             </div>
           </section>
@@ -87,43 +150,58 @@ const Members: React.FC = () => {
               <div className="col-span-3">Contact</div>
               <div className="col-span-1">Status</div>
             </div>
-            {rows.map((r, idx) => (
-              <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none">
-                <div className="col-span-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-gray-200" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-800">{r.name}</p>
-                      <p className="text-xs text-gray-500">ID: {r.id}</p>
+
+            {isLoading ? (
+                <div className="p-10 text-center text-gray-500">Loading members...</div>
+            ) : members.length === 0 ? (
+                <div className="p-10 text-center text-gray-500">No members found for this cooperative.</div>
+            ) : (
+                members.map((m, idx) => {
+                  const roleStyle = getRoleStyle(m.role);
+                  const statusStyle = getStatusStyle(m.status);
+                  const name = getFullName(m.user);
+                  const location = [m.user.city, m.user.state].filter(Boolean).join(", ") || "No Location";
+
+                  return (
+                    <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none hover:bg-gray-50/50 transition-colors">
+                      <div className="col-span-3">
+                        <div className="flex items-center gap-3">
+                          <img 
+                            src={m.user.profile_pic_url || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name)} 
+                            alt={name} 
+                            className="w-9 h-9 rounded-full object-cover border border-gray-100 shadow-sm"
+                          />
+                          <div>
+                            <p className="text-sm font-medium text-gray-800">{name}</p>
+                            <p className="text-xs text-gray-500">ID: FI-2023-{m.id}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-span-2">
+                        <span className={`text-[10px] font-black uppercase px-2 py-1 rounded-full ${roleStyle.color}`}>{roleStyle.label}</span>
+                      </div>
+                      <div className="col-span-3 text-sm text-gray-700 whitespace-pre-line truncate pr-4">{location}</div>
+                      <div className="col-span-3 text-sm text-gray-700">
+                        <div className="flex items-center gap-2 truncate"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user.email}</div>
+                        <div className="flex items-center gap-2 mt-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user.phone || "No Phone"}</div>
+                      </div>
+                      <div className="col-span-1">
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className={`w-2.5 h-2.5 rounded-full ${statusStyle.dot}`} />
+                          <span className="text-gray-800 text-xs font-semibold">{statusStyle.label}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="col-span-2">
-                  <span className={`text-xs px-2 py-[2px] rounded-full ${r.role.color}`}>{r.role.label}</span>
-                </div>
-                <div className="col-span-3 text-sm text-gray-700 whitespace-pre-line">{r.location}</div>
-                <div className="col-span-3 text-sm text-gray-700">
-                  <div className="flex items-center gap-2"><span className="w-4 h-4 rounded bg-gray-100" /> {r.email}</div>
-                  <div className="flex items-center gap-2 mt-1"><span className="w-4 h-4 rounded bg-gray-100" /> {r.phone}</div>
-                </div>
-                <div className="col-span-1">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className={`w-2.5 h-2.5 rounded-full ${r.status.dot}`} />
-                    <span className="text-gray-800">{r.status.label}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
+                  );
+                })
+            )}
+
             <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-600">
-              <p>Showing 1 to 4 of 1,240 results</p>
+              <p>Showing {members.length} result{members.length !== 1 ? "s" : ""}</p>
               <div className="flex items-center gap-2">
-                <button className="px-3 py-1 rounded-md border">‹</button>
+                <button className="px-3 py-1 rounded-md border hover:bg-gray-50">‹</button>
                 <button className="px-3 py-1 rounded-md bg-lime-600 text-white">1</button>
-                <button className="px-3 py-1 rounded-md border">2</button>
-                <button className="px-3 py-1 rounded-md border">3</button>
-                <button className="px-3 py-1 rounded-md border">…</button>
-                <button className="px-3 py-1 rounded-md border">10</button>
-                <button className="px-3 py-1 rounded-md border">›</button>
+                <button className="px-3 py-1 rounded-md border hover:bg-gray-50">›</button>
               </div>
             </div>
           </section>

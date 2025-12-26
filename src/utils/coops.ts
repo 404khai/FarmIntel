@@ -1,4 +1,5 @@
 import { api } from "./api";
+import type { UserPayload } from "./user";
 
 export interface Cooperative {
   id: number;
@@ -8,6 +9,14 @@ export interface Cooperative {
   created_at?: string;
 }
 
+export interface CooperativeMember {
+  id: number;
+  user: UserPayload;
+  role: "owner" | "member_farmer" | "member_buyer" | string;
+  joined_at: string;
+  status: string;
+}
+
 export const fetchCooperatives = async (): Promise<Cooperative[]> => {
   const res = await api.get("/cooperatives/");
   return res.data;
@@ -15,6 +24,11 @@ export const fetchCooperatives = async (): Promise<Cooperative[]> => {
 
 export const fetchCooperative = async (id: number): Promise<Cooperative> => {
   const res = await api.get(`/cooperatives/${id}/`);
+  return res.data;
+};
+
+export const fetchCooperativeMembers = async (coopId: number): Promise<CooperativeMember[]> => {
+  const res = await api.get(`/cooperatives/${coopId}/members/`);
   return res.data;
 };
 

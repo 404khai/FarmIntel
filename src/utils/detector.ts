@@ -6,6 +6,11 @@ export interface DetectionResult {
     label: string;
     confidence: number;
   };
+  treatment: {
+    status: string;
+    treatment_plan: string;
+    model: string;
+  } | string;
   alternatives?: Array<{
     label: string;
     confidence: number;
