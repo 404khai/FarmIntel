@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, DocumentAttachmentIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon, Store04Icon, CreditCardPosIcon } from "hugeicons-react";
+import { AccountSetting02Icon, Message01Icon, Bug02Icon, DashboardSquare02Icon, UserGroupIcon, HelpCircleIcon, Invoice03Icon, Plant02Icon, Store04Icon, CreditCardPosIcon } from "hugeicons-react";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -45,15 +45,18 @@ const FarmerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collap
             </Section>
 
             {/* --- INSIGHTS & INTELLIGENCE SECTION --- */}
-            <Section title="Insights" collapsed={collapsed}>
+            <Section title="Social" collapsed={collapsed}>
                 {/* <NavLink to="/FarmerDashboard/Recommendations" icon={<Megaphone02Icon />}>
                     AI Recommendations
                 </NavLink> */}
                 <NavLink to="/FarmerDashboard/Messages" icon={<Message01Icon />} collapsed={collapsed}>
                     Messages
                 </NavLink>
-                <NavLink to="/FarmerDashboard/Reports" icon={<DocumentAttachmentIcon />} collapsed={collapsed}>
+                {/* <NavLink to="/FarmerDashboard/Reports" icon={<DocumentAttachmentIcon />} collapsed={collapsed}>
                     Reports
+                </NavLink> */}
+                <NavLink to="/FarmerDashboard/Cooperatives" icon={<UserGroupIcon />} collapsed={collapsed}>
+                    Cooperatives
                 </NavLink>
             </Section>
 
