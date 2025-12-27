@@ -29,68 +29,34 @@ const Cooperatives: React.FC = () => {
     });
   };
 
-  // Mock data to match the design image
-  const mockCooperatives: CooperativeDisplay[] = [
-    {
-      id: 1,
-      name: "GreenField Collective",
-      description: "Dedicated to sustainable organic farming practices in the Midwest with a focus on corn and soy exports.",
-      image_url: "https://images.unsplash.com/photo-1625246333195-58197bd47d26?auto=format&fit=crop&q=80&w=300&h=200",
-      membersCount: 1200,
-      isVerified: true,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 2,
-      name: "Valley Grain Alliance",
-      description: "A powerful network of wheat and barley growers maximizing storage efficiency and logistics.",
-      image_url: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&q=80&w=300&h=200",
-      membersCount: 850,
-      isVerified: true,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 3,
-      name: "EcoHarvest Network",
-      description: "Connecting small-scale fruit farmers with premium organic markets and grocers nationwide.",
-      image_url: "https://images.unsplash.com/photo-1628352081506-83c43123ed6d?auto=format&fit=crop&q=80&w=300&h=200",
-      membersCount: 400,
-      isVerified: false,
-      enrollmentStatus: "Open",
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 4,
-      name: "DairyPro Union",
-      description: "A cooperative for dairy farmers focusing on modernizing equipment and ensuring milk price stability.",
-      image_url: "https://images.unsplash.com/photo-1500595046743-cd271d694d30?auto=format&fit=crop&q=80&w=300&h=200",
-      membersCount: 2100,
-      isVerified: true,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 5,
-      name: "SoyBean United",
-      description: "Export-focused group helping soy farmers reach international markets in Asia and Europe.",
-      image_url: "https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?auto=format&fit=crop&q=80&w=300&h=200",
-      membersCount: 1500,
-      isVerified: true,
-      created_at: new Date().toISOString()
-    },
-    {
-      id: 6,
-      name: "TechFarm Innovators",
-      description: "A community for forward-thinking farmers adopting IoT, drones, and precision agriculture.",
-      image_url: "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&q=80&w=300&h=200",
-      membersCount: 320,
-      isVerified: false,
-      enrollmentStatus: "Open",
-      created_at: new Date().toISOString()
-    }
-  ];
+  const [coops, setCoops] = useState<CooperativeDisplay[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const [coops, setCoops] = useState<CooperativeDisplay[]>(mockCooperatives);
-  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const loadCooperatives = async () => {
+      try {
+        const data = await fetchCooperatives();
+        // Transform the fetched data to match the display interface
+        // Adding random/placeholder values for fields not present in the backend yet
+        const displayData: CooperativeDisplay[] = data.map(c => ({
+          ...c,
+          membersCount: Math.floor(Math.random() * 2000) + 100, // Placeholder
+          isVerified: Math.random() > 0.3, // Randomly verify 70%
+          enrollmentStatus: Math.random() > 0.5 ? "Open" : "Closed",
+          region: "Midwest",
+          cropFocus: "Mixed"
+        }));
+        setCoops(displayData);
+      } catch (error) {
+        console.error("Failed to fetch cooperatives", error);
+        toast.error("Could not load cooperatives. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCooperatives();
+  }, []);
 
   const handleJoin = async (id: number) => {
     try {
@@ -153,7 +119,12 @@ const Cooperatives: React.FC = () => {
 
           {/* Cooperatives List */}
           <div className="space-y-4">
-            {coops.map((coop) => (
+            {loading ? (
+              <div className="text-center py-20 text-gray-500">Loading cooperatives...</div>
+            ) : coops.length === 0 ? (
+              <div className="text-center py-20 text-gray-500">No cooperatives found.</div>
+            ) : (
+              coops.map((coop) => (
               <div key={coop.id} className="bg-white rounded-xl p-4 sm:p-5 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-5 md:items-center hover:shadow-md transition-shadow">
                 {/* Image */}
                 <div className="w-full md:w-48 h-32 md:h-28 flex-shrink-0">
@@ -196,7 +167,7 @@ const Cooperatives: React.FC = () => {
                   </button>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
 
           {/* Load More */}
