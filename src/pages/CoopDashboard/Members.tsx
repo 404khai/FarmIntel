@@ -160,14 +160,14 @@ const Members: React.FC = () => {
                   const roleStyle = getRoleStyle(m.role);
                   const statusStyle = getStatusStyle(m.status);
                   const name = getFullName(m.user);
-                  const location = [m.user.city, m.user.state].filter(Boolean).join(", ") || "No Location";
+                  const location = [m.user?.city, m.user?.state].filter(Boolean).join(", ") || "No Location";
 
                   return (
                     <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none hover:bg-gray-50/50 transition-colors">
                       <div className="col-span-3">
                         <div className="flex items-center gap-3">
                           <img 
-                            src={m.user.profile_pic_url || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name)} 
+                            src={m.user?.profile_pic_url || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name)} 
                             alt={name} 
                             className="w-9 h-9 rounded-full object-cover border border-gray-100 shadow-sm"
                           />
@@ -182,8 +182,8 @@ const Members: React.FC = () => {
                       </div>
                       <div className="col-span-3 text-sm text-gray-700 whitespace-pre-line truncate pr-4">{location}</div>
                       <div className="col-span-3 text-sm text-gray-700">
-                        <div className="flex items-center gap-2 truncate"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user.email}</div>
-                        <div className="flex items-center gap-2 mt-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user.phone || "No Phone"}</div>
+                        <div className="flex items-center gap-2 truncate"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user?.email || "No Email"}</div>
+                        <div className="flex items-center gap-2 mt-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user?.phone || "No Phone"}</div>
                       </div>
                       <div className="col-span-1">
                         <div className="flex items-center gap-2 text-sm">

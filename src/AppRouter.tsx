@@ -21,6 +21,7 @@ import Reports from "./pages/FarmerDashboard/Reports";
 import Orders from "./pages/FarmerDashboard/Orders";
 import Transactions from "./pages/FarmerDashboard/Transactions";
 import Help from "./pages/FarmerDashboard/Help";
+import Cooperatives from "./pages/FarmerDashboard/Cooperatives";
 
 // BuyerDashboard PAGES
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
@@ -75,6 +76,7 @@ const FarmerDashboardLayout = () => (
       <Route path="/FarmerDashboard/Settings" element={<Settings />} />
       <Route path="/FarmerDashboard/Profile" element={<Profile />} />
       <Route path="/FarmerDashboard/Messages" element={<Messages />} />
+      <Route path="/FarmerDashboard/Cooperatives" element={<Cooperatives />} />
       <Route path="/FarmerDashboard/Reports" element={<Reports />} />
       <Route path="/FarmerDashboard/Orders" element={<Orders />} />
       <Route path="/FarmerDashboard/Transactions" element={<Transactions />} />
