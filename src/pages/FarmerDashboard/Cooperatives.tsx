@@ -5,6 +5,7 @@ import Breadcrumbs from "../../components/Breadcrumbs";
 import { LuUsers, LuCircleCheck, LuFilter, LuChevronDown } from "react-icons/lu";
 import { fetchCooperatives, joinCooperative, type Cooperative } from "../../utils/coops";
 import toast, { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 // Extended interface for UI display purposes
 interface CooperativeDisplay extends Cooperative {
@@ -16,6 +17,7 @@ interface CooperativeDisplay extends Cooperative {
 }
 
 const Cooperatives: React.FC = () => {
+  const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
     return localStorage.getItem("farmerSidebarCollapsed") === "true";
@@ -60,10 +62,21 @@ const Cooperatives: React.FC = () => {
 
   const handleJoin = async (id: number) => {
     try {
-      // await joinCooperative(id); // backend integration
-      toast.success("Request to join sent successfully!");
-    } catch (error) {
-      toast.error("Failed to join cooperative.");
+      const membership = await joinCooperative(id);
+      setCoops(prev => prev.map(c => c.id === id ? { ...c, membersCount: c.membersCount + 1 } : c));
+      localStorage.setItem("coopJoinEvent", JSON.stringify({ coopId: id, role: membership.role, timestamp: Date.now() }));
+      const roleLabel = membership.role?.includes("farmer") ? "Farmer" : membership.role?.includes("buyer") ? "Buyer" : membership.role;
+      toast.success(`Joined as ${roleLabel}`);
+      navigate(`/CoopDashboard?id=${id}`);
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        toast.error("Forbidden: Please ensure join action allows non-owners.");
+      } else if (error?.response?.status === 400) {
+        toast.error(error?.response?.data?.detail || "Already a member or invalid role.");
+      } else {
+        toast.error("Failed to join cooperative.");
+      }
+      console.error(error);
     }
   };
 

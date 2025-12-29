@@ -71,8 +71,21 @@ const Members: React.FC = () => {
     }
   };
 
-  const farmersCount = members.filter(m => m.role.includes("farmer")).length;
-  const buyersCount = members.filter(m => m.role.includes("buyer")).length;
+  const joinEvent = (() => {
+    try {
+      const raw = localStorage.getItem("coopJoinEvent");
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  })();
+  const coopIdNum = coopId ? parseInt(coopId) : null;
+  const isRecentJoin = joinEvent && coopIdNum && joinEvent.coopId === coopIdNum && (Date.now() - (joinEvent.timestamp || 0)) < 5 * 60 * 1000;
+  const extraFarmer = isRecentJoin && String(joinEvent.role).includes("farmer") ? 1 : 0;
+  const extraBuyer = isRecentJoin && String(joinEvent.role).includes("buyer") ? 1 : 0;
+  const extraTotal = isRecentJoin ? 1 : 0;
+  const farmersCount = members.filter(m => m.role.includes("farmer")).length + extraFarmer;
+  const buyersCount = members.filter(m => m.role.includes("buyer")).length + extraBuyer;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -98,7 +111,7 @@ const Members: React.FC = () => {
                 <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-lime-50 text-lime-600"><UserGroupIcon size={16} /></span>
               </div>
               <div className="mt-2">
-                <p className="text-3xl font-bold text-gray-800">{isLoading ? "..." : members.length}</p>
+                <p className="text-3xl font-bold text-gray-800">{isLoading ? "..." : members.length + extraTotal}</p>
                 <p className="text-xs mt-1"><span className="px-2 py-[2px] rounded-full bg-emerald-100 text-emerald-700">+12%</span> <span className="text-gray-500">from last month</span></p>
               </div>
             </div>
