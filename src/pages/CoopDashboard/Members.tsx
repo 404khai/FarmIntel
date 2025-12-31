@@ -11,15 +11,16 @@ import {
   SortByDown02Icon, 
   PlusSignIcon 
 } from "hugeicons-react";
-import { fetchCooperativeMembers, type CooperativeMember } from "../../utils/coops";
+import { fetchCooperativeMembersDetail, isCoopOwner, type CooperativeMemberDetail } from "../../utils/coops";
 import { getFullName } from "../../utils/user";
 import toast from "react-hot-toast";
 
 const Members: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [members, setMembers] = useState<CooperativeMember[]>([]);
+  const [members, setMembers] = useState<CooperativeMemberDetail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [allowed, setAllowed] = useState<boolean>(true);
   
   const [searchParams] = useSearchParams();
   const coopId = searchParams.get("id");
@@ -31,7 +32,14 @@ const Members: React.FC = () => {
         return;
       }
       try {
-        const data = await fetchCooperativeMembers(parseInt(coopId));
+        const idNum = parseInt(coopId);
+        const owner = await isCoopOwner(idNum);
+        setAllowed(owner);
+        if (!owner) {
+          setMembers([]);
+          return;
+        }
+        const data = await fetchCooperativeMembersDetail(idNum);
         setMembers(data);
       } catch (error) {
         toast.error("Failed to load cooperative members");
@@ -84,8 +92,8 @@ const Members: React.FC = () => {
   const extraFarmer = isRecentJoin && String(joinEvent.role).includes("farmer") ? 1 : 0;
   const extraBuyer = isRecentJoin && String(joinEvent.role).includes("buyer") ? 1 : 0;
   const extraTotal = isRecentJoin ? 1 : 0;
-  const farmersCount = members.filter(m => m.role.includes("farmer")).length + extraFarmer;
-  const buyersCount = members.filter(m => m.role.includes("buyer")).length + extraBuyer;
+  const farmersCount = members.filter(m => (m.role || m.role_display).toLowerCase().includes("farmer")).length + extraFarmer;
+  const buyersCount = members.filter(m => (m.role || m.role_display).toLowerCase().includes("buyer")).length + extraBuyer;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -94,6 +102,11 @@ const Members: React.FC = () => {
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)} />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+          {!allowed && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-5 text-red-700 mb-6">
+              Access restricted — only the cooperative owner can view member management.
+            </div>
+          )}
           <div className="flex items-center justify-between mb-4">
             <Breadcrumbs items={[{ label: "Dashboard", to: "/CoopDashboard" }, { label: "Member Management" }]} />
             <button className="flex items-center gap-2 px-3 py-2 rounded-md bg-lime-600 text-white text-sm"><PlusSignIcon size={18} /> Add New Member</button>
@@ -166,27 +179,29 @@ const Members: React.FC = () => {
 
             {isLoading ? (
                 <div className="p-10 text-center text-gray-500">Loading members...</div>
+            ) : !allowed ? (
+                <div className="p-10 text-center text-gray-500">You do not have permission to view this page.</div>
             ) : members.length === 0 ? (
                 <div className="p-10 text-center text-gray-500">No members found for this cooperative.</div>
             ) : (
                 members.map((m, idx) => {
-                  const roleStyle = getRoleStyle(m.role);
+                  const roleStyle = getRoleStyle(m.role || m.role_display);
                   const statusStyle = getStatusStyle(m.status);
-                  const name = getFullName(m.user);
-                  const location = [m.user?.city, m.user?.state].filter(Boolean).join(", ") || "No Location";
+                  const name = m.full_name || "Member";
+                  const location = m.location || "No Location";
 
                   return (
                     <div key={idx} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none hover:bg-gray-50/50 transition-colors">
                       <div className="col-span-3">
                         <div className="flex items-center gap-3">
                           <img 
-                            src={m.user?.profile_pic_url || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name)} 
+                            src={m.profile_pic_url || "https://ui-avatars.com/api/?name=" + encodeURIComponent(name)} 
                             alt={name} 
                             className="w-9 h-9 rounded-full object-cover border border-gray-100 shadow-sm"
                           />
                           <div>
                             <p className="text-sm font-medium text-gray-800">{name}</p>
-                            <p className="text-xs text-gray-500">ID: FI-2023-{m.id}</p>
+                            <p className="text-xs text-gray-500">ID: {m.member_id || `FI-2023-${m.id}`}</p>
                           </div>
                         </div>
                       </div>
@@ -195,8 +210,8 @@ const Members: React.FC = () => {
                       </div>
                       <div className="col-span-3 text-sm text-gray-700 whitespace-pre-line truncate pr-4">{location}</div>
                       <div className="col-span-3 text-sm text-gray-700">
-                        <div className="flex items-center gap-2 truncate"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user?.email || "No Email"}</div>
-                        <div className="flex items-center gap-2 mt-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.user?.phone || "No Phone"}</div>
+                        <div className="flex items-center gap-2 truncate"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.email || "No Email"}</div>
+                        <div className="flex items-center gap-2 mt-1"><span className="w-1.5 h-1.5 rounded-full bg-gray-300" /> {m.phone || "No Phone"}</div>
                       </div>
                       <div className="col-span-1">
                         <div className="flex items-center gap-2 text-sm">

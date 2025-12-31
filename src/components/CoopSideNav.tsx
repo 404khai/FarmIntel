@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { AccountSetting02Icon, AnalysisTextLinkIcon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, UserGroupIcon } from "hugeicons-react";
+import { AccountSetting02Icon, AnalysisTextLinkIcon, DashboardSquare02Icon, HelpCircleIcon, Invoice03Icon, UserGroupIcon, Store04Icon } from "hugeicons-react";
+import { isCoopOwner } from "../utils/coops";
 
 interface PetOwnerSideNavProps {
   isOpen: boolean;
@@ -11,6 +12,19 @@ interface PetOwnerSideNavProps {
 const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapsed = false }) => {
   const [searchParams] = useSearchParams();
   const coopId = searchParams.get("id");
+  const [isOwner, setIsOwner] = useState<boolean>(false);
+
+  useEffect(() => {
+    const check = async () => {
+      if (!coopId) {
+        setIsOwner(false);
+        return;
+      }
+      const ok = await isCoopOwner(parseInt(coopId));
+      setIsOwner(ok);
+    };
+    check();
+  }, [coopId]);
 
   return (
     <>
@@ -34,24 +48,36 @@ const CoopSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose, collapse
             </NavLink>
           </Section>
 
-          <Section title="Coop Management" collapsed={collapsed}>
-            <NavLink to="/CoopDashboard/Members" icon={<UserGroupIcon />} collapsed={collapsed} coopId={coopId}>
-              Members
-            </NavLink>
-          </Section>
+          {isOwner && (
+            <Section title="Coop Management" collapsed={collapsed}>
+              <NavLink to="/CoopDashboard/Members" icon={<UserGroupIcon />} collapsed={collapsed} coopId={coopId}>
+                Members
+              </NavLink>
+            </Section>
+          )}
 
-          <Section title="Insights" collapsed={collapsed}>
-            <NavLink to="/CoopDashboard/Analytics" icon={<AnalysisTextLinkIcon />} collapsed={collapsed} coopId={coopId}>
-              Analytics
-            </NavLink>
-            <NavLink to="/CoopDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed} coopId={coopId}>
-              Transactions
-            </NavLink>
-          </Section>
+          {isOwner && (
+            <Section title="Insights" collapsed={collapsed}>
+              <NavLink to="/CoopDashboard/Analytics" icon={<AnalysisTextLinkIcon />} collapsed={collapsed} coopId={coopId}>
+                Analytics
+              </NavLink>
+              <NavLink to="/CoopDashboard/Transactions" icon={<Invoice03Icon />} collapsed={collapsed} coopId={coopId}>
+                Transactions
+              </NavLink>
+            </Section>
+          )}
 
-          <Section title="Account" collapsed={collapsed}>
-            <NavLink to="/CoopDashboard/Profile" icon={<AccountSetting02Icon />} collapsed={collapsed} coopId={coopId}>
-              Settings
+          {isOwner && (
+            <Section title="Account" collapsed={collapsed}>
+              <NavLink to="/CoopDashboard/Profile" icon={<AccountSetting02Icon />} collapsed={collapsed} coopId={coopId}>
+                Settings
+              </NavLink>
+            </Section>
+          )}
+
+          <Section title="Marketplace" collapsed={collapsed}>
+            <NavLink to="/CoopDashboard/Marketplace" icon={<Store04Icon />} collapsed={collapsed} coopId={coopId}>
+              Browse Supply
             </NavLink>
           </Section>
 

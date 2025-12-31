@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import CoopSideNav from "../../components/CoopSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
@@ -8,12 +8,26 @@ import user2 from "../../assets/user2.jpeg";
 import user3 from "../../assets/user3.jpeg";
 import user4 from "../../assets/user4.jpeg";
 import user5 from "../../assets/user5.jpeg";
+import { useSearchParams } from "react-router-dom";
+import { isCoopOwner } from "../../utils/coops";
 
 const Transactions: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [statusFilter, setStatusFilter] = useState("All");
   const [cropFilter, setCropFilter] = useState("All");
+  const [allowed, setAllowed] = useState<boolean>(true);
+  const [searchParams] = useSearchParams();
+  const coopId = searchParams.get("id");
+
+  useEffect(() => {
+    const check = async () => {
+      if (!coopId) return;
+      const ok = await isCoopOwner(parseInt(coopId));
+      setAllowed(ok);
+    };
+    check();
+  }, [coopId]);
 
   const rows = [
     { id: "#TRX-9928", farmer: { name: "John Doe", tag: "Member #442", avatar: user1 }, buyer: { name: "Whole Foods Co-op", tag: "Retailer", avatar: user2 }, crop: { name: "Organic Wheat", qty: "500 kg" }, amount: "$450.00", date: "Oct 24, 2023\n10:42 AM", status: { label: "Completed", color: "bg-emerald-100 text-emerald-700" } },
@@ -31,6 +45,11 @@ const Transactions: React.FC = () => {
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)} />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+          {!allowed && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-5 text-red-700 mb-6">
+              Access restricted — only the cooperative owner can view transactions.
+            </div>
+          )}
           <div className="flex items-center justify-between mb-4">
             <Breadcrumbs items={[{ label: "Dashboard", to: "/CoopDashboard" }, { label: "All Transactions" }]} />
             <button className="flex items-center gap-2 px-3 py-2 rounded-md bg-lime-600 text-white text-sm"><Download02Icon size={18} /> Export Report</button>
@@ -41,6 +60,7 @@ const Transactions: React.FC = () => {
             <p className="text-gray-500 mt-1">Manage and audit all cooperative trade flows in real-time.</p>
           </div>
 
+          {allowed && (
           <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-white rounded-2xl shadow-sm p-5">
               <div className="flex items-center justify-between">
@@ -75,7 +95,9 @@ const Transactions: React.FC = () => {
               </div>
             </div>
           </section>
+          )}
 
+          {allowed && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-6">
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2 flex-1 min-w-[260px]">
@@ -99,7 +121,9 @@ const Transactions: React.FC = () => {
               <button className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm">Apply</button>
             </div>
           </section>
+          )}
 
+          {allowed && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="grid grid-cols-12 gap-0 text-xs font-semibold text-gray-500 border-b px-4 py-3">
               <div className="col-span-2">ID</div>
@@ -156,6 +180,7 @@ const Transactions: React.FC = () => {
               </div>
             </div>
           </section>
+          )}
         </main>
       </div>
     </div>
