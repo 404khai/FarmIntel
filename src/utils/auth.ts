@@ -5,6 +5,7 @@ import { saveTokens, clearTokens } from "../utils/storage";
 export interface RegisterPayload {
   email: string;
   password: string;
+  role?: string;
 }
 
 export interface VerifyOtpPayload {

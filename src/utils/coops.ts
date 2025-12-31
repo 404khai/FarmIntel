@@ -7,6 +7,7 @@ export interface Cooperative {
   description: string;
   image_url: string | null;
   created_at?: string;
+  created_by?: number;
 }
 
 export interface CooperativeMember {
@@ -54,6 +55,7 @@ export const deleteCooperative = async (id: number): Promise<void> => {
   await api.delete(`/cooperatives/${id}/`);
 };
 
-export const joinCooperative = async (id: number): Promise<void> => {
-  await api.post(`/cooperatives/${id}/join/`);
+export const joinCooperative = async (id: number): Promise<CooperativeMember> => {
+  const res = await api.post(`/cooperatives/${id}/join/`);
+  return res.data;
 };

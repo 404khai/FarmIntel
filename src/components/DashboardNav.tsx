@@ -39,7 +39,9 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
   const loadCooperatives = async () => {
     try {
       const data = await fetchCooperatives();
-      setCooperatives(data);
+      const currentUserId = getStoredUser()?.id;
+      const owned = data.filter(c => c.created_by === currentUserId);
+      setCooperatives(owned);
     } catch (error) {
       console.error("Failed to load cooperatives:", error);
     }
@@ -166,8 +168,8 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
                   </li>
                 ))
               ) : (
-                <li className="px-4 py-3 text-sm text-gray-400 text-center">
-                  No cooperatives yet
+                <li className="px-4 py-3 text-sm text-gray-500 text-center">
+                  You haven't created any cooperatives yet.
                 </li>
               )}
             </ul>
@@ -252,12 +254,18 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
 
           {isDropdownOpen && (
             <div className="absolute right-0 mt-50 w-48 bg-white rounded-lg shadow-lg z-50 animate-fade-in">
-              <Link
-                to="/FarmerDashboard/Profile"
-                className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-gray-700"
-              >
-                <LuUser size={16} /> My Profile
-              </Link>
+              {(() => {
+                const role = getStoredUser()?.role;
+                const profileLink = role === "buyer" ? "/BuyerDashboard/Profile" : "/FarmerDashboard/Profile";
+                return (
+                  <Link
+                    to={profileLink}
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-gray-700"
+                  >
+                    <LuUser size={16} /> My Profile
+                  </Link>
+                );
+              })()}
               <Link
                 to="/home"
                 className="flex items-center gap-2 px-4 py-2 hover:bg-gray-50 text-gray-700"

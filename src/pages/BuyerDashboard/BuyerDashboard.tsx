@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
-import { LuShoppingCart, LuHandshake, LuWallet, LuTrendingUp } from "react-icons/lu";
+import { LuShoppingCart, LuHandshake, LuWallet, LuTrendingUp, LuBadgeAlert } from "react-icons/lu";
 import BuyerSideNav from "../../components/BuyerSideNav";
+import { Link } from "react-router-dom";
 import {
   ResponsiveContainer,
   LineChart,
@@ -54,10 +55,13 @@ const BuyerDashboard: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   type User = { firstname?: string; name?: string } | null;
   const [user, setUser] = useState<User>(null);
+  const [showCompleteProfileBanner, setShowCompleteProfileBanner] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
+    const justSignedUp = localStorage.getItem("justSignedUp") === "true";
+    if (justSignedUp) setShowCompleteProfileBanner(true);
   }, []);
 
   const firstName = user?.firstname || user?.name?.split(" ")[0] || "Buyer";
@@ -112,10 +116,36 @@ const BuyerDashboard: React.FC = () => {
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
         <main className="pt-16 px-4 sm:px-6 md:px-8 ml-0 md:ml-64 pb-10 h-screen overflow-y-auto">
-          <div className="mb-6">
-            <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName}</h1>
-            <p className="text-gray-500 mt-1">Your supply chain overview and marketplace activity.</p>
-          </div>
+              <div className="mb-6">
+                <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName}</h1>
+                <p className="text-gray-500 mt-1">Your supply chain overview and marketplace activity.</p>
+              </div>
+          
+          {showCompleteProfileBanner && (
+            <div className="mb-6 rounded-2xl border border-lime-200 bg-lime-50 p-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-lime-100 text-lime-700">
+                  <LuBadgeAlert />
+                </span>
+                <div>
+                  <p className="text-sm font-medium text-gray-800">Complete your profile to get better matches</p>
+                  <p className="text-xs text-gray-600">Add contact details and purchasing preferences to improve seller trust.</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Link to="/BuyerDashboard/Settings" className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm">Go to Settings</Link>
+                <button
+                  onClick={() => {
+                    setShowCompleteProfileBanner(false);
+                    localStorage.removeItem("justSignedUp");
+                  }}
+                  className="px-3 py-2 rounded-md bg-gray-100 text-gray-800 text-sm"
+                >
+                  Dismiss
+                </button>
+              </div>
+            </div>
+          )}
 
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {kpis.map((k, i) => (
