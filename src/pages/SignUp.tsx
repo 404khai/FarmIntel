@@ -12,6 +12,7 @@ import OtpModal from "../components/OtpModal";
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("farmer");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +24,7 @@ const SignUp: React.FC = () => {
     setLoading(true);
 
     try {
-      const res = await registerUser({ email, password });
+      const res = await registerUser({ email, password, role });
       toast.success(res.data.message);
 
       // Show OTP modal
@@ -52,7 +53,7 @@ const SignUp: React.FC = () => {
         </div>
 
         {/* Google Button */}
-        <button
+        {/* <button
           type="button"
           className="flex items-center justify-center gap-3 w-[60%] rounded-md py-3 bg-white hover:shadow-md transition-all"
         >
@@ -65,6 +66,36 @@ const SignUp: React.FC = () => {
         <div className="flex items-center justify-center w-full gap-4 text-gray-400 my-2">
           <span className="h-px bg-gray-600 flex-1"></span> or
           <span className="h-px bg-gray-600 flex-1"></span>
+        </div> */}
+
+        {/* Role Selection */}
+        <div className="flex gap-6 w-full justify-center my-1">
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input
+              type="radio"
+              name="role"
+              value="farmer"
+              checked={role === "farmer"}
+              onChange={(e) => setRole(e.target.value)}
+              className="accent-lime-500 w-4 h-4 cursor-pointer"
+            />
+            <span className={`text-sm transition-colors ${role === "farmer" ? "text-lime-400 font-medium" : "text-gray-400 group-hover:text-gray-300"}`}>
+              Farmer
+            </span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input
+              type="radio"
+              name="role"
+              value="buyer"
+              checked={role === "buyer"}
+              onChange={(e) => setRole(e.target.value)}
+              className="accent-lime-500 w-4 h-4 cursor-pointer"
+            />
+            <span className={`text-sm transition-colors ${role === "buyer" ? "text-lime-400 font-medium" : "text-gray-400 group-hover:text-gray-300"}`}>
+              Buyer
+            </span>
+          </label>
         </div>
 
         {/* Email */}

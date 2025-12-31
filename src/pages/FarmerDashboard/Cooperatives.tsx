@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import FarmerSideNav from "../../components/FarmerSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import { LuUsers, LuCircleCheck, LuFilter, LuChevronDown } from "react-icons/lu";
-import { fetchCooperatives, joinCooperative, type Cooperative } from "../../utils/coops";
+import { LuUsers, LuCircleCheck, LuChevronDown } from "react-icons/lu";
+import { fetchCooperatives, joinCooperative, fetchCooperativeMembers, type Cooperative } from "../../utils/coops";
 import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { getStoredUser } from "../../utils/user";
 
 // Extended interface for UI display purposes
 interface CooperativeDisplay extends Cooperative {
@@ -14,6 +15,7 @@ interface CooperativeDisplay extends Cooperative {
   enrollmentStatus?: "Open" | "Closed";
   region?: string;
   cropFocus?: string;
+  joined?: boolean;
 }
 
 const Cooperatives: React.FC = () => {
@@ -33,6 +35,7 @@ const Cooperatives: React.FC = () => {
 
   const [coops, setCoops] = useState<CooperativeDisplay[]>([]);
   const [loading, setLoading] = useState(true);
+  const [joinedFilter, setJoinedFilter] = useState<"all" | "joined">("all");
 
   useEffect(() => {
     const loadCooperatives = async () => {
@@ -40,7 +43,7 @@ const Cooperatives: React.FC = () => {
         const data = await fetchCooperatives();
         // Transform the fetched data to match the display interface
         // Adding random/placeholder values for fields not present in the backend yet
-        const displayData: CooperativeDisplay[] = data.map(c => ({
+        let displayData: CooperativeDisplay[] = data.map(c => ({
           ...c,
           membersCount: Math.floor(Math.random() * 2000) + 100, // Placeholder
           isVerified: Math.random() > 0.3, // Randomly verify 70%
@@ -48,6 +51,22 @@ const Cooperatives: React.FC = () => {
           region: "Midwest",
           cropFocus: "Mixed"
         }));
+        // Determine if current user is a member of each coop
+        const currentUserId = getStoredUser()?.id;
+        if (currentUserId) {
+          const withMembership = await Promise.all(
+            displayData.map(async (c) => {
+              try {
+                const members = await fetchCooperativeMembers(c.id);
+                const isMember = members.some(m => m.user?.id === currentUserId);
+                return { ...c, joined: isMember };
+              } catch {
+                return { ...c, joined: false };
+              }
+            })
+          );
+          displayData = withMembership;
+        }
         setCoops(displayData);
       } catch (error) {
         console.error("Failed to fetch cooperatives", error);
@@ -63,7 +82,7 @@ const Cooperatives: React.FC = () => {
   const handleJoin = async (id: number) => {
     try {
       const membership = await joinCooperative(id);
-      setCoops(prev => prev.map(c => c.id === id ? { ...c, membersCount: c.membersCount + 1 } : c));
+      setCoops(prev => prev.map(c => c.id === id ? { ...c, membersCount: c.membersCount + 1, joined: true } : c));
       localStorage.setItem("coopJoinEvent", JSON.stringify({ coopId: id, role: membership.role, timestamp: Date.now() }));
       const roleLabel = membership.role?.includes("farmer") ? "Farmer" : membership.role?.includes("buyer") ? "Buyer" : membership.role;
       toast.success(`Joined as ${roleLabel}`);
@@ -127,6 +146,17 @@ const Cooperatives: React.FC = () => {
                   Sort by: Popularity <LuChevronDown className="text-gray-400" />
                 </button>
               </div>
+              <div className="relative">
+                <button
+                  onClick={() => setJoinedFilter(prev => (prev === "all" ? "joined" : "all"))}
+                  className={`flex items-center gap-2 border px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    joinedFilter === "joined" ? "bg-lime-50 border-lime-200 text-lime-700" : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {joinedFilter === "joined" ? "Joined: Only" : "Joined: All"}
+                  <LuChevronDown className="text-gray-400" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -137,7 +167,9 @@ const Cooperatives: React.FC = () => {
             ) : coops.length === 0 ? (
               <div className="text-center py-20 text-gray-500">No cooperatives found.</div>
             ) : (
-              coops.map((coop) => (
+              coops
+                .filter(c => joinedFilter === "joined" ? c.joined : true)
+                .map((coop) => (
               <div key={coop.id} className="bg-white rounded-xl p-4 sm:p-5 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-5 md:items-center hover:shadow-md transition-shadow">
                 {/* Image */}
                 <div className="w-full md:w-48 h-32 md:h-28 flex-shrink-0">
@@ -157,9 +189,9 @@ const Cooperatives: React.FC = () => {
                         <LuCircleCheck size={12} className="fill-current" /> Verified
                       </span>
                     )}
-                    {coop.enrollmentStatus === "Open" && (
-                      <span className="flex items-center gap-1 bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full font-medium">
-                        Enrollment Open
+                    {coop.joined && (
+                      <span className="flex items-center gap-1 bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-medium">
+                        You are in this coop
                       </span>
                     )}
                   </div>
@@ -172,12 +204,21 @@ const Cooperatives: React.FC = () => {
                     <LuUsers className="text-gray-400" />
                     <span className="text-sm font-medium">{(coop.membersCount / 1000).toFixed(1)}k Members</span>
                   </div>
-                  <button 
-                    onClick={() => handleJoin(coop.id)}
-                    className="bg-lime-500 hover:bg-lime-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm shadow-lime-200"
-                  >
-                    Join
-                  </button>
+                  {coop.joined ? (
+                    <button
+                      onClick={() => navigate(`/CoopDashboard?id=${coop.id}`)}
+                      className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg text-sm font-semibold transition-colors"
+                    >
+                      Visit Coop
+                    </button>
+                  ) : (
+                    <button 
+                      onClick={() => handleJoin(coop.id)}
+                      className="bg-lime-500 hover:bg-lime-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors shadow-sm shadow-lime-200"
+                    >
+                      Join
+                    </button>
+                  )}
                 </div>
               </div>
             )))}

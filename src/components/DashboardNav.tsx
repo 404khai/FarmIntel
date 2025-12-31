@@ -39,7 +39,9 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
   const loadCooperatives = async () => {
     try {
       const data = await fetchCooperatives();
-      setCooperatives(data);
+      const currentUserId = getStoredUser()?.id;
+      const owned = data.filter(c => c.created_by === currentUserId);
+      setCooperatives(owned);
     } catch (error) {
       console.error("Failed to load cooperatives:", error);
     }
@@ -166,8 +168,8 @@ const DashboardNav: React.FC<DashboardNavProps> = ({ onToggleMobileSidebar, onTo
                   </li>
                 ))
               ) : (
-                <li className="px-4 py-3 text-sm text-gray-400 text-center">
-                  No cooperatives yet
+                <li className="px-4 py-3 text-sm text-gray-500 text-center">
+                  You haven't created any cooperatives yet.
                 </li>
               )}
             </ul>

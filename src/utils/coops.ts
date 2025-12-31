@@ -7,6 +7,7 @@ export interface Cooperative {
   description: string;
   image_url: string | null;
   created_at?: string;
+  created_by?: number;
 }
 
 export interface CooperativeMember {
