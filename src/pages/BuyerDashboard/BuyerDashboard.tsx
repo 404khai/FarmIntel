@@ -116,10 +116,10 @@ const BuyerDashboard: React.FC = () => {
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} />
 
         <main className="pt-16 px-4 sm:px-6 md:px-8 ml-0 md:ml-64 pb-10 h-screen overflow-y-auto">
-          <div className="mb-6">
-            <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName}</h1>
-            <p className="text-gray-500 mt-1">Your supply chain overview and marketplace activity.</p>
-          </div>
+              <div className="mb-6">
+                <h1 className="text-3xl font-semibold text-gray-800">Hi, {firstName}</h1>
+                <p className="text-gray-500 mt-1">Your supply chain overview and marketplace activity.</p>
+              </div>
           
           {showCompleteProfileBanner && (
             <div className="mb-6 rounded-2xl border border-lime-200 bg-lime-50 p-4 flex items-center justify-between">
@@ -133,7 +133,7 @@ const BuyerDashboard: React.FC = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Link to="/BuyerDashboard" className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm">Go to Settings</Link>
+                <Link to="/BuyerDashboard/Settings" className="px-3 py-2 rounded-md bg-lime-600 text-white text-sm">Go to Settings</Link>
                 <button
                   onClick={() => {
                     setShowCompleteProfileBanner(false);

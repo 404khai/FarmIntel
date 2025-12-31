@@ -25,6 +25,9 @@ import Cooperatives from "./pages/FarmerDashboard/Cooperatives";
 
 // BuyerDashboard PAGES
 import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
+import BuyerSettings from "./pages/BuyerDashboard/Settings";
+import BuyerCooperatives from "./pages/BuyerDashboard/Cooperatives";
+import BuyerProfile from "./pages/BuyerDashboard/Profile";
 
 // OrgDashboard PAGES
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
@@ -102,6 +105,9 @@ const BuyerDashboardLayout = () => (
   <>
     <Routes>
       <Route path="/BuyerDashboard" element={<BuyerDashboard />} /> 
+      <Route path="/BuyerDashboard/Settings" element={<BuyerSettings />} /> 
+      <Route path="/BuyerDashboard/Cooperatives" element={<BuyerCooperatives />} /> 
+      <Route path="/BuyerDashboard/Profile" element={<BuyerProfile />} /> 
     </Routes>
   </>
 );
