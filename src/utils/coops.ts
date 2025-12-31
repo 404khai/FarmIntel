@@ -1,5 +1,6 @@
 import { api } from "./api";
 import type { UserPayload } from "./user";
+import { getStoredUser } from "./user";
 
 export interface Cooperative {
   id: number;
@@ -18,6 +19,21 @@ export interface CooperativeMember {
   status: string;
 }
 
+// Detailed member info serializer contract
+export interface CooperativeMemberDetail {
+  id: number;
+  profile_pic_url: string | null;
+  full_name: string;
+  member_id: string;
+  role?: string;
+  role_display: string;
+  location: string;
+  business_name: string;
+  email: string;
+  phone: string;
+  status: string;
+}
+
 export const fetchCooperatives = async (): Promise<Cooperative[]> => {
   const res = await api.get("/cooperatives/");
   return res.data;
@@ -29,6 +45,11 @@ export const fetchCooperative = async (id: number): Promise<Cooperative> => {
 };
 
 export const fetchCooperativeMembers = async (coopId: number): Promise<CooperativeMember[]> => {
+  const res = await api.get(`/cooperatives/${coopId}/members/`);
+  return res.data;
+};
+
+export const fetchCooperativeMembersDetail = async (coopId: number): Promise<CooperativeMemberDetail[]> => {
   const res = await api.get(`/cooperatives/${coopId}/members/`);
   return res.data;
 };
@@ -58,4 +79,15 @@ export const deleteCooperative = async (id: number): Promise<void> => {
 export const joinCooperative = async (id: number): Promise<CooperativeMember> => {
   const res = await api.post(`/cooperatives/${id}/join/`);
   return res.data;
+};
+
+export const isCoopOwner = async (coopId: number): Promise<boolean> => {
+  try {
+    const currentUserId = getStoredUser()?.id;
+    if (!currentUserId) return false;
+    const coop = await fetchCooperative(coopId);
+    return coop.created_by === currentUserId;
+  } catch {
+    return false;
+  }
 };

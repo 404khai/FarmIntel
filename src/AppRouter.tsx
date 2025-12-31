@@ -42,6 +42,7 @@ import CoopDashboard from "./pages/CoopDashboard/CoopDashboard";
 import Members from "./pages/CoopDashboard/Members";
 import CoopAnalytics from "./pages/CoopDashboard/Analytics";
 import CoopTransactions from "./pages/CoopDashboard/Transactions";
+import Marketplace from "./pages/CoopDashboard/Marketplace";
 
 
 
@@ -96,6 +97,7 @@ const CoopDashboardLayout = () => (
       <Route path="/CoopDashboard/Members" element={<Members />} /> 
       <Route path="/CoopDashboard/Analytics" element={<CoopAnalytics />} /> 
       <Route path="/CoopDashboard/Transactions" element={<CoopTransactions />} /> 
+      <Route path="/CoopDashboard/Marketplace" element={<Marketplace />} /> 
     </Routes>
   </>
 );

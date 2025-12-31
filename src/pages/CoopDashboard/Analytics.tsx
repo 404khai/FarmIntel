@@ -1,13 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardNav from "../../components/DashboardNav";
 import CoopSideNav from "../../components/CoopSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
 import { Calendar02Icon, Download02Icon, UserGroupIcon, CreditCardPosIcon, Agreement02Icon } from "hugeicons-react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import { useSearchParams } from "react-router-dom";
+import { isCoopOwner } from "../../utils/coops";
 
 const Analytics: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [allowed, setAllowed] = useState<boolean>(true);
+  const [searchParams] = useSearchParams();
+  const coopId = searchParams.get("id");
+
+  useEffect(() => {
+    const check = async () => {
+      if (!coopId) return;
+      const ok = await isCoopOwner(parseInt(coopId));
+      setAllowed(ok);
+    };
+    check();
+  }, [coopId]);
 
   const registrationData = [
     { day: "Mon", value: 24 },
@@ -26,6 +40,11 @@ const Analytics: React.FC = () => {
         <DashboardNav onToggleMobileSidebar={() => setIsSidebarOpen(!isSidebarOpen)} onToggleCollapse={() => setIsSidebarCollapsed((c) => !c)} />
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
+          {!allowed && (
+            <div className="bg-red-50 border border-red-200 rounded-xl p-5 text-red-700 mb-6">
+              Access restricted — only the cooperative owner can view analytics.
+            </div>
+          )}
           <div className="flex items-center justify-between mb-4">
             <Breadcrumbs items={[{ label: "Dashboard", to: "/CoopDashboard" }, { label: "Analytics" }]} />
             <div className="flex items-center gap-2">
@@ -39,6 +58,7 @@ const Analytics: React.FC = () => {
             <p className="text-gray-500 mt-1">Welcome back, Admin. Here’s what’s happening today.</p>
           </div>
 
+          {allowed && (
           <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div className="bg-white rounded-2xl shadow-sm p-5">
               <div className="flex items-center justify-between">
@@ -73,7 +93,9 @@ const Analytics: React.FC = () => {
               </div>
             </div>
           </section>
+          )}
 
+          {allowed && (
           <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
             <div className="lg:col-span-8 bg-white rounded-2xl shadow-sm p-5">
               <div className="flex items-center justify-between mb-2">
@@ -96,7 +118,6 @@ const Analytics: React.FC = () => {
                 </ResponsiveContainer>
               </div>
             </div>
-
             <div className="lg:col-span-4 bg-white rounded-2xl shadow-sm p-5">
               <h3 className="text-lg font-semibold text-gray-800">Top Producing Regions</h3>
               <div className="mt-3 h-40 rounded-xl bg-gray-100" />
@@ -119,7 +140,9 @@ const Analytics: React.FC = () => {
               </div>
             </div>
           </section>
+          )}
 
+          {allowed && (
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="flex items-center justify-between px-4 py-3">
               <h3 className="text-lg font-semibold text-gray-800">Recent Transactions</h3>
@@ -152,6 +175,7 @@ const Analytics: React.FC = () => {
               </div>
             ))}
           </section>
+          )}
         </main>
       </div>
     </div>
