@@ -4,7 +4,13 @@ import { verifyOtp, requestOtp } from "../utils/auth";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-export default function OtpModal({ email, close }) {
+interface Props {
+  email: string;
+  close: () => void;
+  role?: string;
+}
+
+export default function OtpModal({ email, close, role }: Props) {
   const [otp, setOtp] = useState("");
   const [loading, setLoading] = useState(false);
   const [resending, setResending] = useState(false);
@@ -20,10 +26,10 @@ export default function OtpModal({ email, close }) {
       toast.dismiss(load);
       toast.success("OTP Verified!");
 
-      localStorage.setItem("user", JSON.stringify({ email }));
+      localStorage.setItem("user", JSON.stringify({ email, role }));
       localStorage.setItem("justSignedUp", "true");
       close();
-      navigate("/FarmerDashboard");
+      navigate(role === "buyer" ? "/BuyerDashboard" : "/FarmerDashboard");
     } catch (err: any) {
       toast.dismiss(load);
       toast.error(err?.response?.data?.message || "Invalid OTP");

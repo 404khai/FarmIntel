@@ -154,7 +154,7 @@ const SignUp: React.FC = () => {
       />
 
       {showOtpModal && (
-        <OtpModal email={emailForOtp} close={() => setShowOtpModal(false)} />
+        <OtpModal email={emailForOtp} role={role} close={() => setShowOtpModal(false)} />
       )}
     </div>
   );
