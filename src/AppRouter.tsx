@@ -28,6 +28,7 @@ import BuyerDashboard from "./pages/BuyerDashboard/BuyerDashboard";
 import BuyerSettings from "./pages/BuyerDashboard/Settings";
 import BuyerCooperatives from "./pages/BuyerDashboard/Cooperatives";
 import BuyerProfile from "./pages/BuyerDashboard/Profile";
+import BuyerOrders from "./pages/BuyerDashboard/Orders";
 
 // OrgDashboard PAGES
 import OrgDashboard from "./pages/OrgDashboard/OrgDashboard";
@@ -43,6 +44,7 @@ import Members from "./pages/CoopDashboard/Members";
 import CoopAnalytics from "./pages/CoopDashboard/Analytics";
 import CoopTransactions from "./pages/CoopDashboard/Transactions";
 import Marketplace from "./pages/CoopDashboard/Marketplace";
+import FarmerProfile from "./pages/CoopDashboard/FarmerProfile";
 
 
 
@@ -98,6 +100,7 @@ const CoopDashboardLayout = () => (
       <Route path="/CoopDashboard/Analytics" element={<CoopAnalytics />} /> 
       <Route path="/CoopDashboard/Transactions" element={<CoopTransactions />} /> 
       <Route path="/CoopDashboard/Marketplace" element={<Marketplace />} /> 
+      <Route path="/CoopDashboard/FarmerProfile/:id" element={<FarmerProfile />} />
     </Routes>
   </>
 );
@@ -110,6 +113,7 @@ const BuyerDashboardLayout = () => (
       <Route path="/BuyerDashboard/Settings" element={<BuyerSettings />} /> 
       <Route path="/BuyerDashboard/Cooperatives" element={<BuyerCooperatives />} /> 
       <Route path="/BuyerDashboard/Profile" element={<BuyerProfile />} /> 
+      <Route path="/BuyerDashboard/Orders" element={<BuyerOrders />} /> 
     </Routes>
   </>
 );
