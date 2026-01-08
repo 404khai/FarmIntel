@@ -45,7 +45,7 @@ const BuyerSideNav: React.FC<PetOwnerSideNavProps> = ({ isOpen, onClose }) => {
 
 
             <Section title="Orders">
-                <NavLink to="/FarmerDashboard/Orders" icon={<Store04Icon />}>
+                <NavLink to="/BuyerDashboard/Orders" icon={<Store04Icon />}>
                     Orders
                 </NavLink>
                 <NavLink to="/FarmerDashboard/Transactions" icon={<Invoice03Icon />}>

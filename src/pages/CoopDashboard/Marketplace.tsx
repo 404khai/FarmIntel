@@ -1,14 +1,17 @@
-import React, { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import DashboardNav from "../../components/DashboardNav";
 import CoopSideNav from "../../components/CoopSideNav";
 import Breadcrumbs from "../../components/Breadcrumbs";
+import { fetchCooperativeMembersDetail, type CooperativeMemberDetail } from "../../utils/coops";
+import type { Crop } from "../../utils/crops";
 import { 
   Search01Icon, 
   FilterIcon, 
   ArrowRight01Icon,
   ShoppingBag03Icon
 } from "hugeicons-react";
+import avatar from "../../assets/avatar.jpeg";
 
 interface Product {
   id: number;
@@ -16,95 +19,67 @@ interface Product {
   location: string;
   verified: boolean;
   rating: number;
-  productName: string;
-  quantity: string;
-  price: string;
-  available: string;
+  productName?: string;
+  quantity?: string;
+  price?: string;
+  available?: string;
   isNew?: boolean;
   image?: string;
+  member: CooperativeMemberDetail;
+  crop?: Crop | null;
 }
-
-const DUMMY_PRODUCTS: Product[] = [
-  {
-    id: 1,
-    farmerName: "Green Valley Estates",
-    location: "Napa Valley, CA",
-    verified: true,
-    rating: 4.8,
-    productName: "Organic Kale",
-    quantity: "500 kg",
-    price: "$3.20 / kg",
-    available: "Today",
-    image: "https://images.unsplash.com/photo-1524673450801-b5aa9b621b76?auto=format&fit=crop&q=80&w=200&h=200"
-  },
-  {
-    id: 2,
-    farmerName: "Sunny Side Co-op",
-    location: "Modesto, CA",
-    verified: true,
-    rating: 4.9,
-    productName: "Sweet Corn",
-    quantity: "5,000 ears",
-    price: "$0.50 / ear",
-    available: "Now",
-    image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&q=80&w=200&h=200"
-  },
-  {
-    id: 3,
-    farmerName: "Highland Orchards",
-    location: "Auburn, WA",
-    verified: false,
-    rating: 0,
-    productName: "Fuji Apples",
-    quantity: "12 tons",
-    price: "$2.10 / kg",
-    available: "In Storage",
-    isNew: true,
-    image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&q=80&w=200&h=200"
-  },
-  {
-    id: 4,
-    farmerName: "Riverbend Organics",
-    location: "Willamette Valley, OR",
-    verified: true,
-    rating: 4.7,
-    productName: "Blueberries",
-    quantity: "800 kg",
-    price: "$6.50 / kg",
-    available: "Frozen Stock",
-    image: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?auto=format&fit=crop&q=80&w=200&h=200"
-  },
-  {
-    id: 5,
-    farmerName: "Golden Grains Farm",
-    location: "Fargo, ND",
-    verified: true,
-    rating: 5.0,
-    productName: "Hard Red Wheat",
-    quantity: "50 tons",
-    price: "$230 / ton",
-    available: "Bulk Silo",
-    image: "https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?auto=format&fit=crop&q=80&w=200&h=200"
-  },
-  {
-    id: 6,
-    farmerName: "Coastal Growers",
-    location: "Santa Cruz, CA",
-    verified: true,
-    rating: 4.5,
-    productName: "Strawberries",
-    quantity: "300 crates",
-    price: "$18 / crate",
-    available: "Tomorrow",
-    image: "https://images.unsplash.com/photo-1464965911861-746a04b4b0a6?auto=format&fit=crop&q=80&w=200&h=200"
-  }
-];
 
 const Marketplace: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const coopId = searchParams.get("id");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+      if (!coopId) return;
+      try {
+        const members = await fetchCooperativeMembersDetail(parseInt(coopId));
+        // Filter for farmers, and include owners as well
+        const farmers = members.filter(m => {
+          const rDisplay = (m.role_display || "").toLowerCase();
+          const r = (m.role || "").toLowerCase();
+          const uRole = (m.user_role || "").toLowerCase();
+          // Show anyone who has "farmer" in their role display, coop role, or user role, OR is the owner
+          return rDisplay.includes("farmer") || r.includes("farmer") || uRole.includes("farmer") || r === "owner";
+        });
+        
+        // Map farmers to products using their real crops (first crop if available)
+        const mappedProducts = farmers.map((farmer, index) => {
+            const crop = (farmer.crops && farmer.crops.length > 0) ? farmer.crops[0] : null;
+            return {
+                id: farmer.id,
+                farmerName: farmer.full_name,
+                location: farmer.location || "Location not set",
+                verified: farmer.status === "Active",
+                rating: 4.0 + (Math.random() * 1.0),
+                productName: crop?.name,
+                quantity: crop ? `${(crop.quantity_kg || 0).toLocaleString()} kg` : undefined,
+                price: crop?.price_per_kg !== undefined ? `₦${(crop.price_per_kg || 0).toLocaleString()} / kg` : undefined,
+                available: crop?.status,
+                isNew: Math.random() > 0.7,
+                image: farmer.profile_pic_url || avatar,
+                member: farmer,
+                crop
+            };
+        });
+        setProducts(mappedProducts);
+      } catch (error) {
+        console.error("Failed to load marketplace data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadData();
+  }, [coopId]);
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -177,7 +152,7 @@ const Marketplace: React.FC = () => {
 
           {/* Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {DUMMY_PRODUCTS.map((product) => (
+            {products.map((product) => (
               <div key={product.id} className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-4">
@@ -232,7 +207,10 @@ const Marketplace: React.FC = () => {
                   </div>
 
                   <div className="mt-5 grid grid-cols-2 gap-3">
-                    <button className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                    <button 
+                        onClick={() => navigate(`/CoopDashboard/FarmerProfile/${product.member.id}`, { state: { member: product.member } })}
+                        className="px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
                         View Profile
                     </button>
                     <button className="px-4 py-2 bg-lime-600 border border-transparent rounded-lg text-sm font-medium text-white hover:bg-lime-700 transition-colors shadow-sm shadow-lime-200">

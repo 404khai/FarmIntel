@@ -26,7 +26,14 @@ const Login: React.FC = () => {
       const user = res?.data?.user || { email };
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.removeItem("justSignedUp");
-      navigate("/FarmerDashboard");
+      
+      if (user?.role === "buyer") {
+        navigate("/BuyerDashboard");
+      } else if (user?.role === "farmer") {
+        navigate("/FarmerDashboard");
+      } else {
+        navigate("/FarmerDashboard");
+      }
     } catch (err: any) {
       toast.dismiss(load);
       const msg = err?.response?.data?.message || "Login failed";

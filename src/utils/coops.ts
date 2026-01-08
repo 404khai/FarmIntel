@@ -1,4 +1,5 @@
 import { api } from "./api";
+import type { Crop } from "./crops";
 import type { UserPayload } from "./user";
 import { getStoredUser } from "./user";
 
@@ -28,10 +29,14 @@ export interface CooperativeMemberDetail {
   role?: string;
   role_display: string;
   location: string;
+  city?: string;
+  state?: string;
   business_name: string;
   email: string;
   phone: string;
   status: string;
+  user_role?: string;
+  crops?: Crop[];
 }
 
 export const fetchCooperatives = async (): Promise<Cooperative[]> => {

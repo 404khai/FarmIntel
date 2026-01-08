@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
 import DashboardNav from "../../components/DashboardNav";
-import FarmerSideNav from "../../components/FarmerSideNav";
+import BuyerSideNav from "../../components/BuyerSideNav";
 import { Calendar02Icon, CreditCardPosIcon, ChartBarLineIcon, FilterIcon, Download02Icon } from "hugeicons-react";
 import Breadcrumbs from "../../components/Breadcrumbs";
-import { LuCheck, LuX } from "react-icons/lu";
 import user1 from "../../assets/user1.jpeg";
 import toast, { Toaster } from "react-hot-toast";
-import { listOrders, updateOrderAction, type Order } from "../../utils/orders";
+import { listOrders, type Order } from "../../utils/orders";
 
-const Orders: React.FC = () => {
+const BuyerOrders: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
-    return localStorage.getItem("farmerSidebarCollapsed") === "true";
+    return localStorage.getItem("buyerSidebarCollapsed") === "true";
   });
   
   const handleToggleCollapse = () => {
     setIsSidebarCollapsed(prev => {
       const newState = !prev;
-      localStorage.setItem("farmerSidebarCollapsed", String(newState));
+      localStorage.setItem("buyerSidebarCollapsed", String(newState));
       return newState;
     });
   };
@@ -42,36 +41,32 @@ const Orders: React.FC = () => {
     }
   };
 
-  const handleOrderAction = async (orderId: number, action: "accept" | "decline") => {
-    try {
-      await updateOrderAction(orderId, action);
-      toast.success(`Order ${action}ed successfully`);
-      fetchOrders(); // Refresh list
-    } catch (error) {
-      console.error(`Failed to ${action} order`, error);
-      toast.error(`Failed to ${action} order`);
-    }
-  };
-
   // Helper to safely get nested properties or fallback
-  const getBuyerName = (order: Order) => {
-    if (order.buyer_details?.full_name) {
-        return order.buyer_details.full_name;
+  const getFarmerName = (order: Order) => {
+    if (order.farmer_details?.full_name) {
+        return order.farmer_details.full_name;
     }
-    if (typeof order.buyer === 'object' && order.buyer !== null && 'full_name' in order.buyer) {
-        return (order.buyer as any).full_name;
+    if (typeof order.farmer === 'object' && order.farmer !== null && 'full_name' in order.farmer) {
+        return (order.farmer as any).full_name;
     }
-    return `Buyer #${typeof order.buyer === 'number' ? order.buyer : (order.buyer as any).id}`;
+    return `Farmer #${typeof order.farmer === 'number' ? order.farmer : (order.farmer as any).id}`;
   };
 
-  const getBuyerLocation = (order: Order) => {
-     if (order.buyer_details?.location) {
-        return order.buyer_details.location;
+  const getFarmerLocation = (order: Order) => {
+     if (order.farmer_details?.city || order.farmer_details?.state) {
+        return `${order.farmer_details.city || ''}, ${order.farmer_details.state || ''}`;
      }
-     if (typeof order.buyer === 'object' && order.buyer !== null && 'location' in order.buyer) {
-        return (order.buyer as any).location || "Unknown Location";
+     if (typeof order.farmer === 'object' && order.farmer !== null && 'location' in order.farmer) {
+        return (order.farmer as any).location || "Unknown Location";
     }
     return "Unknown Location";
+  };
+
+  const getFarmerImage = (order: Order) => {
+    if (order.farmer_details?.profile_pic_url) {
+        return order.farmer_details.profile_pic_url;
+    }
+    return user1; // Fallback
   };
 
   const getCropImage = (order: Order) => {
@@ -111,7 +106,7 @@ const Orders: React.FC = () => {
         case "DECLINED": return "bg-red-100 text-red-700";
         case "PAID": return "bg-blue-100 text-blue-700";
         case "SHIPPED": return "bg-indigo-100 text-indigo-700";
-        case "COMPLETED": return "bg-gray-100 text-gray-700"; // Assuming Fulfilled maps to Completed/Shipped
+        case "COMPLETED": return "bg-gray-100 text-gray-700";
         case "CANCELLED": return "bg-gray-200 text-gray-600";
         default: return "bg-gray-100 text-gray-700";
     }
@@ -124,7 +119,7 @@ const Orders: React.FC = () => {
 
   return (
     <div className="flex min-h-screen bg-white">
-      <FarmerSideNav
+      <BuyerSideNav
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         collapsed={isSidebarCollapsed}
@@ -138,12 +133,12 @@ const Orders: React.FC = () => {
 
         <main className={`pt-20 px-4 sm:px-6 md:px-8 pb-10 ml-0 ${isSidebarCollapsed ? "md:ml-20" : "md:ml-64"} min-h-screen overflow-y-auto`}>
           <div className="mb-4">
-            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/FarmerDashboard" }, { label: "Orders" }]} />
+            <Breadcrumbs items={[{ label: "Home", to: "/Home" }, { label: "Dashboard", to: "/BuyerDashboard" }, { label: "Orders" }]} />
           </div>
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-semibold text-gray-800">Incoming Orders</h1>
-              <p className="text-gray-500 mt-1">Manage your sales, approve requests, and track deliveries.</p>
+              <h1 className="text-3xl font-semibold text-gray-800">My Orders</h1>
+              <p className="text-gray-500 mt-1">Track your purchases and delivery status.</p>
             </div>
             <button className="px-4 py-2 rounded-md bg-lime-600 text-white text-sm flex items-center gap-2"><Download02Icon size={18} /> Export Report</button>
           </div>
@@ -156,20 +151,20 @@ const Orders: React.FC = () => {
               </div>
               <div className="mt-2">
                 <p className="text-3xl font-bold text-gray-800">{orders.filter(o => o.status === "PENDING").length}</p>
-                <p className="text-xs mt-1 text-gray-500">requests requiring action</p>
+                <p className="text-xs mt-1 text-gray-500">awaiting confirmation</p>
               </div>
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm p-5">
               <div className="flex items-center justify-between">
-                <p className="text-sm text-gray-700">Total Revenue</p>
+                <p className="text-sm text-gray-700">Total Spent</p>
                 <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-emerald-50 text-emerald-600"><CreditCardPosIcon size={16} /></span>
               </div>
               <div className="mt-2">
                 <p className="text-3xl font-bold text-gray-800">
                     ₦{orders.reduce((acc, curr) => acc + (parseFloat(curr.total_price) || 0), 0).toLocaleString()}
                 </p>
-                <p className="text-xs mt-1 text-gray-500">estimated total value</p>
+                <p className="text-xs mt-1 text-gray-500">total investment</p>
               </div>
             </div>
 
@@ -189,7 +184,7 @@ const Orders: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-2 flex-1 min-w-[240px]">
                 <FilterIcon size={18} className="text-gray-600" />
-                <input type="text" placeholder="Search by buyer name, order ID, or crop..." className="bg-transparent outline-0 w-full text-sm" />
+                <input type="text" placeholder="Search by farmer name, order ID, or crop..." className="bg-transparent outline-0 w-full text-sm" />
               </div>
               <div className="flex items-center gap-2">
                 <button onClick={() => setFilter("all")} className={`px-3 py-2 rounded-full text-sm ${filter === "all" ? "bg-black text-white" : "bg-gray-100 text-gray-800"}`}>All Orders</button>
@@ -202,7 +197,7 @@ const Orders: React.FC = () => {
 
           <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="grid grid-cols-12 gap-0 text-xs font-semibold text-gray-500 border-b px-4 py-3">
-              <div className="col-span-2">Buyer</div>
+              <div className="col-span-2">Farmer</div>
               <div className="col-span-2">Crop</div>
               <div className="col-span-2">Variety</div>
               <div className="col-span-1">Quantity</div>
@@ -219,13 +214,13 @@ const Orders: React.FC = () => {
             ) : (
                 filteredOrders.map((order) => (
                   <div key={order.id} className="grid grid-cols-12 gap-0 items-center px-4 py-3 border-b last:border-none hover:bg-gray-50">
-                    {/* Buyer Column */}
+                    {/* Farmer Column */}
                     <div className="col-span-2">
                       <div className="flex items-center gap-3">
-                        <img src={user1} alt="Buyer" className="w-9 h-9 rounded-full object-cover" />
+                        <img src={getFarmerImage(order)} alt="Farmer" className="w-9 h-9 rounded-full object-cover" />
                         <div className="truncate">
-                          <p className="text-sm font-medium text-gray-800 truncate" title={getBuyerName(order)}>{getBuyerName(order)}</p>
-                          <p className="text-xs text-gray-500 truncate" title={getBuyerLocation(order)}>{getBuyerLocation(order)}</p>
+                          <p className="text-sm font-medium text-gray-800 truncate" title={getFarmerName(order)}>{getFarmerName(order)}</p>
+                          <p className="text-xs text-gray-500 truncate" title={getFarmerLocation(order)}>{getFarmerLocation(order)}</p>
                         </div>
                       </div>
                     </div>
@@ -269,29 +264,12 @@ const Orders: React.FC = () => {
 
                     {/* Actions Column */}
                     <div className="col-span-1 flex items-center gap-2 justify-end">
+                      {/* Buyer actions can be added here, e.g., Cancel, Pay */}
                       {order.status === "PENDING" && (
-                        <>
-                          <button 
-                            onClick={() => handleOrderAction(order.id, "decline")}
-                            className="w-8 h-8 rounded-md bg-red-100 text-red-700 flex items-center justify-center hover:bg-red-200 transition-colors"
-                            title="Decline"
-                          >
-                            <LuX size={16} />
-                          </button>
-                          <button 
-                            onClick={() => handleOrderAction(order.id, "accept")}
-                            className="w-8 h-8 rounded-md bg-emerald-100 text-emerald-700 flex items-center justify-center hover:bg-emerald-200 transition-colors"
-                            title="Accept"
-                          >
-                            <LuCheck size={16} />
-                          </button>
-                        </>
+                        <span className="text-xs text-gray-400">Wait Approval</span>
                       )}
                       {order.status === "ACCEPTED" && (
-                        <span className="text-xs text-gray-500 italic">Awaiting Pay</span>
-                      )}
-                      {order.status === "PAID" && (
-                        <button className="px-2 py-1 rounded bg-blue-600 text-white text-xs hover:bg-blue-700">Ship</button>
+                         <button className="px-2 py-1 rounded bg-lime-600 text-white text-xs hover:bg-lime-700">Pay Now</button>
                       )}
                     </div>
                   </div>
@@ -300,7 +278,6 @@ const Orders: React.FC = () => {
             
             <div className="flex items-center justify-between px-4 py-3 text-sm text-gray-600">
               <p>Showing {filteredOrders.length} orders</p>
-              {/* Pagination can be added later */}
             </div>
           </section>
         </main>
@@ -309,4 +286,4 @@ const Orders: React.FC = () => {
   );
 };
 
-export default Orders;
+export default BuyerOrders;
